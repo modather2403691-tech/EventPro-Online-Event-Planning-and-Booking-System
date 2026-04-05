@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EventPro - Reports</title>
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/forms.css">
+  <link rel="stylesheet" href="css/dashboard.css">
+  <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+
+  <div class="dashboard-container">
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <h2>Admin Panel</h2>
+      <ul>
+        <li><a href="admin-dashboard.html">Dashboard</a></li>
+        <li><a href="manage-users.html">Manage Users</a></li>
+        <li><a href="manage-bookings.html">Manage Bookings</a></li>
+        <li><a href="reports.html">Reports</a></li>
+        <li><a href="index.html">Back to Home</a></li>
+      </ul>
+    </aside>
+
+    <!-- Main Content -->
+    <div class="dashboard-content">
+      <h1>Reports</h1>
+
+      <!-- Cards -->
+      <div class="cards">
+        <div class="card">
+          <h3>Monthly Bookings</h3>
+          <p>12</p>
+        </div>
+
+        <div class="card">
+          <h3>Completed Events</h3>
+          <p>9</p>
+        </div>
+
+        <div class="card">
+          <h3>Estimated Revenue</h3>
+          <p>$8,500</p>
+        </div>
+      </div>
+
+      <!-- Report Table -->
+      <section class="dashboard-section">
+        <h2>Report Summary</h2>
+
+        <table class="dashboard-table">
+          <thead>
+            <tr>
+              <th>Month</th>
+              <th>Total Bookings</th>
+              <th>Completed</th>
+              <th>Pending</th>
+              <th>Revenue</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <tr>
+              <td>March</td>
+              <td>8</td>
+              <td>6</td>
+              <td>2</td>
+              <td>$4,200</td>
+            </tr>
+
+            <tr>
+              <td>April</td>
+              <td>10</td>
+              <td>7</td>
+              <td>3</td>
+              <td>$5,600</td>
+            </tr>
+
+            <tr>
+              <td>May</td>
+              <td>12</td>
+              <td>9</td>
+              <td>3</td>
+              <td>$8,500</td>
+            </tr>
+          </tbody>
+        </table>
+
+      </section>
+
+    </div>
+  </div>
+
+  <!-- JS -->
+  <script src="js/main.js"></script>
+  <script src="js/validation.js"></script>
+  <script src="js/booking.js"></script>
+  <script src="js/dashboard.js"></script>
+
+</body>
+</html>
