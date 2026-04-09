@@ -1,0 +1,158 @@
+/* STYLES FOR NON-ORGANIZER PAGES (from dashboard.css) */
+
+.dashboard-container {
+  display: flex;
+  min-height: 100vh;
+}
+
+.sidebar {
+  width: 250px;
+  background-color: #1e2a38;
+  color: white;
+  padding: 20px;
+}
+
+.sidebar h2 {
+  margin-bottom: 20px;
+}
+
+.sidebar ul {
+  list-style: none;
+  padding: 0;
+}
+
+.sidebar ul li {
+  margin-bottom: 12px;
+}
+
+.sidebar ul li a {
+  color: white;
+  text-decoration: none;
+  display: block;
+  padding: 10px;
+  border-radius: 6px;
+}
+
+.sidebar ul li a:hover {
+  background-color: #2d4054;
+}
+
+.dashboard-content {
+  flex: 1;
+  padding: 30px;
+  background-color: #f5f7fb;
+}
+
+.dashboard-section {
+  margin-top: 30px;
+}
+
+.dashboard-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 15px;
+  background: white;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.dashboard-table th,
+.dashboard-table td {
+  padding: 14px;
+  border: 1px solid #ddd;
+  text-align: center;
+}
+
+.dashboard-table th {
+  background-color: #1e2a38;
+  color: white;
+}
+
+/* ORGANIZER-PAGE SPECIFIC STYLES */
+
+body.organizer-page .dashboard-container {
+  display: flex;
+  min-height: 100vh;
+}
+
+/* SIDEBAR */
+body.organizer-page .sidebar {
+  width: 250px;
+  color: white;
+  padding: 20px;
+
+  background: #020617;
+  border-right: 1px solid #1e293b;
+}
+
+body.organizer-page .sidebar h2 {
+  margin-bottom: 20px;
+  color: #60a5fa;
+}
+
+body.organizer-page .sidebar ul {
+  list-style: none;
+  padding: 0;
+}
+
+body.organizer-page .sidebar ul li {
+  margin-bottom: 12px;
+}
+
+body.organizer-page .sidebar ul li a {
+  color: #cbd5f5;
+  text-decoration: none;
+  display: block;
+  padding: 12px;
+  border-radius: 10px;
+  transition: 0.3s;
+}
+
+body.organizer-page .sidebar ul li a:hover {
+  background: linear-gradient(45deg, #2563eb, #7c3aed);
+  color: white;
+}
+
+/* CONTENT */
+body.organizer-page .dashboard-content {
+  flex: 1;
+  padding: 30px;
+  background: #0f172a;
+}
+
+/* SECTIONS */
+body.organizer-page .dashboard-section {
+  margin-top: 30px;
+}
+
+/* TABLE */
+body.organizer-page .dashboard-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 15px;
+
+  background: #1e293b;
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+}
+
+body.organizer-page .dashboard-table th,
+body.organizer-page .dashboard-table td {
+  padding: 14px;
+  text-align: center;
+}
+
+body.organizer-page .dashboard-table th {
+  background: #020617;
+  color: #60a5fa;
+}
+
+body.organizer-page .dashboard-table td {
+  border-bottom: 1px solid #334155;
+  color: #e2e8f0;
+}
+
+body.organizer-page .dashboard-table tr:hover {
+  background: rgba(37, 99, 235, 0.1);
+}
