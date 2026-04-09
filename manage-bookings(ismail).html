@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EventPro - Manage Bookings</title>
+
+  <link rel="stylesheet" href="style(ismail).css">
+  <link rel="stylesheet" href="forms(ismail).css">
+  <link rel="stylesheet" href="dashboard(ismail).css">
+  <link rel="stylesheet" href="responsive(ismail).css">
+</head>
+<body class="admin-page">
+
+  <div class="dashboard-container">
+    <aside class="sidebar">
+      <div class="brand-wrapper" id="brandLogo">
+        <div class="brand-mark">I</div>
+        <div class="brand-text">
+          <span class="brand-name">Ismail</span>
+          <span class="brand-subtitle">Admin</span>
+        </div>
+      </div>
+      <nav aria-label="Admin navigation" id="adminNav">
+        <h2 id="sidebarTitle">Admin Panel</h2>
+        <ul id="sidebarMenu">
+          <li id="sidebarItemDashboard"><a id="navDashboard" href="admin-dashboard.html">Dashboard</a></li>
+          <li id="sidebarItemUsers"><a id="navUsers" href="manage-users.html">Manage Users</a></li>
+          <li id="sidebarItemBookings"><a id="navBookings" href="manage-bookings.html">Manage Bookings</a></li>
+          <li id="sidebarItemReports"><a id="navReports" href="reports.html">Reports</a></li>
+          <li id="sidebarItemHome"><a id="navHome" href="index.html">Back to Home</a></li>
+        </ul>
+      </nav>
+    </aside>
+
+    <div class="dashboard-content">
+      <h1>Manage Bookings</h1>
+      <div class="page-meta" id="pageMeta">
+      </div>
+
+      <table class="dashboard-table">
+        <thead>
+          <tr>
+            <th>Booking ID</th>
+            <th>Client</th>
+            <th>Package</th>
+            <th>Date</th>
+            <th>Total Cost</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>B001</td>
+            <td>Sarah Ahmed</td>
+            <td>Wedding Package</td>
+            <td>2025-05-18</td>
+            <td>$750</td>
+            <td>Approved</td>
+          </tr>
+          <tr>
+            <td>B002</td>
+            <td>Ali Hassan</td>
+            <td>Conference Package</td>
+            <td>2025-06-02</td>
+            <td>$550</td>
+            <td>Pending</td>
+          </tr>
+          <tr>
+            <td>B003</td>
+            <td>Mona Khaled</td>
+            <td>Birthday Package</td>
+            <td>2025-06-15</td>
+            <td>$420</td>
+            <td>Rejected</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <script src="js/main.js"></script>
+  <script src="js/validation.js"></script>
+  <script src="js/booking.js"></script>
+  <script src="dashboard.js"></script>
+</body>
+</html>
