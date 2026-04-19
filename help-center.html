@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EventPro - Help Center</title>
+
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/footer.css">
+ 
+</head>
+
+<body class="help-center-page">
+
+<header>
+  <nav class="inner-navbar">
+    <a href="index.html" class="brand">EventPro</a>
+
+    <button class="nav-toggle">☰</button>
+
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="resources.html">Resources</a></li>
+      <li><a href="security.html">Security</a></li>
+      <li><a href="help-center.html" class="active">Help</a></li>
+      <li><a href="contact.html" class="nav-btn">Contact</a></li>
+    </ul>
+  </nav>
+</header>
+
+<main class="page-main">
+
+  <!-- HERO -->
+  <section class="hero-modern help-hero">
+    <div class="hero-left">
+      <span class="help-badge">Support</span>
+      <h1>Help Center</h1>
+      <p class="hero-subtitle">
+        Get fast answers about booking, managing events, and using EventPro.
+      </p>
+    </div>
+  </section>
+
+  <!-- ARTICLES -->
+  <section class="content-section">
+    <div class="section-header">
+      <h2>Support Articles</h2>
+      <p>Browse helpful guides to solve common issues quickly.</p>
+    </div>
+
+    <div class="help-grid">
+      <div class="help-card">
+        <h3>How to Book an Event</h3>
+        <p>Step-by-step guide to booking your first event on EventPro.</p>
+      </div>
+
+      <div class="help-card">
+        <h3>Manage Reservations</h3>
+        <p>Learn how to edit, cancel, or track your bookings.</p>
+      </div>
+
+      <div class="help-card">
+        <h3>Account Settings</h3>
+        <p>Update your profile, preferences, and personal details.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="content-section">
+    <div class="section-header">
+      <h2>Frequently Asked Questions</h2>
+    </div>
+
+    <ul class="faq-list">
+      <li>How do I cancel a booking?</li>
+      <li>Can I change my event date?</li>
+      <li>How do I contact an organizer?</li>
+      <li>Is my payment secure?</li>
+    </ul>
+  </section>
+
+  <!-- CONTACT -->
+  <section class="content-section">
+    <div class="help-highlight-box">
+      <p>Still need help? Our support team is ready to assist you.</p>
+      <a href="contact.html" class="help-btn">Contact Support</a>
+    </div>
+  </section>
+
+</main>
+
+<footer class="main-footer">
+  <!-- keep your footer same -->
+</footer>
+
+<script>
+  const nav = document.querySelector(".inner-navbar");
+  const toggle = document.querySelector(".nav-toggle");
+
+  toggle.addEventListener("click", () => {
+    nav.classList.toggle("open");
+  });
+</script>
+
+</body>
+</html>
