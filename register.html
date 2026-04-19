@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EventPro - Register</title>
+  
+
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/forms.css">
+</head>
+<body class="auth-page">
+
+<header>
+  <nav class="navbar">
+    <div class="logo">Event pro</div>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="login.html">Packages</a></li>
+      
+    
+    </ul>
+  </nav>
+</header>
+
+<main>
+  <h1>Register</h1>
+  <p class="register-subtitle">Create your account to get started</p>
+
+  <div class="form-container">
+<form id="registerForm">
+
+      <div>
+  <label>Full Name</label>
+  <input type="text" id="name" placeholder="Enter your full name" required>
+<span class="error" id="nameError"></span>
+</div>
+
+<div>
+  <label>Email</label>
+<input type="email" id="email" placeholder="Enter your email" required>
+<span class="error" id="emailError"></span>
+</div>
+
+<div>
+  <label>Date of Birth</label>
+  <input type="date" id="dob" required>
+  <span class="error" id="dobError"></span>
+</div>
+
+<div>
+  <label>Password</label>
+ 
+  <input type="password" id="password" placeholder="Enter your password" required>
+<span class="error" id="passwordError"></span>
+</div>
+
+<div>
+  <label>Confirm Password</label>
+  <input type="password" id="confirmPassword" placeholder="Confirm your password" required>
+  <span class="error" id="confirmPasswordError"></span>
+</div>
+
+<div>
+  <label>Phone</label>
+<input type="text" id="phone" maxlength="11" placeholder="01xxxxxxxxx" required>
+<span class="error" id="phoneError"></span>
+</div>
+
+<div>
+  <label>Role</label>
+  <select id="roles">
+    <option class="C">Client</option>
+    <option class="C">Organizer</option>
+ 
+  </select>
+</div>
+
+
+      <button type="submit">Register</button>
+      
+    <div class="register-extra">
+  <span>Already have an account?</span>
+  <a href="login.html">Login</a>
+</div>
+    </form>
+  </div>
+</main>
+
+<footer class="footer">
+  <p>&copy; 2026 EventPro</p>
+</footer>
+
+
+<script src="js/validation.js"></script>
+</body>
+</html>
