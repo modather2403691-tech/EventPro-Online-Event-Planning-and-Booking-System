@@ -16,6 +16,12 @@ a {
   color: inherit;
 }
 
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
 main {
   padding: 40px;
 }
@@ -680,5 +686,615 @@ section {
 
   .logos img {
     height: 24px;
+  }
+}
+
+@media (max-width: 1100px) {
+  .navbar,
+  .home-navbar,
+  .cvent-navbar,
+  body:not(.admin-page) .dashboard-container,
+  body.admin-page .dashboard-container {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .nav-links,
+  .home-nav-links,
+  .cvent-nav-links {
+    width: 100%;
+    flex-wrap: wrap;
+    gap: 12px 18px;
+    margin-top: 14px;
+  }
+
+  .home-nav-actions,
+  .cvent-actions {
+    width: 100%;
+    justify-content: flex-start;
+    margin-top: 12px;
+  }
+
+  body:not(.admin-page) .sidebar,
+  body.admin-page .sidebar,
+  .profile-dashboard-page .sidebar {
+    width: 100%;
+    height: auto;
+    position: static;
+  }
+
+  body:not(.admin-page) .dashboard-content,
+  body.admin-page .dashboard-content,
+  .profile-dashboard-page .dashboard-content {
+    width: 100%;
+    max-width: 100%;
+    padding: 24px;
+  }
+
+  .hero-modern {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 48px 24px 96px;
+  }
+
+  .hero-left,
+  .hero-right {
+    width: 100%;
+  }
+
+  .hero-right {
+    min-height: 0;
+  }
+
+  .hero-mockup {
+    margin: 0;
+    max-width: 100%;
+  }
+
+  .home-info-strip {
+    width: calc(100% - 32px);
+    flex-direction: column;
+    align-items: flex-start;
+    margin: -42px auto 40px;
+  }
+
+  .quick-links-section,
+  .events-section {
+    padding-left: 24px;
+    padding-right: 24px;
+  }
+}
+
+@media (max-width: 768px) {
+  main {
+    padding: 24px 16px;
+  }
+
+  .navbar,
+  .home-navbar,
+  .cvent-navbar {
+    padding: 14px 16px;
+  }
+
+  .nav-links,
+  .home-nav-links,
+  .cvent-nav-links {
+    gap: 10px 14px;
+  }
+
+  .hero {
+    padding: 48px 20px;
+  }
+
+  .hero h1 {
+    font-size: 32px;
+  }
+
+  .hero h2 {
+    font-size: 24px;
+  }
+
+  .hero p {
+    font-size: 16px;
+  }
+
+  .hero-left h1 {
+    font-size: 38px;
+  }
+
+  .hero-subtitle {
+    font-size: 18px;
+  }
+
+  .hero-points li {
+    font-size: 16px;
+  }
+
+  .hero-buttons {
+    width: 100%;
+  }
+
+  .hero-primary-btn,
+  .hero-secondary-btn {
+    width: 100%;
+    text-align: center;
+  }
+
+  .home-info-strip {
+    width: calc(100% - 24px);
+    padding: 18px 16px;
+    margin: -32px auto 32px;
+  }
+
+  .info-strip-text {
+    font-size: 18px;
+  }
+
+  .quick-links-section,
+  .events-section {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+
+  .cards {
+    flex-direction: column;
+  }
+
+  .card {
+    width: 100%;
+  }
+
+  .form-container {
+    padding: 0 16px;
+  }
+
+  form {
+    padding: 22px 18px;
+  }
+
+  .dashboard-container,
+  .profile-layout {
+    width: 100%;
+  }
+
+  .dashboard-table {
+    display: block;
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  body:not(.admin-page) .dashboard-content,
+  body.admin-page .dashboard-content,
+  .profile-dashboard-page .dashboard-content {
+    padding: 18px 16px;
+  }
+
+  .profile-header h1 {
+    font-size: 28px;
+  }
+
+  .profile-layout {
+    gap: 18px;
+  }
+
+  .profile-main-card,
+  .profile-box {
+    padding: 18px;
+    border-radius: 18px;
+  }
+
+  .profile-main-image {
+    width: 160px;
+    height: 160px;
+  }
+
+  .profile-info-row,
+  .profile-toggle-row,
+  .profile-box-header,
+  .account-status-row,
+  .bill-row {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .bill-row {
+    display: flex;
+    gap: 8px;
+  }
+
+  .mini-status,
+  .status-btn,
+  .small-edit-btn,
+  .profile-save-btn {
+    width: 100%;
+    text-align: center;
+  }
+
+  .profile-save-btn {
+    max-width: none;
+  }
+
+  .sidebar {
+    padding: 18px 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero {
+    padding: 36px 16px;
+    border-radius: 12px;
+  }
+
+  .hero h1 {
+    font-size: 28px;
+  }
+
+  .hero h2 {
+    font-size: 22px;
+  }
+
+  .hero p {
+    font-size: 15px;
+  }
+
+  .navbar,
+  .home-navbar,
+  .cvent-navbar {
+    padding: 12px 14px;
+  }
+
+  .logo,
+  .home-logo,
+  .cvent-logo {
+    font-size: 20px;
+  }
+
+  .profile-main-image {
+    width: 140px;
+    height: 140px;
+  }
+
+  .profile-main-card,
+  .profile-box,
+  .content-section,
+  .footer-links > div {
+    padding: 16px;
+    border-radius: 16px;
+  }
+
+  .footer {
+    padding: 16px;
+  }
+}
+/* ===== Global responsive improvements ===== */
+html, body {
+  overflow-x: hidden;
+}
+
+iframe, video {
+  max-width: 100%;
+}
+
+.dashboard-table,
+.organizer-table-wrap,
+.reservation-table-wrap,
+.manage-users-table-wrap {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.dashboard-table table {
+  min-width: 100%;
+}
+
+.hero-modern,
+.promo-banner,
+.profile-layout,
+.client-dashboard-grid,
+.analytics-cards,
+.booking-cards-grid,
+.about-grid,
+.help-grid,
+.resource-grid,
+.footer-links,
+.events-grid,
+.packages-wrapper,
+.cards {
+  width: 100%;
+}
+
+.home-navbar,
+.navbar,
+.inner-navbar,
+.cvent-navbar {
+  gap: 14px;
+}
+
+.inner-navbar,
+.navbar,
+.home-navbar {
+  flex-wrap: wrap;
+}
+
+.nav-toggle {
+  display: none;
+}
+
+@media (max-width: 1024px) {
+  .dashboard-container,
+  body.admin-page .dashboard-container,
+  body:not(.admin-page) .dashboard-container,
+  .profile-dashboard-page .dashboard-container {
+    flex-direction: column;
+  }
+
+  .sidebar,
+  body.admin-page .sidebar,
+  body:not(.admin-page) .sidebar,
+  #sidebar {
+    width: 100% !important;
+    height: auto !important;
+    min-height: auto !important;
+    position: static !important;
+  }
+
+  .dashboard-content,
+  body.admin-page .dashboard-content,
+  body:not(.admin-page) .dashboard-content,
+  #dashboardContent {
+    width: 100% !important;
+    max-width: 100% !important;
+    padding: 24px 18px !important;
+  }
+
+  .profile-layout,
+  .client-dashboard-grid,
+  .promo-banner,
+  .hero-modern {
+    grid-template-columns: 1fr;
+    flex-direction: column;
+  }
+
+  .hero-left,
+  .hero-right,
+  .promo-image,
+  .promo-content,
+  .client-main-panel,
+  .client-analytics-panel,
+  .profile-main-card,
+  .profile-side-column {
+    width: 100% !important;
+    max-width: 100%;
+  }
+
+  .hero-left h1 {
+    font-size: clamp(2.2rem, 6vw, 3.25rem);
+  }
+}
+
+@media (max-width: 768px) {
+  main,
+  .page-main,
+  .events-section,
+  .promo-section,
+  .stats-section,
+  .packages-wrapper,
+  .dashboard-content,
+  #dashboardContent {
+    padding-left: 16px !important;
+    padding-right: 16px !important;
+  }
+
+  .navbar,
+  .home-navbar,
+  .inner-navbar,
+  .cvent-navbar {
+    padding: 14px 16px !important;
+    align-items: flex-start;
+  }
+
+  .nav-links,
+  .home-nav-links,
+  .inner-navbar .nav-links,
+  .cvent-nav-links {
+    width: 100%;
+    display: flex !important;
+    flex-direction: column;
+    gap: 10px;
+    align-items: stretch;
+  }
+
+  .nav-links li,
+  .home-nav-links li,
+  .cvent-nav-links li {
+    width: 100%;
+  }
+
+  .nav-links a,
+  .home-nav-links a,
+  .cvent-nav-links a,
+  .nav-btn,
+  .home-outline-btn {
+    display: block;
+    width: 100%;
+    text-align: center;
+  }
+
+  .hero-modern {
+    padding: 40px 16px 72px !important;
+    gap: 24px;
+  }
+
+  .hero-left,
+  .hero-right,
+  .hero-mockup,
+  .video-background video,
+  .package-card,
+  form,
+  .modern-card {
+    max-width: 100%;
+  }
+
+  .hero-left h1,
+  .packages-hero h1,
+  #pageTitle,
+  .page-heading h1 {
+    font-size: clamp(1.9rem, 8vw, 2.6rem) !important;
+    line-height: 1.15;
+  }
+
+  .hero-subtitle,
+  .hero-points li,
+  .page-description,
+  .dashboard-subtitle {
+    font-size: 1rem !important;
+  }
+
+  .hero-buttons,
+  .dashboard-actions {
+    flex-direction: column;
+  }
+
+  .hero-primary-btn,
+  .hero-secondary-btn,
+  .dashboard-actions button,
+  button,
+  .btn,
+  #book-btn,
+  .modern-button {
+    width: 100%;
+    min-width: 0 !important;
+  }
+
+  .events-grid,
+  .resource-grid,
+  .help-grid,
+  .about-grid,
+  .cards,
+  .stats-grid,
+  .analytics-cards,
+  .booking-cards-grid,
+  .packages-wrapper,
+  #statsGrid {
+    grid-template-columns: 1fr !important;
+    display: grid;
+  }
+
+  .event-card,
+  .card,
+  .package-card,
+  .resource-card,
+  .help-card,
+  .about-card,
+  .profile-main-card,
+  .profile-box,
+  .booking-card,
+  #cardUsers,
+  #cardBookings,
+  #cardPending {
+    width: 100%;
+  }
+
+  .dashboard-table {
+    display: block;
+    white-space: nowrap;
+    font-size: 0.92rem;
+  }
+
+  .dashboard-table th,
+  .dashboard-table td {
+    padding: 10px 12px !important;
+  }
+
+  .top-bar,
+  #topBar,
+  .activity-header,
+  #activityHeader,
+  .profile-box-header,
+  .account-status-row,
+  .profile-info-row,
+  .profile-toggle-row,
+  .bill-row {
+    flex-direction: column;
+    align-items: flex-start !important;
+  }
+
+  .sidebar-profile,
+  .brand-wrapper {
+    justify-content: flex-start;
+  }
+
+  .profile-main-image {
+    width: 140px !important;
+    height: 140px !important;
+  }
+
+  .package-card {
+    margin: 24px auto;
+    padding: 22px 18px;
+  }
+
+  .packages-hero {
+    padding: 56px 16px;
+  }
+
+  .footer-links {
+    grid-template-columns: 1fr !important;
+  }
+
+  .footer-bottom {
+    flex-direction: column;
+    text-align: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .logo,
+  .home-logo,
+  .brand,
+  .cvent-logo {
+    font-size: 1.2rem !important;
+  }
+
+  main,
+  .page-main,
+  .dashboard-content,
+  #dashboardContent {
+    padding: 14px !important;
+  }
+
+  form,
+  .modern-card,
+  .content-section,
+  .profile-main-card,
+  .profile-box,
+  .footer-links > div {
+    padding: 16px !important;
+    border-radius: 16px;
+  }
+
+  .hero-modern {
+    padding: 32px 14px 56px !important;
+  }
+
+  .hero-left h1,
+  .packages-hero h1,
+  .page-heading h1,
+  #pageTitle {
+    font-size: 1.7rem !important;
+  }
+
+  .hero-subtitle,
+  .hero-points li,
+  .content-section p,
+  .resource-card p,
+  .help-card p {
+    font-size: 0.95rem !important;
+  }
+
+  .event-card img {
+    height: 160px;
   }
 }

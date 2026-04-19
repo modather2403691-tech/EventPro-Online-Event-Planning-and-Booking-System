@@ -23,8 +23,18 @@ document.addEventListener('mousemove', (e) => {
 });
 
 // ========== PASSWORD TOGGLE ==========
+const loginEmailInput = document.querySelector('input[type="email"]');
 const passwordInput = document.getElementById('password');
 const toggleEye = document.getElementById('toggleEye');
+
+if (loginEmailInput) {
+    const loginParams = new URLSearchParams(window.location.search);
+    const presetEmail = loginParams.get('email');
+
+    if (presetEmail) {
+        loginEmailInput.value = presetEmail;
+    }
+}
 
 toggleEye.addEventListener('click', () => {
     const isPassword = passwordInput.type === 'password';
