@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EventPro - Client Dashboard</title>
+
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/forms.css">
+  <link rel="stylesheet" href="css/dashboard.css">
+  <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body class="client-dashboard-page">
+
+  <div class="dashboard-container">
+    <aside class="sidebar">
+      <div class="sidebar-profile">
+  <img src="assets/images/my-photo.jpg" alt="Profile">
+  <div>
+    <h3>Modather</h3>
+    <p>Client</p>
+  </div>
+</div>
+      <h2>Client Panel</h2>
+      <ul>
+        <li><a href="client-index.html">Home</a></li>
+      
+        <li><a href="client-dashboard.html" class="active">My Dashboard</a></li>
+        <li><a href="my-bookings.html">My Bookings</a></li>
+        <li><a href="profile.html">Profile</a></li>
+        
+      </ul>
+    </aside>
+
+    <div class="dashboard-content">
+      <h1>Client Dashboard</h1>
+      <p class="dashboard-subtitle">
+        Track your bookings, event progress, and activity overview in one place.
+      </p>
+
+      <div class="client-dashboard-grid">
+        <div class="client-main-panel">
+
+          <div class="client-status-block teal">
+            <div class="status-label-box">
+              <h3>Awaiting Confirmation</h3>
+              <p>Wedding Event</p>
+              <p>Party Booking</p>
+            </div>
+
+            <div class="status-table-box">
+              <div class="status-table-header">
+                <span>Event</span>
+                <span>Progress</span>
+                <span>Package</span>
+                <span>Price</span>
+                <span>Date</span>
+              </div>
+
+              <div class="status-row">
+                <span>Wedding</span>
+                <span><div class="progress-bar"><div class="fill teal-fill w40"></div></div></span>
+                <span>Gold</span>
+                <span>$800</span>
+                <span>May 20</span>
+              </div>
+
+              <div class="status-row">
+                <span>Party</span>
+                <span><div class="progress-bar"><div class="fill teal-fill w55"></div></div></span>
+                <span>Silver</span>
+                <span>$550</span>
+                <span>Jun 03</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="client-status-block peach">
+            <div class="status-label-box">
+              <h3>Bookings in Progress</h3>
+              <p>Birthday Party</p>
+              <p>Private Event</p>
+            </div>
+
+            <div class="status-table-box">
+              <div class="status-table-header">
+                <span>Event</span>
+                <span>Progress</span>
+                <span>Package</span>
+                <span>Price</span>
+                <span>Date</span>
+              </div>
+
+              <div class="status-row">
+                <span>Birthday</span>
+                <span><div class="progress-bar"><div class="fill peach-fill w80"></div></div></span>
+                <span>Light</span>
+                <span>$400</span>
+                <span>Jun 10</span>
+              </div>
+
+              <div class="status-row">
+                <span>Private</span>
+                <span><div class="progress-bar"><div class="fill peach-fill w45"></div></div></span>
+                <span>Silver</span>
+                <span>$620</span>
+                <span>Jun 18</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="client-status-block gold">
+            <div class="status-label-box">
+              <h3>Completed Bookings</h3>
+              <p>Engagement Party</p>
+              <p>Family Gathering</p>
+            </div>
+
+            <div class="status-table-box">
+              <div class="status-table-header">
+                <span>Event</span>
+                <span>Progress</span>
+                <span>Package</span>
+                <span>Price</span>
+                <span>Date</span>
+              </div>
+
+              <div class="status-row">
+                <span>Engagement</span>
+                <span><div class="progress-bar"><div class="fill gold-fill w100"></div></div></span>
+                <span>Silver</span>
+                <span>$700</span>
+                <span>Apr 14</span>
+              </div>
+
+              <div class="status-row">
+                <span>Gathering</span>
+                <span><div class="progress-bar"><div class="fill gold-fill w100"></div></div></span>
+                <span>Light</span>
+                <span>$500</span>
+                <span>Apr 28</span>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="client-analytics-panel">
+          <h2>Analytics</h2>
+
+          <div class="analytics-cards">
+            <div class="analytics-card">
+              <span>Total Bookings</span>
+              <strong>8</strong>
+            </div>
+            <div class="analytics-card">
+              <span>Upcoming</span>
+              <strong>3</strong>
+            </div>
+            <div class="analytics-card">
+              <span>Completed</span>
+              <strong>5</strong>
+            </div>
+            <div class="analytics-card">
+              <span>Avg. Response</span>
+              <strong>2 Days</strong>
+            </div>
+          </div>
+
+          <div class="analytics-donut-box">
+            <h3>Booking Completion Rate</h3>
+            <div class="fake-donut">
+              <span>70%</span>
+            </div>
+          </div>
+
+          <div class="analytics-chart-box">
+            <h3>Applications Received</h3>
+            <div class="chart-number">11265</div>
+            <p>Total amount of booking requests</p>
+            <div class="fake-bars">
+              <span></span><span></span><span></span><span></span>
+              <span></span><span></span><span></span><span></span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>
