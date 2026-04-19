@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EventPro - Client Reservation</title>
+
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/forms.css">
+  <link rel="stylesheet" href="css/dashboard.css">
+  <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body class="admin-page" id="clientReservationPage">
+
+  <div class="dashboard-container">
+    <aside class="sidebar">
+      <div class="brand-wrapper" id="brandLogo">
+        <div class="brand-mark">I</div>
+        <div class="brand-text">
+          <span class="brand-name">Ismail</span>
+          <span class="brand-subtitle">Admin</span>
+        </div>
+      </div>
+      <nav aria-label="Admin navigation" id="adminNav">
+        <h2 id="sidebarTitle">Admin Panel</h2>
+        <ul id="sidebarMenu">
+          <li id="sidebarItemDashboard"><a id="navDashboard" href="admin-dashboard.html">Dashboard</a></li>
+          <li id="sidebarItemUsers"><a id="navUsers" href="manage-users.html">Manage Users</a></li>
+          <li id="sidebarItemClientReservations"><a id="navClientReservations" href="client-reservation.html">Client Reservation</a></li>
+          <li id="sidebarItemOrganizerEvents"><a id="navOrganizerEvents" href="organizer-event.html">Organizer Event</a></li>
+          <li id="sidebarItemReports"><a id="navReports" href="reports.html">Reports</a></li>
+          <li id="sidebarItemHome"><a id="navHome" href="admin-index.html">Back to Home</a></li>
+        </ul>
+      </nav>
+    </aside>
+
+    <main class="dashboard-content">
+      <h1>Client Reservation</h1>
+      
+      <section class="dashboard-section">
+        <h2>Package Requests</h2>
+        <div class="reservation-table-wrap">
+          <table class="dashboard-table" aria-label="Client package requests">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Client Name</th>
+                <th>Requested Package</th>
+                <th>Event Date</th>
+                <th>Request Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>CR-101</td>
+                <td>Lina Omar</td>
+                <td>Wedding Package</td>
+                <td>2026-05-12</td>
+                <td><span class="status-pill status-approved">Approved</span></td>
+              </tr>
+              <tr>
+                <td>CR-102</td>
+                <td>Ahmed Nasser</td>
+                <td>Party Package</td>
+                <td>2026-05-20</td>
+                <td><span class="status-pill status-pending">Pending</span></td>
+              </tr>
+              <tr>
+                <td>CR-103</td>
+                <td>Mariam Adel</td>
+                <td>Birthday Package</td>
+                <td>2026-06-04</td>
+                <td><span class="status-pill status-approved">Approved</span></td>
+              </tr>
+              <tr>
+                <td>CR-104</td>
+                <td>Youssef Tarek</td>
+                <td>Party Package</td>
+                <td>2026-06-18</td>
+                <td><span class="status-pill status-approved">Approved</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="dashboard-section">
+        <h2>Joined Events</h2>
+        <div class="reservation-table-wrap">
+          <table class="dashboard-table" aria-label="Client joined events">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Client Name</th>
+                <th>Event Title</th>
+                <th>Event Date</th>
+                <th>Joined Event</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>JE-201</td>
+                <td>Lina Omar</td>
+                <td>Royal Wedding Night</td>
+                <td>2026-05-12</td>
+                <td><span class="status-pill status-joined">Yes</span></td>
+              </tr>
+              <tr>
+                <td>JE-202</td>
+                <td>Ahmed Nasser</td>
+                <td>Business Leaders Summit</td>
+                <td>2026-05-20</td>
+<td><span class="status-pill status-joined">Yes</span></td>              </tr>
+              <tr>
+                <td>JE-203</td>
+                <td>Mariam Adel</td>
+                <td>Family Birthday Gala</td>
+                <td>2026-06-04</td>
+                <td><span class="status-pill status-joined">Yes</span></td>
+              </tr>
+              <tr>
+                <td>JE-204</td>
+                <td>Youssef Tarek</td>
+                <td>Engagement Evening</td>
+                <td>2026-06-18</td>
+<td><span class="status-pill status-joined">Yes</span></td>              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script src="js/dashboard.js"></script>
+</body>
+</html>

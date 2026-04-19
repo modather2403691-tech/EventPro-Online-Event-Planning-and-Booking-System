@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EventPro - Manage Users</title>
+
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/forms.css">
+  <link rel="stylesheet" href="css/dashboard.css">
+  <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body class="admin-page" id="manageUsersPage">
+
+  <div class="dashboard-container">
+    <aside class="sidebar">
+      <div class="brand-wrapper" id="brandLogo">
+        <div class="brand-mark">I</div>
+        <div class="brand-text">
+          <span class="brand-name">Ismail</span>
+          <span class="brand-subtitle">Admin</span>
+        </div>
+      </div>
+      <nav aria-label="Admin navigation" id="adminNav">
+        <h2 id="sidebarTitle">Admin Panel</h2>
+        <ul id="sidebarMenu">
+          <li id="sidebarItemDashboard"><a id="navDashboard" href="admin-dashboard.html">Dashboard</a></li>
+          <li id="sidebarItemUsers"><a id="navUsers" href="manage-users.html">Manage Users</a></li>
+          <li id="sidebarItemClientReservations"><a id="navClientReservations" href="client-reservation.html">Client Reservation</a></li>
+          <li id="sidebarItemOrganizerEvents"><a id="navOrganizerEvents" href="organizer-event.html">Organizer Event</a></li>
+          <li id="sidebarItemReports"><a id="navReports" href="reports.html">Reports</a></li>
+          <li id="sidebarItemHome"><a id="navHome" href="admin-index.html">Back to Home</a></li>
+        </ul>
+      </nav>
+    </aside>
+
+    <div class="dashboard-content">
+      <h1>Manage Users</h1>
+      <div class="page-meta" id="pageMeta">
+      </div>
+
+      <section class="manage-users-form-wrap" aria-label="Add a new user">
+        <h2>Add New User</h2>
+        <form id="addUserForm" class="manage-users-form">
+          <div class="manage-users-form-grid">
+            <label>
+              User ID
+              <input type="text" id="newUserId" placeholder="U004" required>
+              <span class="error" id="newUserIdError"></span>
+            </label>
+            <label>
+              Name
+              <input type="text" id="newUserName" placeholder="Full name" minlength="10" required>
+              <span class="error" id="newUserNameError"></span>
+            </label>
+            <label>
+              Email
+              <input type="email" id="newUserEmail" placeholder="user@example.com" required>
+              <span class="error" id="newUserEmailError"></span>
+            </label>
+            <label>
+              Role
+              <select id="newUserRole" required>
+                <option value="Client">Client</option>
+                <option value="Organizer">Organizer</option>
+                <option value="Admin">Admin</option>
+              </select>
+            </label>
+            <label>
+              Status
+              <select id="newUserStatus" required>
+                <option value="Active">Active</option>
+                <option value="Inactive">Inactive</option>
+              </select>
+            </label>
+          </div>
+          <button type="submit" class="manage-users-add-btn">Add User</button>
+        </form>
+      </section>
+
+      <div class="manage-users-table-wrap">
+        <table class="dashboard-table" id="manageUsersTable" aria-label="Manage users table with editable rows">
+          <thead>
+            <tr>
+              <th>User ID</th>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Role</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="manageUsersTableBody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/dashboard.js"></script>
+</body>
+</html>

@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EventPro - Organizer Event</title>
+
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/forms.css">
+  <link rel="stylesheet" href="css/dashboard.css">
+  <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body class="admin-page" id="organizerEventPage">
+
+  <div class="dashboard-container">
+    <aside class="sidebar">
+      <div class="brand-wrapper" id="brandLogo">
+        <div class="brand-mark">I</div>
+        <div class="brand-text">
+          <span class="brand-name">Ismail</span>
+          <span class="brand-subtitle">Admin</span>
+        </div>
+      </div>
+      <nav aria-label="Admin navigation" id="adminNav">
+        <h2 id="sidebarTitle">Admin Panel</h2>
+        <ul id="sidebarMenu">
+          <li id="sidebarItemDashboard"><a id="navDashboard" href="admin-dashboard.html">Dashboard</a></li>
+          <li id="sidebarItemUsers"><a id="navUsers" href="manage-users.html">Manage Users</a></li>
+          <li id="sidebarItemClientReservations"><a id="navClientReservations" href="client-reservation.html">Client Reservation</a></li>
+          <li id="sidebarItemOrganizerEvents"><a id="navOrganizerEvents" href="organizer-event.html">Organizer Event</a></li>
+          <li id="sidebarItemReports"><a id="navReports" href="reports.html">Reports</a></li>
+          <li id="sidebarItemHome"><a id="navHome" href="admin-index.html">Back to Home</a></li>
+        </ul>
+      </nav>
+    </aside>
+
+    <main class="dashboard-content">
+      <h1>Organizer Event</h1>
+      
+
+      <div class="organizer-spotlights">
+        <article class="organizer-spotlight-card">
+          <h3>Top Package Acceptance</h3>
+          <p class="spotlight-name">Noor Hassan</p>
+          <span class="spotlight-meta">48 accepted packages this quarter</span>
+        </article>
+
+        <article class="organizer-spotlight-card">
+          <h3>Top Event Creator</h3>
+          <p class="spotlight-name">Fady Khalil</p>
+          <span class="spotlight-meta">31 events created this quarter</span>
+        </article>
+      </div>
+
+      <section class="dashboard-section">
+        <h2 class="organizer-section-title">Available Events by Organizer</h2>
+        <div class="organizer-table-wrap">
+          <table class="dashboard-table" id="organizerEventsTable" aria-label="Available events and their organizers">
+            <thead>
+              <tr>
+                <th>Event ID</th>
+                <th>Event Title</th>
+                <th>Organizer</th>
+                <th>Event Date</th>
+                <th>Number of Guests</th>
+
+                <th>Availability</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="organizerEventsTableBody">
+              <tr>
+                <td data-field="eventId">EV-501</td>
+                <td data-field="eventTitle">Royal Wedding Night</td>
+                <td data-field="organizer">Noor Hassan</td>
+                <td data-field="eventDate">2026-05-12</td>
+           
+                <td data-field="availability">Available</td>
+                <td class="organizer-event-actions-cell">
+                  <button type="button" class="event-action-btn event-edit-btn">Edit</button>
+                  <button type="button" class="event-action-btn event-save-btn is-hidden">Save</button>
+                  <button type="button" class="event-action-btn event-cancel-btn is-hidden">Cancel</button>
+                  <button type="button" class="event-action-btn event-remove-btn">Remove</button>
+                </td>
+              </tr>
+              <tr>
+                <td data-field="eventId">EV-502</td>
+                <td data-field="eventTitle">Business Leaders Summit</td>
+                <td data-field="organizer">Ahmed Nasser</td>
+                <td data-field="eventDate">2026-05-20</td>
+             
+                <td data-field="availability">Available</td>
+                <td class="organizer-event-actions-cell">
+                  <button type="button" class="event-action-btn event-edit-btn">Edit</button>
+                  <button type="button" class="event-action-btn event-save-btn is-hidden">Save</button>
+                  <button type="button" class="event-action-btn event-cancel-btn is-hidden">Cancel</button>
+                  <button type="button" class="event-action-btn event-remove-btn">Remove</button>
+                </td>
+              </tr>
+              <tr>
+                <td data-field="eventId">EV-503</td>
+                <td data-field="eventTitle">Family Birthday Gala</td>
+                <td data-field="organizer">Mariam Adel</td>
+                <td data-field="eventDate">2026-06-04</td>
+              
+                <td data-field="availability">Limited</td>
+                <td class="organizer-event-actions-cell">
+                  <button type="button" class="event-action-btn event-edit-btn">Edit</button>
+                  <button type="button" class="event-action-btn event-save-btn is-hidden">Save</button>
+                  <button type="button" class="event-action-btn event-cancel-btn is-hidden">Cancel</button>
+                  <button type="button" class="event-action-btn event-remove-btn">Remove</button>
+                </td>
+              </tr>
+              <tr>
+                <td data-field="eventId">EV-504</td>
+                <td data-field="eventTitle">Engagement Evening</td>
+                <td data-field="organizer">Fady Khalil</td>
+                <td data-field="eventDate">2026-06-18</td>
+              
+                <td data-field="availability">Available</td>
+                <td class="organizer-event-actions-cell">
+                  <button type="button" class="event-action-btn event-edit-btn">Edit</button>
+                  <button type="button" class="event-action-btn event-save-btn is-hidden">Save</button>
+                  <button type="button" class="event-action-btn event-cancel-btn is-hidden">Cancel</button>
+                  <button type="button" class="event-action-btn event-remove-btn">Remove</button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="dashboard-section">
+        <h2 class="organizer-section-title">Most Organizers Accepting Packages</h2>
+        <div class="organizer-table-wrap">
+          <table class="dashboard-table" aria-label="Top organizers by accepted packages">
+            <thead>
+              <tr>
+                <th>Rank</th>
+                <th>Organizer</th>
+                <th>Accepted Packages</th>
+           
+                <th>Acceptance Rate</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>1</td>
+                <td>Noor Hassan</td>
+                <td>48</td>
+           
+                <td>96%</td>
+              </tr>
+              <tr>
+                <td>2</td>
+                <td>Ahmed Nasser</td>
+                <td>44</td>
+             
+                <td>92%</td>
+              </tr>
+              <tr>
+                <td>3</td>
+                <td>Mariam Adel</td>
+                <td>39</td>
+             
+                <td>89%</td>
+              </tr>
+              <tr>
+                <td>4</td>
+                <td>Fady Khalil</td>
+                <td>35</td>
+           
+                <td>84%</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="dashboard-section">
+        <h2 class="organizer-section-title">Most Organizers Adding Events</h2>
+        <div class="organizer-table-wrap">
+          <table class="dashboard-table" aria-label="Top organizers by added events">
+            <thead>
+              <tr>
+                <th>Rank</th>
+                <th>Organizer</th>
+                <th>Events Added</th>
+                
+                <th>Latest Added Event Date</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>1</td>
+                <td>Fady Khalil</td>
+                <td>31</td>
+              
+                <td>2026-04-09</td>
+              </tr>
+              <tr>
+                <td>2</td>
+                <td>Noor Hassan</td>
+                <td>28</td>
+               
+                <td>2026-04-06</td>
+              </tr>
+              <tr>
+                <td>3</td>
+                <td>Ahmed Nasser</td>
+                <td>24</td>
+               
+                <td>2026-04-03</td>
+              </tr>
+              <tr>
+                <td>4</td>
+                <td>Mariam Adel</td>
+                <td>20</td>
+                
+                <td>2026-03-30</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script src="js/dashboard.js"></script>
+</body>
+</html>
