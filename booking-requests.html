@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EventPro - Booking Requests</title>
+
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/forms.css">
+  <link rel="stylesheet" href="css/dashboard.css">
+  <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body class="organizer-page">
+
+   <div class="dashboard-container">
+    <aside class="sidebar">
+      <div class="sidebar-profile">
+        <img src="assets/images/333.jpeg" alt="Profile">
+        <div>
+          <h3>Elham</h3>
+          <p>Organizer</p>
+        </div>
+      </div>
+      <h2>Organizer Panel</h2>
+      <ul>
+        <li><a href="organizer-dashboard.html">Dashboard</a></li>
+         <li><a href="addevent.html">Add Event</a></li>
+        <li><a href="booking-requests.html" class="active">Booking Requests</a></li>
+        <li><a href="availability.html">Availability</a></li>
+        <li><a href="profile.html?role=organizer">Profile</a></li>
+        <li><a href="organizer-index.html">Back to Home</a></li>
+      </ul>
+    </aside>
+
+    <div class="dashboard-content">
+      <h1>Booking Requests</h1>
+
+      <h2>Pending Requests</h2>
+      <table class="dashboard-table">
+        <thead>
+          <tr>
+            <th>Request ID</th>
+            <th>Client</th>
+            <th>Package</th>
+            <th>Guests</th>
+            <th>Event Date</th>
+            <th>Status</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr data-request-id="R001" data-status="Pending">
+            <td>R001</td>
+            <td>Sarah Ahmed</td>
+            <td>Wedding Package</td>
+            <td>180</td>
+            <td>2025-05-18</td>
+            <td class="request-status pending">Pending</td>
+            <td class="request-actions">
+              <button type="button" class="request-action-btn accept-btn" data-action="accept">Accept</button>
+              <button type="button" class="request-action-btn reject-btn" data-action="reject">Reject</button>
+            </td>
+          </tr>
+          <tr class="request-details-row" data-details-for="R001" hidden>
+            <td colspan="7">
+              <div class="request-details-panel">
+                <h3>Client Details</h3>
+                <div class="request-details-grid">
+                  <p><span>Email:</span> sarah.ahmed@example.com</p>
+                  <p><span>Phone:</span> +1 555 0101</p>
+                  <p><span>Event Type:</span> Wedding</p>
+                  <p><span>Guests:</span> 180</p>
+                  <p><span>Price:</span> <input type="number" min="1" class="request-price-input" placeholder="Enter price"><button type="button" class="price-confirm-btn">Enter</button><span class="price-error"></span></p>
+                </div>
+              </div>
+            </td>
+          </tr>
+          <tr data-request-id="R002" data-status="Pending">
+            <td>R002</td>
+            <td>Ali Hassan</td>
+            <td>Conference Package</td>
+            <td>75</td>
+            <td>2025-06-02</td>
+            <td class="request-status pending">Pending</td>
+            <td class="request-actions">
+              <button type="button" class="request-action-btn accept-btn" data-action="accept">Accept</button>
+              <button type="button" class="request-action-btn reject-btn" data-action="reject">Reject</button>
+            </td>
+          </tr>
+          <tr class="request-details-row" data-details-for="R002" hidden>
+            <td colspan="7">
+              <div class="request-details-panel">
+                <h3>Client Details</h3>
+                <div class="request-details-grid">
+                  <p><span>Email:</span> ali.hassan@example.com</p>
+                  <p><span>Phone:</span> +1 555 0102</p>
+                  <p><span>Event Type:</span> Conference</p>
+                  <p><span>Guests:</span> 75</p>
+                  <p><span>Price:</span> <input type="number" min="1" class="request-price-input" placeholder="Enter price"><button type="button" class="price-confirm-btn">Enter</button><span class="price-error"></span></p>
+                </div>
+              </div>
+            </td>
+          </tr>
+          <tr data-request-id="R003" data-status="Pending">
+            <td>R003</td>
+            <td>Mona Khaled</td>
+            <td>Birthday Package</td>
+            <td>40</td>
+            <td>2025-06-15</td>
+            <td class="request-status pending">Pending</td>
+            <td class="request-actions">
+              <button type="button" class="request-action-btn accept-btn" data-action="accept">Accept</button>
+              <button type="button" class="request-action-btn reject-btn" data-action="reject">Reject</button>
+            </td>
+          </tr>
+          <tr class="request-details-row" data-details-for="R003" hidden>
+            <td colspan="7">
+              <div class="request-details-panel">
+                <h3>Client Details</h3>
+                <div class="request-details-grid">
+                  <p><span>Email:</span> mona.khaled@example.com</p>
+                  <p><span>Phone:</span> +1 555 0103</p>
+                  <p><span>Event Type:</span> Birthday</p>
+                  <p><span>Guests:</span> 40</p>
+                  <p><span>Price:</span> <input type="number" min="1" class="request-price-input" placeholder="Enter price"><button type="button" class="price-confirm-btn">Enter</button><span class="price-error"></span></p>
+                </div>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <script src="js/main.js"></script>
+  <script src="js/validation.js"></script>
+  <script src="js/booking.js"></script>
+  <script src="js/dashboard.js"></script>
+</body>
+</html>
