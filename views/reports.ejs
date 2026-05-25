@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EventPro - Reports</title>
+
+  <!-- CSS -->
+ <link rel="stylesheet" href="../public/css/Admin.css">
+  <link rel="stylesheet" href="../public/css/responsive.css">
+  <link rel="stylesheet" href="../public/css/darkmode.css">
+</head>
+<body class="admin-page" id="reportsPage">
+
+  <div class="dashboard-container">
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="brand-wrapper" id="brandLogo">
+        <div class="brand-mark">I</div>
+        <div class="brand-text">
+          <span class="brand-name">Ismail</span>
+          <span class="brand-subtitle">Admin</span>
+        </div>
+      </div>
+      <nav aria-label="Admin navigation" id="adminNav">
+        <h2 id="sidebarTitle">Admin Panel</h2>
+        <ul id="sidebarMenu">
+          <li id="sidebarItemDashboard"><a id="navDashboard" href="admin-dashboard.html">Dashboard</a></li>
+          <li id="sidebarItemUsers"><a id="navUsers" href="manage-users.html">Manage Users</a></li>
+          <li id="sidebarItemClientReservations"><a id="navClientReservations" href="client-reservation.html">Client Reservation</a></li>
+          <li id="sidebarItemOrganizerEvents"><a id="navOrganizerEvents" href="organizer-event.html">Organizer Event</a></li>
+          <li id="sidebarItemReports"><a id="navReports" href="reports.html">Reports</a></li>
+          <li id="sidebarItemHome"><a id="navHome" href="admin-index.html">Back to Home</a></li>
+        </ul>
+      </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <div class="dashboard-content">
+      <h1>Reports</h1>
+      <div class="page-meta" id="pageMeta">
+      </div>
+
+      <!-- Cards -->
+      <div class="cards">
+        <div class="card">
+          <h3>Monthly Bookings</h3>
+          <p>12</p>
+        </div>
+
+        <div class="card">
+          <h3>Completed Events</h3>
+          <p>9</p>
+        </div>
+
+        <div class="card">
+          <h3>Estimated Revenue</h3>
+          <p>$8,500</p>
+        </div>
+      </div>
+
+      <!-- Report Table -->
+      <section class="dashboard-section">
+        <h2>Report Summary</h2>
+
+        <table class="dashboard-table">
+          <thead>
+            <tr>
+              <th>Month</th>
+              <th>Total Bookings</th>
+              <th>Completed</th>
+              <th>Pending</th>
+              <th>Revenue</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <tr>
+              <td>March</td>
+              <td>8</td>
+              <td>6</td>
+              <td>2</td>
+              <td>$4,200</td>
+            </tr>
+
+            <tr>
+              <td>April</td>
+              <td>10</td>
+              <td>7</td>
+              <td>3</td>
+              <td>$5,600</td>
+            </tr>
+
+            <tr>
+              <td>May</td>
+              <td>12</td>
+              <td>9</td>
+              <td>3</td>
+              <td>$8,500</td>
+            </tr>
+          </tbody>
+        </table>
+
+      </section>
+
+    </div>
+  </div>
+  <script src="../public/js/admin.js"></script>
+  <script src="../public/js/darkmode.js"></script>
+</body>
+</html>

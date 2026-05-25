@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Event Dashboard</title>
+    <link rel="stylesheet" href="../public/css/organizer.css">
+    <link rel="stylesheet" href="../public/css/responsive.css">
+    <link rel="stylesheet" href="../public/css/darkmode.css">
+</head>
+
+<body class="organizer-page add-event-page">
+  <div class="dashboard-container">
+    <aside class="sidebar">
+      <div class="sidebar-profile">
+        <img src="../public/assets/images/333.jpeg" alt="Profile">
+        <div>
+          <h3>Elham</h3>
+          <p>Organizer</p>
+        </div>
+      </div>
+      <h2>Organizer Panel</h2>
+      <ul>
+        <li><a href="organizer-dashboard.html">Dashboard</a></li>
+        <li><a href="addevent.html" class="active">Add Event</a></li>
+        <li><a href="booking-requests.html">Booking Requests</a></li>
+        <li><a href="availability.html">Availability</a></li>
+        <li><a href="profile.html?role=organizer">Profile</a></li>
+        <li><a href="organizer-index.html">Back to Home</a></li>
+      </ul>
+    </aside>
+
+    <div class="dashboard-content">
+      <h1>Create Event</h1>
+
+      <form id="form-box">
+
+        <label class="label">Event Image:</label>
+        <input type="file" id="image" class="input-field" accept="image/*">
+        <span id="imageError" class="error"></span>
+
+        <label class="label">Title:</label>
+        <input type="text" id="title" class="input-field" placeholder="Enter event title" required>
+        <span id="titleError" class="error"></span>
+
+        <label class="label">Date of Event:</label>
+        <input type="date" id="date" class="input-field" required>
+        <span id="dateError" class="error"></span>
+
+        <label class="label">Capacity:</label>
+        <input type="number" id="capacity" class="input-field" min="1" placeholder="Enter number of people" required>
+        <span id="capacityError" class="error"></span>
+
+        <label class="label">Location:</label>
+        <input type="text" id="location" class="input-field" placeholder="Enter location" required>
+        <span id="locationError" class="error"></span>
+
+        <label class="label">Rules:</label>
+        <textarea id="rules" class="input-field" placeholder="Enter rules here..."></textarea>
+
+        <button id="submit-btn">Submit</button>
+
+      </form>
+    </div>
+  </div>
+
+  <script src="../public/js/organizer.js"></script>
+  <script src="../public/js/profile-role-styles.js"></script>
+  <script src="../public/js/darkmode.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,780 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background: linear-gradient(135deg, #0b0f3a, #1f2a6b, #4b0082);
+    min-height: 100vh;
+}
+
+.container {
+    display: flex;
+    height: 100vh;
+    overflow: hidden;
+}
+
+/* ========== LEFT SIDE ========== */
+.animation-side {
+    flex: 1.2;
+    background-color: rgba(248, 249, 251, 0.1);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Subtle background pattern */
+.animation-side::before {
+    content: '';
+    position: absolute;
+    width: 500px;
+    height: 500px;
+    background: radial-gradient(circle, rgba(139,92,246,0.08) 0%, transparent 70%);
+    border-radius: 50%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+}
+
+.character-container {
+    position: relative;
+    width: 350px;
+    height: 400px;
+}
+
+/* --- Character idle animations --- */
+@keyframes float-1 {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-6px); }
+}
+@keyframes float-2 {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
+}
+@keyframes float-3 {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-5px); }
+}
+@keyframes float-4 {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-7px); }
+}
+
+@keyframes entrance {
+    from { opacity: 0; transform: translateY(40px) scale(0.9); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.char {
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    animation: entrance 0.6s ease-out both;
+}
+
+.purple-rect {
+    background: #8B5CF6;
+    width: 87px;
+    height: 330px;
+    left: 127px;
+    bottom: 100px;
+    border-radius: 12px;
+    z-index: 3;
+    align-items: flex-start;
+    padding-top: 45px;
+    animation: entrance 0.6s ease-out 0.1s both, float-1 4s ease-in-out 0.7s infinite;
+}
+
+.black-rect {
+    background: #111;
+    width: 95px;
+    height: 230px;
+    left: 155px;
+    bottom: 100px;
+    border-radius: 12px;
+    z-index: 3;
+    align-items: flex-start;
+    padding-top: 40px;
+    animation: entrance 0.6s ease-out 0.2s both, float-2 5s ease-in-out 0.8s infinite;
+}
+
+.orange-semi {
+    background: #F97316;
+    width: 150px;
+    height: 79px;
+    left: 40px;
+    bottom: 100px;
+    border-radius: 100px 100px 10px 10px;
+    z-index: 4;
+    align-items: center;
+    animation: entrance 0.6s ease-out 0.3s both, float-3 4.5s ease-in-out 0.9s infinite;
+}
+
+.yellow-pill {
+    background: #FACC15;
+    width: 80px;
+    height: 130px;
+    left: 232px;
+    bottom: 100px;
+    border-radius: 40px 40px 15px 15px;
+    z-index: 2;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 25px;
+    animation: entrance 0.6s ease-out 0.4s both, float-4 3.8s ease-in-out 1s infinite;
+}
+
+/* --- Eyes --- */
+.eye {
+    background: white;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: all 0.4s ease;
+    box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.pupil {
+    background: #111;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    position: absolute;
+    transition: transform 0.1s ease-out;
+    pointer-events: none;
+}
+
+/* Little highlight on pupil */
+.pupil::after {
+    content: '';
+    position: absolute;
+    width: 3px;
+    height: 3px;
+    background: white;
+    border-radius: 50%;
+    top: 1px;
+    right: 1px;
+}
+
+/* --- Mouth (on yellow pill) --- */
+.mouth {
+    width: 16px;
+    height: 8px;
+    border-bottom: 2.5px solid #92400e;
+    border-radius: 0 0 50% 50%;
+    margin-top: 6px;
+    transition: all 0.4s ease;
+}
+
+/* ========== SAD MODE ========== */
+.sad-mode .char {
+    animation-play-state: paused !important;
+}
+
+/* Characters tilt their "heads" slightly away */
+.sad-mode .purple-rect {
+    transform: rotate(-3deg) translateX(-4px);
+}
+.sad-mode .black-rect {
+    transform: rotate(-4deg) translateX(-5px);
+}
+.sad-mode .orange-semi {
+    transform: rotate(-5deg) translateX(-6px);
+}
+.sad-mode .yellow-pill {
+    transform: rotate(-3deg) translateX(-4px);
+}
+
+/* Eyes stay normal shape but pupils shift left */
+.sad-mode .pupil {
+    transform: translateX(-8px) !important;
+}
+
+/* Sad mouth - frown */
+.sad-mode .mouth {
+    border-bottom: none;
+    border-top: 2.5px solid #92400e;
+    border-radius: 50% 50% 0 0;
+}
+
+/* Shake animation for errors */
+.shake {
+    animation: shake 0.5s ease-in-out;
+}
+
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+    20%, 40%, 60%, 80% { transform: translateX(5px); }
+}
+
+/* Error flash effect */
+.error-flash {
+    animation: error-flash 0.5s ease-in-out;
+}
+
+@keyframes error-flash {
+    0%, 100% { background: linear-gradient(135deg, #0b0f3a, #1f2a6b, #4b0082); }
+    50% { background: linear-gradient(135deg, #4b0f0f, #7f2a2a, #8b0000); }
+}
+
+/* ========== SCARED MODE (Peeking back) ========== */
+.scared-mode .char {
+    animation-play-state: paused !important;
+}
+
+.scared-mode .purple-rect {
+    transform: rotate(-2deg) translateX(-3px);
+}
+.scared-mode .black-rect {
+    transform: rotate(-3deg) translateX(-3px);
+}
+.scared-mode .orange-semi {
+    transform: rotate(-4deg) translateX(-4px);
+}
+.scared-mode .yellow-pill {
+    transform: rotate(-2deg) translateX(-2px);
+}
+
+/* Eyes get bigger — they're nervous */
+.scared-mode .eye {
+    height: 24px;
+    width: 22px;
+}
+
+/* Pupils shift slightly left but not as much — they're peeking */
+.scared-mode .pupil {
+    width: 7px;
+    height: 7px;
+    transform: translateX(-5px) !important;
+}
+
+.scared-mode .mouth {
+    width: 12px;
+    height: 12px;
+    border: 2.5px solid #92400e;
+    border-radius: 50%;
+    background: transparent;
+}
+
+/* ========== HAPPY MODE (submit) ========== */
+.happy-mode .char {
+    animation-play-state: running !important;
+}
+
+.happy-mode .eye {
+    height: 6px;
+    border-radius: 10px 10px 0 0;
+}
+
+.happy-mode .mouth {
+    width: 22px;
+    height: 12px;
+    border-bottom: 3px solid #92400e;
+    border-radius: 0 0 50% 50%;
+}
+
+/* ========== RIGHT SIDE ========== */
+.form-side {
+    flex: 1;
+    background: rgba(255, 255, 255, 0.95);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    backdrop-filter: blur(10px);
+}
+
+.login-box {
+    width: 100%;
+    max-width: 380px;
+}
+
+.logo-icon {
+    font-size: 30px;
+    margin-bottom: 20px;
+    display: inline-block;
+    animation: spin-slow 8s linear infinite;
+}
+
+@keyframes spin-slow {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+h1 {
+    font-size: 28px;
+    margin-bottom: 10px;
+}
+
+header p {
+    color: #777;
+    margin-bottom: 40px;
+}
+
+.input-group {
+    margin-bottom: 25px;
+}
+
+.input-group label {
+    display: block;
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: #333;
+}
+
+input[type="email"],
+input[type="password"] {
+    width: 100%;
+    border: none;
+    border-bottom: 2px solid #e0e0e0;
+    padding: 10px 0;
+    outline: none;
+    font-size: 16px;
+    background: transparent;
+    transition: border-color 0.3s ease;
+}
+
+input:focus {
+    border-bottom-color: #8B5CF6;
+}
+
+.pass-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.toggle-pass {
+    position: absolute;
+    right: 0;
+    cursor: pointer;
+    font-size: 18px;
+    user-select: none;
+    transition: transform 0.2s ease;
+    line-height: 1;
+}
+
+.toggle-pass:hover {
+    transform: scale(1.2);
+}
+
+.form-options {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 13px;
+    color: #666;
+    margin: 20px 0 30px;
+}
+
+.form-options a {
+    text-decoration: none;
+    color: #8B5CF6;
+    font-weight: 500;
+    transition: color 0.2s ease;
+}
+
+.form-options a:hover {
+    color: #7c3aed;
+}
+
+/* Custom checkbox */
+.remember {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
+}
+
+.remember input[type="checkbox"] {
+    appearance: none;
+    width: 16px;
+    height: 16px;
+    border: 2px solid #ccc;
+    border-radius: 4px;
+    cursor: pointer;
+    position: relative;
+    transition: all 0.2s ease;
+}
+
+.remember input[type="checkbox"]:checked {
+    background: #8B5CF6;
+    border-color: #8B5CF6;
+}
+
+.remember input[type="checkbox"]:checked::after {
+    content: '✓';
+    color: white;
+    font-size: 11px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.btn-login {
+    width: 100%;
+    padding: 14px;
+    background: #111;
+    color: #fff;
+    border: none;
+    border-radius: 50px;
+    font-weight: 600;
+    font-size: 15px;
+    cursor: pointer;
+    margin-bottom: 15px;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.btn-login:hover {
+    background: #333;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+}
+
+.btn-login:active {
+    transform: translateY(0);
+}
+
+.btn-login.loading {
+    pointer-events: none;
+    opacity: 0.8;
+}
+
+.btn-login .spinner {
+    display: none;
+    width: 18px;
+    height: 18px;
+    border: 2px solid rgba(255,255,255,0.3);
+    border-top-color: white;
+    border-radius: 50%;
+    animation: spin 0.6s linear infinite;
+    margin: 0 auto;
+}
+
+.btn-login.loading .btn-text { display: none; }
+.btn-login.loading .spinner { display: block; }
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+.btn-google {
+    width: 100%;
+    padding: 14px;
+    background: #fff;
+    color: #222;
+    border: 1.5px solid #e0e0e0;
+    border-radius: 50px;
+    font-weight: 600;
+    font-size: 15px;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    align-items: center;
+    transition: all 0.3s ease;
+}
+
+.btn-google:hover {
+    background: #f9f9f9;
+    border-color: #ccc;
+    transform: translateY(-1px);
+}
+
+.footer-text {
+    text-align: center;
+    margin-top: 25px;
+    font-size: 14px;
+    color: #777;
+}
+
+.footer-text a {
+    color: #111;
+    font-weight: 700;
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+.footer-text a:hover {
+    color: #8B5CF6;
+}
+
+/* ========== ERROR STATE ========== */
+.input-group.error input {
+    border-bottom-color: #ef4444;
+}
+
+.error-msg {
+    color: #ef4444;
+    font-size: 12px;
+    margin-top: 6px;
+    display: none;
+}
+
+.input-group.error .error-msg {
+    display: block;
+    animation: shake 0.3s ease;
+}
+
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-5px); }
+    75% { transform: translateX(5px); }
+}
+
+/* ========== MOBILE ========== */
+@media (max-width: 768px) {
+    .container {
+        flex-direction: column-reverse;
+    }
+
+    .animation-side {
+        flex: none;
+        height: 200px;
+    }
+
+    .character-container {
+        width: 220px;
+        height: 200px;
+        transform: scale(0.55);
+        transform-origin: center center;
+    }
+
+    .form-side {
+        flex: 1;
+        align-items: flex-start;
+        padding: 30px 20px;
+        overflow-y: auto;
+    }
+
+    .login-box {
+        max-width: 100%;
+    }
+
+    h1 { font-size: 24px; }
+    header p { margin-bottom: 25px; }
+}
+
+/* ========== REGISTER + CONTACT (scoped) ========== */
+.auth-page,
+.contact-page {
+    min-height: 100vh;
+}
+
+.auth-page .navbar,
+.contact-page .navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 40px;
+    background: #ffffff;
+    color: #1e2a38;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+}
+
+.auth-page .logo,
+.contact-page .logo {
+    font-size: 24px;
+    font-weight: 700;
+}
+
+.auth-page .nav-links,
+.contact-page .nav-links {
+    display: flex;
+    gap: 20px;
+    list-style: none;
+}
+
+.auth-page .nav-links a,
+.contact-page .nav-links a {
+    color: #1e2a38;
+    font-weight: 500;
+    text-decoration: none;
+}
+
+.auth-page .nav-links a:hover,
+.contact-page .nav-links a:hover {
+    color: #4a00e0;
+}
+
+.auth-page main,
+.contact-page main {
+    padding: 40px 20px 50px;
+}
+
+.auth-page main h1,
+.contact-page main h1 {
+    text-align: center;
+    color: #ffffff;
+    margin-bottom: 20px;
+}
+
+.auth-page .register-subtitle,
+.contact-page .contact-subtitle {
+    text-align: center;
+    color: #cfd8ff;
+    font-size: 16px;
+    margin-bottom: 25px;
+    letter-spacing: 0.5px;
+}
+
+.auth-page .form-container,
+.contact-page .form-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.auth-page form,
+.contact-page form {
+    width: 100%;
+    max-width: 520px;
+    padding: 35px;
+    border-radius: 15px;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(15px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+}
+
+.auth-page form div,
+.contact-page form div {
+    margin-bottom: 18px;
+}
+
+.auth-page label,
+.contact-page label {
+    display: block;
+    margin-bottom: 6px;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    color: #ffffff;
+}
+
+.auth-page input,
+.auth-page select,
+.auth-page textarea,
+.contact-page input,
+.contact-page select,
+.contact-page textarea {
+    width: 100%;
+    padding: 12px;
+    border-radius: 6px;
+    border: none;
+    color: #ffffff;
+    background: rgba(255, 255, 255, 0.2);
+    font-family: 'Poppins', sans-serif;
+    font-weight: 400;
+    transition: 0.3s;
+}
+
+.auth-page input::placeholder,
+.auth-page textarea::placeholder,
+.contact-page input::placeholder,
+.contact-page textarea::placeholder {
+    color: #d0d4ff;
+    opacity: 1;
+}
+
+.auth-page input:focus,
+.auth-page select:focus,
+.auth-page textarea:focus,
+.contact-page input:focus,
+.contact-page select:focus,
+.contact-page textarea:focus {
+    outline: none;
+    border: 2px solid #8e2de2;
+    background: rgba(255, 255, 255, 0.3);
+    box-shadow: 0 0 12px rgba(142, 45, 226, 0.45);
+}
+
+.auth-page select option,
+.contact-page select option {
+    color: #1a1a1a;
+    background-color: #ffffff;
+}
+
+.auth-page button,
+.contact-page button {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    border-radius: 6px;
+    color: #ffffff;
+    background: #1a2f5a;
+    cursor: pointer;
+    font-weight: 600;
+    transition: 0.3s;
+}
+
+.auth-page button:hover,
+.contact-page button:hover {
+    background: #132a52;
+    transform: translateY(-1px);
+    box-shadow: 0 0 10px #132a52;
+}
+
+.auth-page .register-extra {
+    margin-top: 10px;
+    text-align: center;
+    color: #e5e7eb;
+}
+
+.auth-page .register-extra a {
+    color: #ffffff;
+    font-weight: 700;
+    margin-left: 6px;
+    text-decoration: none;
+}
+
+.auth-page .register-extra a:hover {
+    color: #a5b4fc;
+}
+
+.auth-page .error,
+.contact-page .error {
+    color: #ef4444;
+    font-size: 13px;
+    margin-top: 5px;
+    display: block;
+}
+
+.auth-page .footer,
+.contact-page .footer {
+    margin-top: 36px;
+    text-align: center;
+    color: #e5e7eb;
+}
+
+@media (max-width: 768px) {
+    .auth-page .navbar,
+    .contact-page .navbar {
+        padding: 14px 16px;
+    }
+
+    .auth-page .nav-links,
+    .contact-page .nav-links {
+        gap: 12px;
+    }
+
+    .auth-page form,
+    .contact-page form {
+        padding: 24px 18px;
+    }
+}

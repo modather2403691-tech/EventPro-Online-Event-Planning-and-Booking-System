@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EventPro - Organizer Dashboard</title>
+
+  <link rel="stylesheet" href="../public/css/organizer.css">
+  <link rel="stylesheet" href="../public/css/responsive.css">
+  <link rel="stylesheet" href="../public/css/darkmode.css">
+</head>
+<body class="organizer-page">
+
+  <div class="dashboard-container">
+    <aside class="sidebar">
+      <div class="sidebar-profile">
+        <img src="../public/assets/images/333.jpeg" alt="Profile">
+        <div>
+          <h3>Elham</h3>
+          <p>Organizer</p>
+        </div>
+      </div>
+      <h2>Organizer Panel</h2>
+      <ul>
+        <li><a href="organizer-dashboard.html" class="active">Dashboard</a></li>
+         <li><a href="addevent.html">Add Event</a></li>
+        <li><a href="booking-requests.html">Booking Requests</a></li>
+        <li><a href="availability.html">Availability</a></li>
+        <li><a href="profile.html?role=organizer">Profile</a></li>
+        <li><a href="organizer-index.html">Back to Home</a></li>
+      </ul>
+    </aside>
+
+    <div class="dashboard-content">
+      <h1>Organizer Dashboard</h1>
+
+      <div class="cards">
+        <div class="card">
+          <h3>Total Packages</h3>
+          <p>6</p>
+        </div>
+
+        <div class="card">
+          <h3>Pending Requests</h3>
+          <p>4</p>
+        </div>
+
+        <div class="card">
+          <h3>Upcoming Events</h3>
+          <p>5</p>
+        </div>
+      </div>
+
+      <section class="dashboard-section">
+        <h2>Recent Booking Requests</h2>
+        <table class="dashboard-table">
+          <thead>
+            <tr>
+              <th>Request ID</th>
+              <th>Client Name</th>
+              <th>Event Type</th>
+              <th>Date</th>
+          
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>R001</td>
+              <td>Sarah Ahmed</td>
+              <td>Wedding</td>
+              <td>2025-05-18</td>
+              
+            </tr>
+            <tr>
+              <td>R002</td>
+              <td>Ali Hassan</td>
+              <td>Party</td>
+              <td>2025-06-02</td>
+              
+            </tr>
+            <tr>
+              <td>R003</td>
+              <td>Mona Khaled</td>
+              <td>Birthday</td>
+              <td>2025-06-15</td>
+          
+            </tr>
+          </tbody>
+        </table>
+      </section>
+    </div>
+  </div>
+
+  <script src="../public/js/organizer.js"></script>
+  <script src="../public/js/profile-role-styles.js"></script>
+  <script src="../public/js/darkmode.js"></script>
+</body>
+</html>
