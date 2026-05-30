@@ -60,71 +60,37 @@ function clearMoods() {
     body.classList.remove('sad-mode', 'scared-mode', 'happy-mode');
 }
 
-// On focus — sad (covering eyes feel)
-passwordInput.addEventListener('focus', () => {
-    clearMoods();
-    body.classList.add('sad-mode');
-    body.classList.add('password-lock');
-    resetPupilsToCenter();
-});
+if (passwordInput) {
 
-// On blur — back to normal
-passwordInput.addEventListener('blur', () => {
-    clearMoods();
-    body.classList.remove('password-lock');
-    resetPupilsToCenter();
-});
-
-// On typing — scared (peeking reaction)
-passwordInput.addEventListener('input', () => {
-    const len = passwordInput.value.length;
-
-    if (len === 0) {
+    passwordInput.addEventListener('focus', () => {
         clearMoods();
         body.classList.add('sad-mode');
-    } else if (len < 4) {
+        body.classList.add('password-lock');
+        resetPupilsToCenter();
+    });
+
+    passwordInput.addEventListener('blur', () => {
         clearMoods();
-        body.classList.add('scared-mode');
-    } else {
-        // Long password — they calm down a bit, stay scared but less intense
-        clearMoods();
-        body.classList.add('scared-mode');
-    }
-});
+        body.classList.remove('password-lock');
+        resetPupilsToCenter();
+    });
+
+    passwordInput.addEventListener('input', () => {
+        const len = passwordInput.value.length;
+
+        if (len === 0) {
+            clearMoods();
+            body.classList.add('sad-mode');
+        } else {
+            clearMoods();
+            body.classList.add('scared-mode');
+        }
+    });
+
+}
 /*validation of admin in login page */
 
-document.addEventListener("DOMContentLoaded", function () {
-  if (!document.body.classList.contains("login-page")) {
-    return;
-  }
 
-  const form = document.querySelector(".auth-form") || document.getElementById("loginForm");
-
-  if (!form) return;
-
-  form.addEventListener("submit", function (e) {
-    e.preventDefault();
-
-    const emailInput = form.querySelector('input[type="email"]');
-    const passwordInput = form.querySelector('input[type="password"]');
-
-    const email = emailInput.value.trim();
-    const password = passwordInput.value.trim();
-
-    if (email === "modather@gmail.com" && password === "Mody1234") {
-      window.location.href = "admin-index.html";
-    } 
-     else if (email === "client@gmail.com" && password === "Mody1234") {
-      window.location.href = "client-index.html";
-    } 
-     else if (email === "organizer@gmail.com" && password === "Mody1234") {
-      window.location.href = "organizer-index.html";
-    } 
-    else {
-      alert("Invalid  email or password.");
-    }
-  });
-});
 document.addEventListener("DOMContentLoaded", function () {
 
   const contactForm = document.getElementById("contactForm");
@@ -365,21 +331,15 @@ dob.addEventListener("input", () => {
       document.getElementById("phoneError").textContent = "Phone must be 11 digits";
       isValid = false;
     }
+// ... (جزء الـ validation بتاعك)
 
     if (isValid) {
-      alert("Registered successfully 🎉");
-
-      const role = document.getElementById("roles").value;
-
-      if (role === "Client") {
-        window.location.href = "client-index.html";
-      } else if (role === "Organizer") {
-        window.location.href = "organizer-index.html";
-      } else if (role === "Admin") {
-        window.location.href = "admin-index.html";
-      }
+        // alert("Registered successfully 🎉"); 
+        
+        // شلنا الـ if والـ window.location.href خالص
+        // وبنقول للـ form: ابعت البيانات للسيرفر دلوقتي
+        form.submit(); 
     }
-
-  });
+});
 
 });

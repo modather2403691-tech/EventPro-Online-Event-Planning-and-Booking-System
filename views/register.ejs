@@ -6,9 +6,13 @@
   <title>EventPro - Register</title>
   
 
- <link rel="stylesheet" href="../public/css/login&regester&contact.css">
-  <link rel="stylesheet" href="../public/css/responsive.css">
-  <link rel="stylesheet" href="../public/css/darkmode.css">
+
+ <link rel="stylesheet" href="/css/login&regester&contact.css">
+<link rel="stylesheet" href="/css/responsive.css">
+<link rel="stylesheet" href="/css/darkmode.css">
+
+<script src="/js/login&regester&contact.js"></script>
+<script src="/js/darkmode.js"></script>
 </head>
 <body class="auth-page">
 
@@ -27,71 +31,70 @@
 <main>
   <h1>Register</h1>
   <p class="register-subtitle">Create your account to get started</p>
+  <% if (typeof error !== 'undefined') { %>
+      <div style="color: red; text-align: center; font-weight: bold; margin-bottom: 15px;">
+          <%= error %>
+      </div>
+  <% } %>
 
   <div class="form-container">
-<form id="registerForm">
+<form id="registerForm" action="/register" method="POST">
 
-      <div>
-  <label>Full Name</label>
-  <input type="text" id="name" placeholder="Enter your full name" required>
-<span class="error" id="nameError"></span>
+  
+  <div>
+    <label>Full Name</label>
+    <input type="text" name="name" id="name" placeholder="Enter your full name" required>
+    <span id="nameError" class="error" style="color: red; font-size: 12px;"></span> 
+  </div>
+
+  <div>
+    <label>Email</label>
+    <input type="email" name="email" id="email" placeholder="Enter your email" required>
+    <span id="emailError" class="error" style="color: red; font-size: 12px;"></span>
+  </div>
+
+  <div>
+    <label>Date of Birth</label>
+    <input type="date" name="dob" id="dob" required>
+    <span id="dobError" class="error" style="color: red; font-size: 12px;"></span>
+  </div>
+
+  <div>
+    <label>Password</label>
+    <input type="password" name="password" id="password" placeholder="Enter your password" required>
+    <span id="passwordError" class="error" style="color: red; font-size: 12px;"></span>
+  </div>
+
+  <div>
+    <label>Confirm Password</label>
+    <input type="password" name="confirmPassword" id="confirmPassword" placeholder="Confirm your password" required>
+    <span id="confirmPasswordError" class="error" style="color: red; font-size: 12px;"></span>
+  </div>
+
+  <div>
+    <label>Phone</label>
+    <input type="text" name="phone" id="phone" maxlength="11" placeholder="01xxxxxxxxx" required>
+    <span id="phoneError" class="error" style="color: red; font-size: 12px;"></span>
+  </div>
+
+  <div>
+    <label>Role</label>
+    <select name="role" id="roles" required>
+        <option value="Client">Client</option>
+        <option value="organizer">organizer</option>
+    </select>
+    <span id="roleError" class="error"></span>
 </div>
 
-<div>
-  <label>Email</label>
-<input type="email" id="email" placeholder="Enter your email" required>
-<span class="error" id="emailError"></span>
-</div>
-
-<div>
-  <label>Date of Birth</label>
-  <input type="date" id="dob" required>
-  <span class="error" id="dobError"></span>
-</div>
-
-<div>
-  <label>Password</label>
- 
-  <input type="password" id="password" placeholder="Enter your password" required>
-<span class="error" id="passwordError"></span>
-</div>
-
-<div>
-  <label>Confirm Password</label>
-  <input type="password" id="confirmPassword" placeholder="Confirm your password" required>
-  <span class="error" id="confirmPasswordError"></span>
-</div>
-
-<div>
-  <label>Phone</label>
-<input type="text" id="phone" maxlength="11" placeholder="01xxxxxxxxx" required>
-<span class="error" id="phoneError"></span>
-</div>
-
-<div>
-  <label>Role</label>
-  <select id="roles">
-    <option class="C">Client</option>
-    <option class="C">Organizer</option>
- 
-  </select>
-</div>
-
-
-      <button type="submit">Register</button>
-      
-    <div class="register-extra">
-  <span>Already have an account?</span>
-  <a href="login.html">Login</a>
-</div>
-    </form>
+  <button type="submit">Register</button>
+</form>
   </div>
 </main>
 
 <footer class="footer">
   <p>&copy; 2026 EventPro</p>
 </footer>
-  <script src="../public/js/login&regester&contact.js"></script>
-  <script src="../public/js/darkmode.js"></script>
+  <script src="/js/login&regester&contact.js"></script>
+<script src="/js/darkmode.js"></script>
 </body>
 </html>
