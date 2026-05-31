@@ -5,29 +5,27 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>EventPro - Client Dashboard</title>
 
-  <link rel="stylesheet" href="../public/css/client&homepages&footer.css">
-  <link rel="stylesheet" href="../public/css/responsive.css">
-  <link rel="stylesheet" href="../public/css/darkmode.css">
+  <link rel="stylesheet" href="/css/client&homepages&footer.css">
+  <link rel="stylesheet" href="/css/responsive.css">
+  <link rel="stylesheet" href="/css/darkmode.css">
 </head>
 <body class="client-dashboard-page">
 
   <div class="dashboard-container">
     <aside class="sidebar">
       <div class="sidebar-profile">
-  <img src="../public/assets/images/my-photo.jpg" alt="Profile">
-  <div>
-    <h3>Modather</h3>
-    <p>Client</p>
-  </div>
-</div>
+        <img src="<%= photo ? photo : '/images/my-photo.jpg' %>" alt="Profile">
+        <div>
+          <h3><%= name %></h3>
+          <p>Client</p>
+        </div>
+      </div>
       <h2>Client Panel</h2>
       <ul>
-        <li><a href="client-index.html">Home</a></li>
-      
-        <li><a href="client-dashboard.html" class="active">My Dashboard</a></li>
-        <li><a href="my-bookings.html">My Bookings</a></li>
-        <li><a href="profile.html">Profile</a></li>
-        
+        <li><a href="/client-index">Home</a></li>
+        <li><a href="/client-dashboard" class="active">My Dashboard</a></li>
+        <li><a href="/my-bookings">My Bookings</a></li>
+        <li><a href="/client-profile">Profile</a></li>
       </ul>
     </aside>
 
@@ -186,7 +184,8 @@
       </div>
     </div>
   </div>
-  <script src="../public/js/profile-role-styles.js"></script>
-  <script src="../public/js/darkmode.js"></script>
+  <script src="/js/profile-role-styles.js"></script>
+  <script src="/js/darkmode.js"></script>
 </body>
 </html>
+

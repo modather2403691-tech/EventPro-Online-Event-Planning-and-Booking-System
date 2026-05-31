@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EventPro - Client Profile</title>
+  <link rel="stylesheet" href="/css/profile.css">
+  <link rel="stylesheet" href="/css/responsive.css">
+  <link rel="stylesheet" href="/css/darkmode.css">
+</head>
+<body class="profile-dashboard-page">
+
+  <div class="dashboard-container">
+    <aside class="sidebar">
+      <div class="sidebar-profile">
+        <img id="sidebarPhoto"
+             src="<%= photo ? photo : '/images/my-photo.jpg' %>"
+             alt="Profile">
+        <div>
+          <h3><%= name %></h3>
+          <p>Client</p>
+        </div>
+      </div>
+
+      <h2>Client Panel</h2>
+      <ul>
+        <li><a href="/client-dashboard">My Dashboard</a></li>
+        <li><a href="/my-bookings">My Bookings</a></li>
+        <li><a href="/client-profile" class="active">Profile</a></li>
+        <li><a href="/client-index">Back to Home</a></li>
+      </ul>
+    </aside>
+
+    <div class="dashboard-content">
+      <div class="profile-header">
+        <div>
+          <h1>My Profile</h1>
+          <p>Welcome to your EventPro client portal.</p>
+        </div>
+      </div>
+
+      <div class="profile-layout">
+        <div class="profile-main-card">
+
+          <!-- Clickable photo — opens file picker on click -->
+          <div class="photo-wrapper" id="photoWrapper" title="Click to change photo">
+            <img id="profilePhoto"
+                 src="<%= photo ? photo : '/images/my-photo.jpg' %>"
+                 alt="Profile Photo">
+            <div class="photo-overlay">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/>
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"/>
+              </svg>
+              Change Photo
+            </div>
+          </div>
+
+          <!-- Hidden file input -->
+          <input type="file" id="photoInput" accept="image/jpeg,image/png,image/webp,image/gif">
+
+          <!-- Upload status -->
+          <div id="uploadStatus"></div>
+
+          <h3>My profile</h3>
+
+          <div class="profile-info-list">
+            <div class="profile-info-row">
+              <span>Full Name</span>
+              <strong><%= name %></strong>
+            </div>
+            <div class="profile-info-row">
+              <span>Phone</span>
+              <strong><%= phone %></strong>
+            </div>
+            <div class="profile-info-row">
+              <span>Email</span>
+              <strong><%= email %></strong>
+            </div>
+            <div class="profile-info-row">
+              <span>Member Since</span>
+              <strong><%= memberSince %></strong>
+            </div>
+          </div>
+
+          <div class="profile-toggle-row">
+            <span>Booking alerts activation</span>
+            <span class="toggle-dot"></span>
+          </div>
+
+        </div>
+
+        <div class="profile-side-column">
+          <div class="profile-box">
+            <div class="profile-box-header">
+              <h3>My EventPro account</h3>
+              <button class="small-edit-btn">Edit</button>
+            </div>
+
+            <div class="account-status-row">
+              <div>
+                <span>Active account</span>
+                <p>Client booking access enabled</p>
+              </div>
+              <button class="status-btn orange">Active</button>
+            </div>
+
+            <div class="account-status-row">
+              <div>
+                <span>Booking privileges</span>
+                <p>Package booking + event joining enabled</p>
+              </div>
+              <button class="status-btn green">Enabled</button>
+            </div>
+          </div>
+
+          <div class="profile-box">
+            <div class="profile-box-header">
+              <h3>My activity</h3>
+              <a href="/my-bookings" class="small-edit-btn">View</a>
+            </div>
+
+            <div class="bill-row">
+              <span class="bill-dot green"></span>
+              <span>Wedding booking</span>
+              <button class="mini-status green-btn">Paid</button>
+            </div>
+            <div class="bill-row">
+              <span class="bill-dot pink"></span>
+              <span>Conference request</span>
+              <button class="mini-status pink-btn">Pending</button>
+            </div>
+            <div class="bill-row">
+              <span class="bill-dot green"></span>
+              <span>Birthday package</span>
+              <button class="mini-status green-btn">Paid</button>
+            </div>
+            <div class="bill-row">
+              <span class="bill-dot green"></span>
+              <span>Private event</span>
+              <button class="mini-status green-btn">Paid</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="/js/darkmode.js"></script>
+  <script src="/js/client-profile.js"></script>
+</body>
+</html>

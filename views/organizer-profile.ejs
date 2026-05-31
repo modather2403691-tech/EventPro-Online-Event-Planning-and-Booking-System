@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EventPro - Organizer Profile</title>
+  <link rel="stylesheet" href="/css/profile.css">
+  <link rel="stylesheet" href="/css/responsive.css">
+  <link rel="stylesheet" href="/css/darkmode.css">
+</head>
+<body class="profile-dashboard-page">
+
+  <div class="dashboard-container">
+    <aside class="sidebar">
+      <div class="sidebar-profile">
+        <img src="/assets/images/333.jpeg" alt="Profile">
+        <div>
+          <h3>Elham</h3>
+          <p>Organizer</p>
+        </div>
+      </div>
+
+      <h2>Organizer Panel</h2>
+      <ul>
+        <li><a href="/organizer-dashboard">Dashboard</a></li>
+        <li><a href="/addevent">Add Event</a></li>
+        <li><a href="/booking-requests">Booking Requests</a></li>
+        <li><a href="/availability">Availability</a></li>
+        <li><a href="/organizer-profile" class="active">Profile</a></li>
+        <li><a href="/organizer-index">Back to Home</a></li>
+      </ul>
+    </aside>
+
+    <div class="dashboard-content">
+      <div class="profile-header">
+        <div>
+          <h1>Organizer Profile</h1>
+          <p>Manage your public organizer identity and event operations from one place.</p>
+        </div>
+      </div>
+
+      <div class="profile-layout">
+        <div class="profile-main-card">
+          <img src="/assets/images/333.jpeg" alt="Profile Photo" class="profile-main-image">
+
+          <h3>Organizer Details</h3>
+
+          <div class="profile-info-list">
+            <div class="profile-info-row">
+              <span>Full Name</span>
+              <strong>Elham</strong>
+            </div>
+            <div class="profile-info-row">
+              <span>Business Phone</span>
+              <strong>+20 100 000 0000</strong>
+            </div>
+            <div class="profile-info-row">
+              <span>Business Email</span>
+              <strong>Elham@email.com</strong>
+            </div>
+            <div class="profile-info-row">
+              <span>Organizer Since</span>
+              <strong>Aug 2024</strong>
+            </div>
+            <div class="profile-info-row">
+              <span>Primary Category</span>
+              <strong>Weddings and Corporate Events</strong>
+            </div>
+          </div>
+
+          <div class="profile-toggle-row">
+            <span>New request notifications</span>
+            <span class="toggle-dot"></span>
+          </div>
+
+          <button class="profile-save-btn">Save Changes</button>
+        </div>
+
+        <div class="profile-side-column">
+          <div class="profile-box">
+            <div class="profile-box-header">
+              <h3>Organizer Account</h3>
+              <button class="small-edit-btn">Edit</button>
+            </div>
+
+            <div class="account-status-row">
+              <div>
+                <span>Verification Status</span>
+                <p>Organizer identity and payment profile verified</p>
+              </div>
+              <button class="status-btn orange">Verified</button>
+            </div>
+
+            <div class="account-status-row">
+              <div>
+                <span>Publishing Access</span>
+                <p>Package publishing and request responses enabled</p>
+              </div>
+              <button class="status-btn green">Enabled</button>
+            </div>
+          </div>
+
+          <div class="profile-box">
+            <div class="profile-box-header">
+              <h3>Organizer Activity</h3>
+              <a href="/booking-requests" class="small-edit-btn">View</a>
+            </div>
+
+            <div class="bill-row">
+              <span class="bill-dot green"></span>
+              <span>Wedding request approved</span>
+              <button class="mini-status green-btn">Done</button>
+            </div>
+            <div class="bill-row">
+              <span class="bill-dot pink"></span>
+              <span>Conference request awaiting reply</span>
+              <button class="mini-status pink-btn">Pending</button>
+            </div>
+            <div class="bill-row">
+              <span class="bill-dot green"></span>
+              <span>Availability updated for next week</span>
+              <button class="mini-status green-btn">Saved</button>
+            </div>
+            <div class="bill-row">
+              <span class="bill-dot green"></span>
+              <span>Premium package published</span>
+              <button class="mini-status green-btn">Live</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="/js/darkmode.js"></script>
+</body>
+</html>

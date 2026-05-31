@@ -1,14 +1,15 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const path = require('path');
-const authRoutes = require('./routes/authRoutes'); // اتأكد إن المسار صح
+const sessionMiddleware = require('./middleware/session');
+const authRoutes = require('./routes/authRoutes');
 
 const app = express();
 
-// 1. Middlewares (مهم جداً عشان نقرا الداتا من الـ forms)
-app.use(express.urlencoded({ extended: true }));
-app.use(express.json());
-// السطر ده بيخلي إكسبريس يقرا ملفات الـ CSS والصور
+// 1. Middlewares
+app.use(express.urlencoded({ extended: true, limit: '5mb' }));
+app.use(express.json({ limit: '5mb' })); // needed for base64 photo uploads
+app.use(sessionMiddleware); // session must be before routes
 app.use(express.static(path.join(__dirname, 'public')));
 
 // 2. Setup EJS
@@ -30,7 +31,7 @@ mongoose.connect(MONGO_URI)
 app.use('/', authRoutes);
 
 // 5. Start the Server
-const PORT = 3000;
+const PORT = 8000;
 app.listen(PORT, () => {
     console.log(`EventPro server is running on http://localhost:${PORT}`);
 });
