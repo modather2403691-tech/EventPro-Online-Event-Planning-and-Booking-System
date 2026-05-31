@@ -5,9 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Organizer Home</title>
 
-  <link rel="stylesheet" href="../public/css/client&homepages&footer.css">
-  <link rel="stylesheet" href="../public/css/responsive.css">
-  <link rel="stylesheet" href="../public/css/darkmode.css">
+  <link rel="stylesheet" href="/css/client&homepages&footer.css">
+  <link rel="stylesheet" href="/css/responsive.css">
+  <link rel="stylesheet" href="/css/darkmode.css">
 
 </head>
 <body>
@@ -18,16 +18,16 @@
     <div class="home-logo">EventPro</div>
 
     <ul class="home-nav-links">
-      <li><a href="organizer-index.html">Home</a></li>
+      <li><a href="/organizer-index">Home</a></li>
       
-      <li><a href="booking-requests.html">Requests</a></li>
-      <li><a href="availability.html">Availability</a></li>
-      <li><a href="organizer-dashboard.html">Dashboard</a></li>
-      <li><a href="profile.html?role=organizer">Profile</a></li>
+      <li><a href="/booking-requests">Requests</a></li>
+      <li><a href="/availability">Availability</a></li>
+      <li><a href="/organizer-dashboard">Dashboard</a></li>
+      <li><a href="/organizer-profile">Profile</a></li>
     </ul>
 
     <div class="home-nav-actions">
-      <a href="index.html" class="home-outline-btn">Logout</a>
+      <a href="/logout" class="home-outline-btn">Logout</a>
     </div>
   </nav>
 </header>
@@ -36,7 +36,7 @@
 <section class="hero-modern">
 
   <div class="hero-left">
-    <h1>Welcome Organizer</h1>
+    <h1>Welcome, <%= name %></h1>
 
     <p class="hero-subtitle">
       Create and manage events, handle booking requests, and control availability.
@@ -49,8 +49,8 @@
     </ul>
 
     <div class="hero-buttons">
-      <a href="booking-requests.html" class="hero-secondary-btn">View Requests</a>
-      <a href="login.html?email=organizer%40gmail.com" class="hero-primary-btn">Organizer Login</a>
+      <a href="/booking-requests" class="hero-secondary-btn">View Requests</a>
+      <a href="/login?email=organizer%40gmail.com" class="hero-primary-btn">Organizer Login</a>
     </div>
   </div>
 
@@ -90,21 +90,22 @@
 
   <div class="events-grid">
     <div class="event-card">i
-      <img src="../public/assets/images/event1.jpg">
+      <img src="/assets/images/event1.jpg">
       <h3>Wedding Event</h3>
       <p>Status: Active</p>
       <button>Manage</button>
     </div>
 
     <div class="event-card">
-      <img src="../public/assets/images/event2.jpg">
+      <img src="/public/images/event2.jpg">
       <h3>Party</h3>
       <p>Status: Pending</p>
       <button>Manage</button>
     </div>
   </div>
 </section>
-<script src="../public/js/darkmode.js"></script>
-<script src="../public/js/client&homepages&footer.js"></script>
+<script src="/js/darkmode.js"></script>
+<script src="/js/client&homepages&footer.js"></script>
 </body>
 </html>
+
