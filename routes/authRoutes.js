@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const authController = require('../controllers/authController');
+const Booking = require('../models/Booking');
 
 // Helper: get name from session or fallback
 function userName(req, fallback) {
@@ -40,12 +41,61 @@ router.get('/client-dashboard', (req, res) => {
     });
 });
 
-router.get('/my-bookings', (req, res) => {
+router.get('/my-bookings', async (req, res) => {
     const u = (req.session && req.session.user) || {};
+    const userEmail = u.email || null;
+    let bookings = [];
+
+    if (userEmail) {
+        try {
+            bookings = await Booking.find({ userEmail }).sort({ createdAt: -1 });
+        } catch (err) {
+            console.error('MY BOOKINGS ERROR:', err);
+        }
+    }
+
     res.render('my-bookings', {
-        name:  u.name  || 'Client',
-        photo: u.photo || ''
+        name:     u.name  || 'Client',
+        photo:    u.photo || '',
+        bookings
     });
+});
+
+router.post('/book-event', async (req, res) => {
+    const u = req.session && req.session.user;
+    const {
+        name,
+        email,
+        phone,
+        eventType,
+        eventDate,
+        guests,
+        price,
+        source
+    } = req.body;
+
+    if (!name || !email || !phone || !eventType) {
+        return res.status(400).json({ error: 'Missing required booking fields.' });
+    }
+
+    try {
+        const booking = await new Booking({
+            userName:  name,
+            userEmail: (u && u.email) || email,
+            phone,
+            eventType,
+            eventDate: eventDate ? new Date(eventDate) : null,
+            guests: guests ? Number(guests) : 0,
+            price: price ? Number(price) : 0,
+            source: source || 'unknown',
+            status: 'Pending'
+        }).save();
+
+        return res.json({ success: true, booking });
+    } catch (err) {
+        console.error('BOOK EVENT ERROR:', err);
+        return res.status(500).json({ error: 'Unable to save booking.' });
+    }
 });
 
 // Index pages — pass name from session
