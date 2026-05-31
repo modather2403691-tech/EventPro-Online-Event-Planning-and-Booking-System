@@ -38,94 +38,43 @@
 
      <section class="dashboard-section">
   <div class="booking-cards-grid">
+    <% if (bookings && bookings.length) { %>
+      <% bookings.forEach(booking => { %>
+        <div class="booking-card">
+          <div class="booking-card-top">
+            <div>
+              <p class="booking-id">Booking ID: <%= booking._id.toString().slice(-6).toUpperCase() %></p>
+              <h3><%= booking.eventType %></h3>
+            </div>
+            <span class="booking-status <%= booking.status.toLowerCase() %>"><%= booking.status %></span>
+          </div>
 
-    <div class="booking-card">
-      <div class="booking-card-top">
-        <div>
-          <p class="booking-id">Booking ID: B001</p>
-          <h3>Wedding Package</h3>
+          <div class="booking-card-body">
+            <div class="booking-info">
+              <span>Event Type</span>
+              <strong><%= booking.eventType %></strong>
+            </div>
+            <div class="booking-info">
+              <span>Date</span>
+              <strong><%= booking.eventDate ? booking.eventDate.toISOString().slice(0, 10) : 'TBD' %></strong>
+            </div>
+            <div class="booking-info">
+              <span>Total Cost</span>
+              <strong>$<%= booking.price.toFixed(2) %></strong>
+            </div>
+          </div>
+
+          <div class="booking-card-actions">
+            <a href="/book-event"><button>Book Again</button></a>
+          </div>
         </div>
-        <span class="booking-status confirmed">Confirmed</span>
+      <% }) %>
+    <% } else { %>
+      <div class="empty-state">
+        <p>No bookings found yet.</p>
+        <a href="/client-index"><button>Book Your First Event</button></a>
       </div>
-
-      <div class="booking-card-body">
-        <div class="booking-info">
-          <span>Event Type</span>
-          <strong>Wedding</strong>
-        </div>
-        <div class="booking-info">
-          <span>Date</span>
-          <strong>2025-05-12</strong>
-        </div>
-        <div class="booking-info">
-          <span>Total Cost</span>
-          <strong>$750</strong>
-        </div>
-      </div>
-
-      <div class="booking-card-actions">
-        <a href="/book-event"><button>Book Again</button></a>
-      </div>
-    </div>
-
-    <div class="booking-card">
-      <div class="booking-card-top">
-        <div>
-          <p class="booking-id">Booking ID: B002</p>
-          <h3>Party Package</h3>
-        </div>
-        <span class="booking-status pending">Pending</span>
-      </div>
-
-      <div class="booking-card-body">
-        <div class="booking-info">
-          <span>Event Type</span>
-          <strong>Party</strong>
-        </div>
-        <div class="booking-info">
-          <span>Date</span>
-          <strong>2025-06-03</strong>
-        </div>
-        <div class="booking-info">
-          <span>Total Cost</span>
-          <strong>$550</strong>
-        </div>
-      </div>
-
-      <div class="booking-card-actions">
-        <a href="/book-event"><button>Book Again</button></a>
-      </div>
-    </div>
-
-    <div class="booking-card">
-      <div class="booking-card-top">
-        <div>
-          <p class="booking-id">Booking ID: B003</p>
-          <h3>Birthday Package</h3>
-        </div>
-        <span class="booking-status approved">Approved</span>
-      </div>
-
-      <div class="booking-card-body">
-        <div class="booking-info">
-          <span>Event Type</span>
-          <strong>Birthday</strong>
-        </div>
-        <div class="booking-info">
-          <span>Date</span>
-          <strong>2025-06-20</strong>
-        </div>
-        <div class="booking-info">
-          <span>Total Cost</span>
-          <strong>$420</strong>
-        </div>
-      </div>
-
-      <div class="booking-card-actions">
-        <a href="/book-event"><button>Book Again</button></a>
-      </div>
-    </div>
-
+    <% } %>
   </div>
 </section>
     </div>

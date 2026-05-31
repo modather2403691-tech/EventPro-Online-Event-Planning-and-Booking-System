@@ -16,7 +16,7 @@ document.addEventListener("DOMContentLoaded", function() {
       const eventName = eventCard.querySelector("h3").textContent;
       const price = eventPrices[eventName] || 0;
       
-      const bookUrl = `book-event.html?source=event&event=${encodeURIComponent(eventName)}&price=${price}`;
+      const bookUrl = `/book-event?source=event&event=${encodeURIComponent(eventName)}&price=${price}`;
       window.location.href = bookUrl;
     });
   });
@@ -167,72 +167,46 @@ document.addEventListener("DOMContentLoaded", function () {
 
       // لو كله تمام
       if (isValid) {
-        alert('Booking submitted successfully! 🎉');
-        bookingForm.reset();
-        // إخفاء السعر لو كان ظاهر
-        const priceSection = document.getElementById('priceDisplaySection');
-        if (priceSection) priceSection.style.display = 'none';
+        const sourceInput = document.getElementById('source');
+        const priceInput = document.getElementById('price');
+        const eventTypeInput = document.getElementById('eventType');
+
+        const body = {
+          name,
+          email,
+          phone,
+          eventType: eventTypeInput ? eventTypeInput.value.trim() : '',
+          eventDate,
+          guests: guestsInput ? guestsInput.value.trim() : '',
+          price: priceInput ? priceInput.value : 0,
+          source: sourceInput ? sourceInput.value : 'unknown'
+        };
+
+        fetch('/book-event', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(body)
+        })
+          .then(async response => {
+            const data = await response.json();
+            if (!response.ok) {
+              throw new Error(data.error || 'Booking failed.');
+            }
+            alert('Booking submitted successfully! 🎉');
+            bookingForm.reset();
+            const priceSection = document.getElementById('priceDisplaySection');
+            if (priceSection) priceSection.style.display = 'none';
+            window.location.href = '/my-bookings';
+          })
+          .catch(error => {
+            console.error('Booking submit error:', error);
+            alert('Unable to save booking. Please try again.');
+          });
       }
     });
   }
 });
-const bookingForm = document.getElementById('bookingForm');
 
-if (bookingForm) {
-  bookingForm.addEventListener('submit', function (e) {
-    e.preventDefault();
-
-    let isValid = true;
-
-    document.querySelectorAll('.error').forEach(error => error.textContent = '');
-
-    const name = document.getElementById('name').value.trim();
-    const email = document.getElementById('email').value.trim();
-    const phone = document.getElementById('phone').value.trim();
-    const eventType = document.getElementById('eventType').value;
-    const eventDate = document.getElementById('eventDate').value;
-    const guests = document.getElementById('guests').value.trim();
-
-    if (name === '') {
-      document.getElementById('nameError').textContent = 'Name is required';
-      isValid = false;
-    }
-
-    if (email === '') {
-      document.getElementById('emailError').textContent = 'Email is required';
-      isValid = false;
-    } else if (!email.includes('@')) {
-      document.getElementById('emailError').textContent = 'Enter a valid email';
-      isValid = false;
-    }
-
-    if (phone === '') {
-      document.getElementById('phoneError').textContent = 'Phone number is required';
-      isValid = false;
-    }
-
-    if (eventType === '') {
-      document.getElementById('eventTypeError').textContent = 'Select an event type';
-      isValid = false;
-    }
-
-    if (eventDate === '') {
-      document.getElementById('dateError').textContent = 'Select an event date';
-      isValid = false;
-    }
-
-    if (guests === '' || guests <= 0) {
-      document.getElementById('guestsError').textContent = 'Enter a valid number of guests';
-      isValid = false;
-    }
-
-    if (isValid) {
-      alert('Booking submitted successfully!');
-      bookingForm.reset();
-      document.getElementById('totalPrice').textContent = 500;
-    }
-  });
-}
 /*book event*/
   const guestsSection = document.getElementById("guestsSection");
 document.addEventListener("DOMContentLoaded", () => {
@@ -242,6 +216,11 @@ document.addEventListener("DOMContentLoaded", () => {
   const type = params.get("type");
   const event = params.get("event");
   const price = params.get("price");
+
+  const sourceInput = document.getElementById('source');
+  const priceInput = document.getElementById('price');
+  if (sourceInput) sourceInput.value = source || 'unknown';
+  if (priceInput) priceInput.value = price || '0';
 
   const eventTypeInput = document.getElementById("eventType");
   const additionalServicesSection = document.getElementById("additionalServicesSection");
@@ -457,7 +436,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   if (bookBtn) {
     bookBtn.onclick = () => {
-      window.location.href = `book-event.html?source=package&type=${type}`;
+      window.location.href = `/book-event?source=package&type=${type}`;
     };
   }
 });
