@@ -30,8 +30,13 @@ mongoose.connect(MONGO_URI)
 // أي مسار هيبدأ بـ / هيروح يدور فيnode event.js ملف الـ authRoutes
 app.use('/', authRoutes);
 
+// 404 — any unmatched route renders the custom not-found page
+app.use((req, res) => {
+    res.status(404).render('404');
+});
+
 // 5. Start the Server
-const PORT = 8000;
+const PORT = process.env.PORT || 8000;
 app.listen(PORT, () => {
     console.log(`EventPro server is running on http://localhost:${PORT}`);
 });

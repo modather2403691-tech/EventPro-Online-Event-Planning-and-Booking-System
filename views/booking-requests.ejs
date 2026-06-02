@@ -8,156 +8,81 @@
   <link rel="stylesheet" href="/css/organizer.css">
   <link rel="stylesheet" href="/css/responsive.css">
   <link rel="stylesheet" href="/css/darkmode.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+  <link rel="stylesheet" href="/css/theme.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&family=Poppins:wght@400;500;600;700&display=swap">
 </head>
 <body class="organizer-page">
 
    <div class="dashboard-container">
-    <aside class="sidebar">
-      <div class="sidebar-profile">
-        <img src="/assets/images/333.jpeg" alt="Profile">
-        <div>
-          <h3>Elham</h3>
-          <p>Organizer</p>
-        </div>
-      </div>
-      <h2>Organizer Panel</h2>
-      <ul>
-        <li><a href="/organizer-dashboard">Dashboard</a></li>
-         <li><a href="/addevent">Add Event</a></li>
-        <li><a href="/booking-requests" class="active">Booking Requests</a></li>
-        <li><a href="/availability">Availability</a></li>
-        <li><a href="/organizer-profile">Profile</a></li>
-        <li><a href="/organizer-index">Back to Home</a></li>
-      </ul>
-    </aside>
+    <%- include('partials/sidebar', { role: 'organizer', active: 'booking-requests' }) %>
 
     <div class="dashboard-content">
       <h1>Booking Requests</h1>
+      <p class="dashboard-subtitle">
+        Custom event requests from clients. Reply with your price — the client
+        picks the offer they like best.
+      </p>
 
-      <h2>Pending Requests</h2>
-      <table class="dashboard-table">
-        <thead>
-          <tr>
-            <th>Request ID</th>
-            <th>Client</th>
-            <th>Package</th>
-            <th>Guests</th>
-            <th>Event Date</th>
-            <th>Status</th>
-            <th></th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr data-request-id="R001" data-status="Pending">
-            <td>R001</td>
-            <td>Sarah Ahmed</td>
-            <td>Wedding Package</td>
-            <td>180</td>
-            <td>2025-05-18</td>
-            <td class="request-status pending">Pending</td>
-            <td class="request-actions">
-              <button type="button" class="request-action-btn accept-btn" data-action="accept">Accept</button>
-              <button type="button" class="request-action-btn reject-btn" data-action="reject">Reject</button>
-            </td>
-          </tr>
-          <tr class="request-details-row" data-details-for="R001" hidden>
-            <td colspan="7">
-              <div class="request-details-panel">
-                <h3>Client Details</h3>
-                <div class="request-details-grid">
-                  <p class="detail-email"><span>Email:</span> <span class="detail-value email-value">sarah.ahmed@example.com</span></p>
-                  <p><span>Phone:</span> +1 555 0101</p>
-                  <p><span>Event Type:</span> Wedding</p>
-                  <p><span>Guests:</span> 180</p>
-                  <p class="confirmed-price-row" hidden><span>Confirmed Price:</span> <span class="confirmed-price-value"></span></p>
-                  <p class="price-row">
-                    <span>Price:</span>
-                    <span class="price-controls">
-                      <input type="number" min="1" class="request-price-input" placeholder="Enter price">
-                      <button type="button" class="price-confirm-btn">Confirm Price</button>
-                    </span>
-                    <span class="price-error"></span>
-                  </p>
-                </div>
-              </div>
-            </td>
-          </tr>
-          <tr data-request-id="R002" data-status="Pending">
-            <td>R002</td>
-            <td>Ali Hassan</td>
-            <td>Conference Package</td>
-            <td>75</td>
-            <td>2025-06-02</td>
-            <td class="request-status pending">Pending</td>
-            <td class="request-actions">
-              <button type="button" class="request-action-btn accept-btn" data-action="accept">Accept</button>
-              <button type="button" class="request-action-btn reject-btn" data-action="reject">Reject</button>
-            </td>
-          </tr>
-          <tr class="request-details-row" data-details-for="R002" hidden>
-            <td colspan="7">
-              <div class="request-details-panel">
-                <h3>Client Details</h3>
-                <div class="request-details-grid">
-                  <p class="detail-email"><span>Email:</span> <span class="detail-value email-value">ali.hassan@example.com</span></p>
-                  <p><span>Phone:</span> +1 555 0102</p>
-                  <p><span>Event Type:</span> Conference</p>
-                  <p><span>Guests:</span> 75</p>
-                  <p class="confirmed-price-row" hidden><span>Confirmed Price:</span> <span class="confirmed-price-value"></span></p>
-                  <p class="price-row">
-                    <span>Price:</span>
-                    <span class="price-controls">
-                      <input type="number" min="1" class="request-price-input" placeholder="Enter price">
-                      <button type="button" class="price-confirm-btn">Confirm Price</button>
-                    </span>
-                    <span class="price-error"></span>
-                  </p>
-                </div>
-              </div>
-            </td>
-          </tr>
-          <tr data-request-id="R003" data-status="Pending">
-            <td>R003</td>
-            <td>Mona Khaled</td>
-            <td>Birthday Package</td>
-            <td>40</td>
-            <td>2025-06-15</td>
-            <td class="request-status pending">Pending</td>
-            <td class="request-actions">
-              <button type="button" class="request-action-btn accept-btn" data-action="accept">Accept</button>
-              <button type="button" class="request-action-btn reject-btn" data-action="reject">Reject</button>
-            </td>
-          </tr>
-          <tr class="request-details-row" data-details-for="R003" hidden>
-            <td colspan="7">
-              <div class="request-details-panel">
-                <h3>Client Details</h3>
-                <div class="request-details-grid">
-                  <p class="detail-email"><span>Email:</span> <span class="detail-value email-value">mona.khaled@example.com</span></p>
-                  <p><span>Phone:</span> +1 555 0103</p>
-                  <p><span>Event Type:</span> Birthday</p>
-                  <p><span>Guests:</span> 40</p>
-                  <p class="confirmed-price-row" hidden><span>Confirmed Price:</span> <span class="confirmed-price-value"></span></p>
-                  <p class="price-row">
-                    <span>Price:</span>
-                    <span class="price-controls">
-                      <input type="number" min="1" class="request-price-input" placeholder="Enter price">
-                      <button type="button" class="price-confirm-btn">Confirm Price</button>
-                    </span>
-                    <span class="price-error"></span>
-                  </p>
-                </div>
-              </div>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+      <h2>Open Requests</h2>
+
+      <% if (!requests || requests.length === 0) { %>
+        <div class="empty-state">
+          <p>No open booking requests right now.</p>
+        </div>
+      <% } else { %>
+        <table class="dashboard-table">
+          <thead>
+            <tr>
+              <th>Request ID</th>
+              <th>Client</th>
+              <th>Event Type</th>
+              <th>Guests</th>
+              <th>Preferred Date</th>
+              <th>Details</th>
+              <th>Your Offer</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% requests.forEach(r => {
+                 const mine = (r.offers || []).find(o => o.organizerEmail === organizerEmail);
+            %>
+              <tr>
+                <td><%= r._id.toString().slice(-6).toUpperCase() %></td>
+                <td>
+                  <%= r.clientName %><br>
+                  <small><%= r.clientEmail %></small><br>
+                  <small><%= r.phone %></small>
+                </td>
+                <td><%= r.eventType %></td>
+                <td><%= r.guests %></td>
+                <td><%= r.eventDate ? r.eventDate.toISOString().slice(0, 10) : 'Flexible' %></td>
+                <td><%= r.notes || '—' %></td>
+                <td>
+                  <% if (mine) { %>
+                    <span class="confirmed-price-value">You offered $<%= mine.price %></span>
+                    <div><small>Update:</small></div>
+                  <% } %>
+                  <form action="/booking-requests/offer" method="POST" style="display:flex; gap:6px; align-items:center;">
+                    <input type="hidden" name="requestId" value="<%= r._id %>">
+                    <input type="number" name="price" min="1" placeholder="Price $" class="request-price-input" required>
+                    <button type="submit" class="request-action-btn accept-btn"><%= mine ? 'Update' : 'Send Offer' %></button>
+                  </form>
+                  <small><%= (r.offers || []).length %> offer(s) so far</small>
+                </td>
+              </tr>
+            <% }) %>
+          </tbody>
+        </table>
+      <% } %>
     </div>
   </div>
 
-  <script src="/js/organizer.js"></script>
   <script src="/js/profile-role-styles.js"></script>
   <script src="/js/darkmode.js"></script>
+  <script src="/js/translate.js"></script>
+  <script src="/js/icons.js"></script>
 </body>
 </html>
-

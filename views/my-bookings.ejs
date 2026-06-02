@@ -8,27 +8,16 @@
   <link rel="stylesheet" href="/css/client&homepages&footer.css">
   <link rel="stylesheet" href="/css/responsive.css">
   <link rel="stylesheet" href="/css/darkmode.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+  <link rel="stylesheet" href="/css/theme.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&family=Poppins:wght@400;500;600;700&display=swap">
 </head>
 <body class="client-dashboard-page">
 
   <div class="dashboard-container">
-    <aside class="sidebar">
-      <div class="sidebar-profile">
-        <img src="<%= photo ? photo : '/images/my-photo.jpg' %>" alt="Profile">
-        <div>
-          <h3><%= name %></h3>
-          <p>Client</p>
-        </div>
-      </div>
-
-      <h2>Client Panel</h2>
-      <ul>
-        <li><a href="/client-dashboard">My Dashboard</a></li>
-        <li><a href="/my-bookings" class="active">My Bookings</a></li>
-        <li><a href="/client-profile">Profile</a></li>
-        <li><a href="/client-index">Back to Home</a></li>
-      </ul>
-    </aside>
+    <%- include('partials/sidebar', { role: 'client', active: 'my-bookings' }) %>
 
     <div class="dashboard-content">
       <h1>My Bookings</h1>
@@ -39,33 +28,33 @@
      <section class="dashboard-section">
   <div class="booking-cards-grid">
     <% if (bookings && bookings.length) { %>
-      <% bookings.forEach(booking => { %>
-        <div class="booking-card">
+      <% bookings.forEach(booking => {
+           const ticket = 'EVP-' + booking._id.toString().slice(-6).toUpperCase();
+      %>
+        <div class="booking-card ticket-card">
           <div class="booking-card-top">
             <div>
-              <p class="booking-id">Booking ID: <%= booking._id.toString().slice(-6).toUpperCase() %></p>
+              <p class="booking-id"><i class="fa-solid fa-ticket"></i> Entry Ticket</p>
               <h3><%= booking.eventType %></h3>
             </div>
             <span class="booking-status <%= booking.status.toLowerCase() %>"><%= booking.status %></span>
           </div>
 
-          <div class="booking-card-body">
-            <div class="booking-info">
-              <span>Event Type</span>
-              <strong><%= booking.eventType %></strong>
+          <div class="ticket-body">
+            <div class="ticket-details">
+              <div class="booking-info"><span>Guest</span><strong><%= booking.userName %></strong></div>
+              <div class="booking-info"><span>Date</span><strong><%= booking.eventDate ? booking.eventDate.toISOString().slice(0, 10) : 'TBD' %></strong></div>
+              <div class="booking-info"><span>Guests</span><strong><%= booking.guests || 1 %></strong></div>
+              <div class="booking-info"><span>Total</span><strong>$<%= booking.price.toFixed(2) %></strong></div>
             </div>
-            <div class="booking-info">
-              <span>Date</span>
-              <strong><%= booking.eventDate ? booking.eventDate.toISOString().slice(0, 10) : 'TBD' %></strong>
-            </div>
-            <div class="booking-info">
-              <span>Total Cost</span>
-              <strong>$<%= booking.price.toFixed(2) %></strong>
+            <div class="ticket-qr">
+              <img src="https://api.qrserver.com/v1/create-qr-code/?size=120x120&qzone=1&data=<%= ticket %>" alt="<%= ticket %>" width="120" height="120">
+              <span class="ticket-code"><%= ticket %></span>
             </div>
           </div>
 
-          <div class="booking-card-actions">
-            <a href="/book-event"><button>Book Again</button></a>
+          <div class="ticket-note">
+            <i class="fa-solid fa-circle-info"></i> Show this ticket ID at the entrance to get in.
           </div>
         </div>
       <% }) %>
@@ -81,6 +70,8 @@
   </div>
   <script src="/js/profile-role-styles.js"></script>
   <script src="/js/darkmode.js"></script>
+  <script src="/js/translate.js"></script>
+  <script src="/js/icons.js"></script>
 </body>
 </html>
 

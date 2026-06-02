@@ -7,29 +7,16 @@
   <link rel="stylesheet" href="/css/profile.css">
   <link rel="stylesheet" href="/css/responsive.css">
   <link rel="stylesheet" href="/css/darkmode.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+  <link rel="stylesheet" href="/css/theme.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&family=Poppins:wght@400;500;600;700&display=swap">
 </head>
 <body class="profile-dashboard-page">
 
   <div class="dashboard-container">
-    <aside class="sidebar">
-      <div class="sidebar-profile">
-        <img src="/assets/images/333.jpeg" alt="Profile">
-        <div>
-          <h3>Elham</h3>
-          <p>Organizer</p>
-        </div>
-      </div>
-
-      <h2>Organizer Panel</h2>
-      <ul>
-        <li><a href="/organizer-dashboard">Dashboard</a></li>
-        <li><a href="/addevent">Add Event</a></li>
-        <li><a href="/booking-requests">Booking Requests</a></li>
-        <li><a href="/availability">Availability</a></li>
-        <li><a href="/organizer-profile" class="active">Profile</a></li>
-        <li><a href="/organizer-index">Back to Home</a></li>
-      </ul>
-    </aside>
+    <%- include('partials/sidebar', { role: 'organizer', active: 'profile' }) %>
 
     <div class="dashboard-content">
       <div class="profile-header">
@@ -133,5 +120,7 @@
   </div>
 
   <script src="/js/darkmode.js"></script>
+  <script src="/js/translate.js"></script>
+  <script src="/js/icons.js"></script>
 </body>
 </html>

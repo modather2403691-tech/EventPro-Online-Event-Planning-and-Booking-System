@@ -1,7 +1,9 @@
 const express = require('express');
 const router = express.Router();
 const authController = require('../controllers/authController');
+const eventController = require('../controllers/eventController');
 const Booking = require('../models/Booking');
+const Event = require('../models/Event');
 
 // Helper: get name from session or fallback
 function userName(req, fallback) {
@@ -13,17 +15,11 @@ function userName(req, fallback) {
 // Generic pages (no session data needed)
 const pages = [
     'about',
-    'addevent',
     'admin-dashboard',
-    'availability',
-    'book-event',
-    'booking-requests',
     'client-reservation',
     'contact',
     'help-center',
-    'index',
     'manage-users',
-    'organizer-dashboard',
     'organizer-event',
     'package-details',
     'packages',
@@ -44,14 +40,13 @@ router.get('/client-dashboard', (req, res) => {
 router.get('/my-bookings', async (req, res) => {
     const u = (req.session && req.session.user) || {};
     const userEmail = u.email || null;
+    if (!userEmail) return res.redirect('/login');
     let bookings = [];
 
-    if (userEmail) {
-        try {
-            bookings = await Booking.find({ userEmail }).sort({ createdAt: -1 });
-        } catch (err) {
-            console.error('MY BOOKINGS ERROR:', err);
-        }
+    try {
+        bookings = await Booking.find({ userEmail }).sort({ createdAt: -1 });
+    } catch (err) {
+        console.error('MY BOOKINGS ERROR:', err);
     }
 
     res.render('my-bookings', {
@@ -61,34 +56,59 @@ router.get('/my-bookings', async (req, res) => {
     });
 });
 
+// Booking form — must be logged in so the booking is tied to the account.
+router.get('/book-event', (req, res) => {
+    const u = req.session && req.session.user;
+    if (!u || !u.email) return res.redirect('/login');
+    res.render('book-event', {
+        name:  u.name  || '',
+        email: u.email,
+        phone: u.phone || ''
+    });
+});
+
 router.post('/book-event', async (req, res) => {
     const u = req.session && req.session.user;
+    if (!u || !u.email) {
+        return res.status(401).json({ error: 'Please log in to book an event.' });
+    }
+
     const {
         name,
-        email,
         phone,
         eventType,
         eventDate,
         guests,
         price,
-        source
+        source,
+        eventId
     } = req.body;
 
-    if (!name || !email || !phone || !eventType) {
+    if (!phone || !eventType) {
         return res.status(400).json({ error: 'Missing required booking fields.' });
     }
 
     try {
+        // If this booking is for an organizer-created event, attach the event
+        // and its organizer so it shows up in the organizer's management page.
+        let linkedEvent = null;
+        if (eventId) {
+            try { linkedEvent = await Event.findById(eventId); } catch (e) { /* ignore bad id */ }
+        }
+
         const booking = await new Booking({
-            userName:  name,
-            userEmail: (u && u.email) || email,
+            userName:  name || u.name,
+            userEmail: u.email,            // always the logged-in account
             phone,
             eventType,
-            eventDate: eventDate ? new Date(eventDate) : null,
+            eventDate: eventDate ? new Date(eventDate) : (linkedEvent ? linkedEvent.date : null),
             guests: guests ? Number(guests) : 0,
-            price: price ? Number(price) : 0,
+            price: price ? Number(price) : (linkedEvent ? linkedEvent.price : 0),
             source: source || 'unknown',
-            status: 'Pending'
+            status: 'Pending',
+            eventId: linkedEvent ? linkedEvent._id : null,
+            organizerEmail: linkedEvent ? linkedEvent.organizerEmail : '',
+            organizerName:  linkedEvent ? linkedEvent.organizerName  : ''
         }).save();
 
         return res.json({ success: true, booking });
@@ -103,12 +123,20 @@ router.get('/admin-index', (req, res) => {
     res.render('admin-index', { name: userName(req, 'Admin') });
 });
 
-router.get('/organizer-index', (req, res) => {
-    res.render('organizer-index', { name: userName(req, 'Organizer') });
+router.get('/organizer-index', async (req, res) => {
+    const u = (req.session && req.session.user) || {};
+    let events = [];
+    try {
+        events = await Event.find(u.email ? { organizerEmail: u.email } : {}).sort({ createdAt: -1 });
+    } catch (err) {
+        console.error('ORGANIZER INDEX EVENTS ERROR:', err);
+    }
+    res.render('organizer-index', { name: userName(req, 'Organizer'), events });
 });
 
-router.get('/client-index', (req, res) => {
-    res.render('client-index', { name: userName(req, 'Client') });
+router.get('/client-index', async (req, res) => {
+    const events = await eventController.getAllEvents();
+    res.render('client-index', { name: userName(req, 'Client'), events });
 });
 
 // Profile pages
@@ -153,13 +181,35 @@ router.post('/client-profile/update-photo', async (req, res) => {
     }
 });
 
+router.get('/organizer-dashboard', (req, res) => {
+    res.render('organizer-dashboard', { name: userName(req, 'Organizer') });
+});
+
 router.get('/organizer-profile', (req, res) => {
     res.render('organizer-profile', { name: userName(req, 'Organizer') });
 });
 
-router.get('/', (req, res) => {
-    res.render('index');
+router.get('/', async (req, res) => {
+    const events = await eventController.getAllEvents();
+    res.render('index', { events });
 });
+
+// ---- Events (organizer) ----
+router.get('/addevent', eventController.showAddEvent);
+router.post('/addevent', eventController.createEvent);
+router.get('/manage-events', eventController.manageEvents);
+router.post('/manage-events/delete', eventController.deleteEvent);
+router.post('/manage-events/edit', eventController.editEvent);
+router.post('/manage-events/booking-status', eventController.updateBookingStatus);
+
+// ---- Booking requests (marketplace) ----
+router.get('/new-request', eventController.showNewRequest);
+router.post('/booking-requests/create', eventController.createRequest);
+router.get('/booking-requests', eventController.organizerRequests);
+router.post('/booking-requests/offer', eventController.makeOffer);
+router.get('/my-requests', eventController.clientRequests);
+router.post('/booking-requests/accept', eventController.acceptOffer);
+router.post('/booking-requests/cancel', eventController.cancelRequest);
 
 pages.forEach((page) => {
     router.get(`/${page}`, (req, res) => {

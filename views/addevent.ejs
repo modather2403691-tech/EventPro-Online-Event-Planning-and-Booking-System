@@ -7,28 +7,16 @@
     <link rel="stylesheet" href="/css/organizer.css">
     <link rel="stylesheet" href="/css/responsive.css">
     <link rel="stylesheet" href="/css/darkmode.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+  <link rel="stylesheet" href="/css/theme.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&family=Poppins:wght@400;500;600;700&display=swap">
 </head>
 
 <body class="organizer-page add-event-page">
   <div class="dashboard-container">
-    <aside class="sidebar">
-      <div class="sidebar-profile">
-        <img src="/assets/images/333.jpeg" alt="Profile">
-        <div>
-          <h3>Elham</h3>
-          <p>Organizer</p>
-        </div>
-      </div>
-      <h2>Organizer Panel</h2>
-      <ul>
-        <li><a href="/organizer-dashboard">Dashboard</a></li>
-        <li><a href="/addevent" class="active">Add Event</a></li>
-        <li><a href="/booking-requests">Booking Requests</a></li>
-        <li><a href="/availability">Availability</a></li>
-        <li><a href="/organizer-profile">Profile</a></li>
-        <li><a href="/organizer-index">Back to Home</a></li>
-      </ul>
-    </aside>
+    <%- include('partials/sidebar', { role: 'organizer', active: 'addevent' }) %>
 
     <div class="dashboard-content">
       <h1>Create Event</h1>
@@ -43,6 +31,16 @@
         <input type="text" id="title" class="input-field" placeholder="Enter event title" required>
         <span id="titleError" class="error"></span>
 
+        <label class="label">Category:</label>
+        <select id="category" class="input-field">
+          <option value="party">Party</option>
+          <option value="corporate">Corporate</option>
+          <option value="wedding">Wedding</option>
+          <option value="birthday">Birthday</option>
+          <option value="other">Other</option>
+        </select>
+        <span id="categoryError" class="error"></span>
+
         <label class="label">Date of Event:</label>
         <input type="date" id="date" class="input-field" required>
         <span id="dateError" class="error"></span>
@@ -50,6 +48,10 @@
         <label class="label">Capacity:</label>
         <input type="number" id="capacity" class="input-field" min="1" placeholder="Enter number of people" required>
         <span id="capacityError" class="error"></span>
+
+        <label class="label">Price ($):</label>
+        <input type="number" id="price" class="input-field" min="0" placeholder="Ticket price per guest" required>
+        <span id="priceError" class="error"></span>
 
         <label class="label">Location:</label>
         <input type="text" id="location" class="input-field" placeholder="Enter location" required>
@@ -68,6 +70,7 @@
   <script src="/js/profile-role-styles.js"></script>
   <script src="/js/darkmode.js"></script>
 
+  <script src="/js/translate.js"></script>
+  <script src="/js/icons.js"></script>
 </body>
 </html>
-

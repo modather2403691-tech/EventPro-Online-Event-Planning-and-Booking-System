@@ -7,6 +7,11 @@
   <link rel="stylesheet" href="/css/client&homepages&footer.css">
   <link rel="stylesheet" href="/css/responsive.css">
   <link rel="stylesheet" href="/css/darkmode.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+  <link rel="stylesheet" href="/css/theme.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&family=Poppins:wght@400;500;600;700&display=swap">
 </head>
 <body>
 
@@ -17,6 +22,8 @@
     <ul class="home-nav-links">
       <li><a href="/client-index">Home</a></li>
       <li><a href="/packages">Customize Your Packages</a></li>
+      <li><a href="/new-request">Request Custom Event</a></li>
+      <li><a href="/my-requests">My Requests</a></li>
       <li><a href="/my-bookings">My Bookings</a></li>
       <li><a href="/client-dashboard">Dashboard</a></li>
       <li><a href="/client-profile">Profile</a></li>
@@ -86,43 +93,28 @@
     <h2>Explore Events</h2>
 
     <div class="events-grid">
-      <div class="event-card" data-category="corporate">
-        <img src="/assets/images/event1.jpg" alt="Event">
-        <h3>Founders Live Cairo</h3>
-        <p>Sat, Apr 25 • 10:00 AM</p>
-        <p>Startup Haus Cairo</p>
-        <a href="/book-event?source=event&event=Founders%20Live%20Cairo&price=150"><button>Join Event</button></a>
-      </div>
-
-      <div class="event-card" data-category="corporate">
-        <img src="/assets/images/event2.jpg" alt="Event">
-        <h3>Investors Founders Meetup</h3>
-        <p>Thu • 1:00 PM</p>
-        <p>Cairo</p>
-        <a href="/book-event?source=event&event=Investors%20Founders%20Meetup&price=250"><button>Join Event</button></a>
-      </div>
-
-      <div class="event-card" data-category="party">
-        <img src="/assets/images/event3.jpg" alt="Event">
-        <h3>Women Party 2026</h3>
-        <p>Wed • 9:00 AM</p>
-        <p>Ramses Hilton</p>
-        <a href="/book-event?source=event&event=Women%20Party%202026&price=200"><button>Join Event</button></a>
-      </div>
-
-      <div class="event-card" data-category="party">
-        <img src="/public/images/event4.jpg" alt="Event">
-        <h3>AI Party Egypt</h3>
-        <p>Sun • 8:30 AM</p>
-        <p>Future University</p>
-        <a href="/book-event?source=event&event=AI%20Party%20Egypt&price=300"><button>Join Event</button></a>
-      </div>
+      <% if (events && events.length) { %>
+        <% events.forEach(event => { %>
+          <div class="event-card" data-category="<%= event.category %>">
+            <img src="<%= event.image ? event.image : '/images/event1.jpg' %>" alt="Event">
+            <h3><%= event.title %></h3>
+            <p><%= event.date ? event.date.toISOString().slice(0, 10) : 'Date TBD' %></p>
+            <p><%= event.location %></p>
+            <p class="event-price">$<%= event.price %> · by <%= event.organizerName %></p>
+            <a href="/book-event?source=event&eventId=<%= event._id %>&event=<%= encodeURIComponent(event.title) %>&price=<%= event.price %>"><button>Join Event</button></a>
+          </div>
+        <% }) %>
+      <% } else { %>
+        <p class="muted">No events available yet. Check back soon!</p>
+      <% } %>
     </div>
   </section>
 </main>
 
 <script src="/js/darkmode.js"></script>
 <script src="/js/client&homepages&footer.js"></script>
+  <script src="/js/translate.js"></script>
+  <script src="/js/icons.js"></script>
 </body>
 </html>
 
