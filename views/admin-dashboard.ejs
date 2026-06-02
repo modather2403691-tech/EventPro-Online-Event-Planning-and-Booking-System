@@ -15,13 +15,17 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&family=Poppins:wght@400;500;600;700&display=swap">
 </head>
 <body class="admin-page">
+  <% const dashboardStats = typeof stats !== 'undefined' ? stats : { activeUsers: 0, newBookings: 0, pendingApprovals: 0 }; %>
+  <% const recentActivity = Array.isArray(activity) ? activity : []; %>
+  <% const lastUpdated = typeof updatedAt !== 'undefined' ? updatedAt : 'N/A'; %>
+  <% const adminName = typeof name !== 'undefined' && name ? name : 'Admin'; %>
   
   <div class="dashboard-container" id="dashboardContainer">
     <aside class="sidebar" id="sidebar">
       <div class="brand-wrapper" id="brandLogo">
-        <div class="brand-mark">I</div>
+        <div class="brand-mark"><%= adminName.charAt(0).toUpperCase() %></div>
         <div class="brand-text">
-          <span class="brand-name">Ismail</span>
+          <span class="brand-name"><%= adminName %></span>
           <span class="brand-subtitle">Admin</span>
         </div>
       </div>
@@ -45,31 +49,31 @@
           <p class="page-description" id="pageDescription">Monitor platform health, booking flow, and team activity from a unified control center.</p>
         </div>
         <div class="page-meta" id="pageMeta">
-          <span id="metaUpdated">Last updated Apr 7, 2026</span>
+          <span id="metaUpdated">Last updated <%= lastUpdated %></span>
         </div>
       </div>
 
       <div class="dashboard-actions" id="dashboardActions">
-        <button id="btnGenerateReport" type="button">Generate report</button>
-        <button id="btnExportCsv" type="button">Export CSV</button>
+        <button id="btnGenerateReport" type="button" data-target="/reports">Generate report</button>
+        <button id="btnExportCsv" type="button" data-target="/admin-dashboard/export-csv">Export CSV</button>
       </div>
 
       <div class="cards" id="statsGrid">
         <div class="card" id="cardUsers">
           <h3 id="cardUsersTitle">Active Users</h3>
-          <p id="cardUsersValue">0</p>
+          <p id="cardUsersValue"><%= dashboardStats.activeUsers %></p>
           <span class="card-note" id="cardUsersNote">+4.2% vs last week</span>
         </div>
 
         <div class="card" id="cardBookings">
           <h3 id="cardBookingsTitle">New Bookings</h3>
-          <p id="cardBookingsValue">0</p>
+          <p id="cardBookingsValue"><%= dashboardStats.newBookings %></p>
           <span class="card-note" id="cardBookingsNote">Updated hourly</span>
         </div>
 
         <div class="card" id="cardPending">
           <h3 id="cardPendingTitle">Pending Approvals</h3>
-          <p id="cardPendingValue">0</p>
+          <p id="cardPendingValue"><%= dashboardStats.pendingApprovals %></p>
           <span class="card-note" id="cardPendingNote">Awaiting review</span>
         </div>
       </div>
@@ -103,7 +107,23 @@
               <th id="colDate">Date</th>
             </tr>
           </thead>
-          <tbody id="activityTableBody"></tbody>
+          <tbody id="activityTableBody">
+            <% if (recentActivity.length > 0) { %>
+              <% recentActivity.forEach(item => { %>
+                <tr>
+                  <td><%= item.activityId %></td>
+                  <td><%= item.user %></td>
+                  <td><%= item.role %></td>
+                  <td><%= item.action %></td>
+                  <td><%= item.dateLabel %></td>
+                </tr>
+              <% }) %>
+            <% } else { %>
+              <tr>
+                <td colspan="5" style="text-align:center; padding:20px;">No recent activity found.</td>
+              </tr>
+            <% } %>
+          </tbody>
         </table>
       </section>
     </div>

@@ -16,6 +16,8 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&family=Poppins:wght@400;500;600;700&display=swap">
 </head>
 <body class="admin-page" id="reportsPage">
+  <% const reportMetrics = typeof metrics !== 'undefined' ? metrics : { monthlyBookings: 0, completedEvents: 0, totalRevenue: 0, totalBookings: 0 }; %>
+  <% const rows = typeof reportRows !== 'undefined' && Array.isArray(reportRows) ? reportRows : []; %>
 
   <div class="dashboard-container">
 
@@ -45,23 +47,24 @@
     <div class="dashboard-content">
       <h1>Reports</h1>
       <div class="page-meta" id="pageMeta">
+        <span>Live report summary</span>
       </div>
 
       <!-- Cards -->
       <div class="cards">
         <div class="card">
           <h3>Monthly Bookings</h3>
-          <p>12</p>
+          <p><%= reportMetrics.monthlyBookings %></p>
         </div>
 
         <div class="card">
           <h3>Completed Events</h3>
-          <p>9</p>
+          <p><%= reportMetrics.completedEvents %></p>
         </div>
 
         <div class="card">
           <h3>Estimated Revenue</h3>
-          <p>$8,500</p>
+          <p>$<%= Number(reportMetrics.totalRevenue || 0).toLocaleString('en-US') %></p>
         </div>
       </div>
 
@@ -81,29 +84,21 @@
           </thead>
 
           <tbody>
-            <tr>
-              <td>March</td>
-              <td>8</td>
-              <td>6</td>
-              <td>2</td>
-              <td>$4,200</td>
-            </tr>
-
-            <tr>
-              <td>April</td>
-              <td>10</td>
-              <td>7</td>
-              <td>3</td>
-              <td>$5,600</td>
-            </tr>
-
-            <tr>
-              <td>May</td>
-              <td>12</td>
-              <td>9</td>
-              <td>3</td>
-              <td>$8,500</td>
-            </tr>
+            <% if (rows.length > 0) { %>
+              <% rows.forEach(row => { %>
+                <tr>
+                  <td><%= row.month %></td>
+                  <td><%= row.totalBookings %></td>
+                  <td><%= row.completed %></td>
+                  <td><%= row.pending %></td>
+                  <td>$<%= Number(row.revenue || 0).toLocaleString('en-US') %></td>
+                </tr>
+              <% }) %>
+            <% } else { %>
+              <tr>
+                <td colspan="5" style="text-align:center; padding:20px;">No booking data available yet.</td>
+              </tr>
+            <% } %>
           </tbody>
         </table>
 

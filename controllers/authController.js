@@ -68,6 +68,10 @@ exports.login = async (req, res) => {
         persist();
 
         const dbRole = user.role.trim().toLowerCase();
+        if (dbRole === 'admin') {
+            return res.redirect('/admin-index');
+        }
+
         return res.redirect(dbRole === 'organizer' ? '/organizer-index' : '/client-index');
 
     } catch (err) {

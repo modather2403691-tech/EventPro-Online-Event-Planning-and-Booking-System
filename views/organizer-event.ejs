@@ -15,6 +15,9 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&family=Poppins:wght@400;500;600;700&display=swap">
 </head>
 <body class="admin-page" id="organizerEventPage">
+  <% const eventsList = typeof events !== 'undefined' && Array.isArray(events) ? events : []; %>
+  <% const acceptedList = typeof acceptedPackages !== 'undefined' && Array.isArray(acceptedPackages) ? acceptedPackages : []; %>
+  <% const createdList = typeof createdEvents !== 'undefined' && Array.isArray(createdEvents) ? createdEvents : []; %>
 
   <div class="dashboard-container">
     <aside class="sidebar">
@@ -45,14 +48,14 @@
       <div class="organizer-spotlights">
         <article class="organizer-spotlight-card">
           <h3>Top Package Acceptance</h3>
-          <p class="spotlight-name">Noor Hassan</p>
-          <span class="spotlight-meta">48 accepted packages this quarter</span>
+          <p class="spotlight-name"><%= acceptedList[0] ? acceptedList[0].organizer : 'No data yet' %></p>
+          <span class="spotlight-meta"><%= acceptedList[0] ? acceptedList[0].acceptedPackages + ' accepted packages this quarter' : 'No bookings yet' %></span>
         </article>
 
         <article class="organizer-spotlight-card">
           <h3>Top Event Creator</h3>
-          <p class="spotlight-name">Fady Khalil</p>
-          <span class="spotlight-meta">31 events created this quarter</span>
+          <p class="spotlight-name"><%= createdList[0] ? createdList[0].organizer : 'No data yet' %></p>
+          <span class="spotlight-meta"><%= createdList[0] ? createdList[0].eventsAdded + ' events created this quarter' : 'No events yet' %></span>
         </article>
       </div>
 
@@ -73,62 +76,30 @@
               </tr>
             </thead>
             <tbody id="organizerEventsTableBody">
-              <tr>
-                <td data-field="eventId">EV-501</td>
-                <td data-field="eventTitle">Royal Wedding Night</td>
-                <td data-field="organizer">Noor Hassan</td>
-                <td data-field="eventDate">2026-05-12</td>
-           
-                <td data-field="availability">Available</td>
-                <td class="organizer-event-actions-cell">
-                  <button type="button" class="event-action-btn event-edit-btn">Edit</button>
-                  <button type="button" class="event-action-btn event-save-btn is-hidden">Save</button>
-                  <button type="button" class="event-action-btn event-cancel-btn is-hidden">Cancel</button>
-                  <button type="button" class="event-action-btn event-remove-btn">Remove</button>
-                </td>
-              </tr>
-              <tr>
-                <td data-field="eventId">EV-502</td>
-                <td data-field="eventTitle">Business Leaders Summit</td>
-                <td data-field="organizer">Ahmed Nasser</td>
-                <td data-field="eventDate">2026-05-20</td>
-             
-                <td data-field="availability">Available</td>
-                <td class="organizer-event-actions-cell">
-                  <button type="button" class="event-action-btn event-edit-btn">Edit</button>
-                  <button type="button" class="event-action-btn event-save-btn is-hidden">Save</button>
-                  <button type="button" class="event-action-btn event-cancel-btn is-hidden">Cancel</button>
-                  <button type="button" class="event-action-btn event-remove-btn">Remove</button>
-                </td>
-              </tr>
-              <tr>
-                <td data-field="eventId">EV-503</td>
-                <td data-field="eventTitle">Family Birthday Gala</td>
-                <td data-field="organizer">Mariam Adel</td>
-                <td data-field="eventDate">2026-06-04</td>
-              
-                <td data-field="availability">Limited</td>
-                <td class="organizer-event-actions-cell">
-                  <button type="button" class="event-action-btn event-edit-btn">Edit</button>
-                  <button type="button" class="event-action-btn event-save-btn is-hidden">Save</button>
-                  <button type="button" class="event-action-btn event-cancel-btn is-hidden">Cancel</button>
-                  <button type="button" class="event-action-btn event-remove-btn">Remove</button>
-                </td>
-              </tr>
-              <tr>
-                <td data-field="eventId">EV-504</td>
-                <td data-field="eventTitle">Engagement Evening</td>
-                <td data-field="organizer">Fady Khalil</td>
-                <td data-field="eventDate">2026-06-18</td>
-              
-                <td data-field="availability">Available</td>
-                <td class="organizer-event-actions-cell">
-                  <button type="button" class="event-action-btn event-edit-btn">Edit</button>
-                  <button type="button" class="event-action-btn event-save-btn is-hidden">Save</button>
-                  <button type="button" class="event-action-btn event-cancel-btn is-hidden">Cancel</button>
-                  <button type="button" class="event-action-btn event-remove-btn">Remove</button>
-                </td>
-              </tr>
+              <% if (eventsList.length > 0) { %>
+                <% eventsList.forEach(event => { %>
+                  <% const eventDate = event.date ? new Date(event.date).toLocaleDateString('en-CA') : 'N/A'; %>
+                  <% const availability = event.capacity > 100 ? 'Available' : (event.capacity > 0 ? 'Limited' : 'Unavailable'); %>
+                  <tr>
+                    <td data-field="eventId">EVT-<%= String(event._id).slice(-6).toUpperCase() %></td>
+                    <td data-field="eventTitle"><%= event.title %></td>
+                    <td data-field="organizer"><%= event.organizerName %></td>
+                    <td data-field="eventDate"><%= eventDate %></td>
+                    <td data-field="guests"><%= event.capacity || 0 %></td>
+                    <td data-field="availability"><%= availability %></td>
+                    <td class="organizer-event-actions-cell">
+                      <button type="button" class="event-action-btn event-edit-btn">Edit</button>
+                      <button type="button" class="event-action-btn event-save-btn is-hidden">Save</button>
+                      <button type="button" class="event-action-btn event-cancel-btn is-hidden">Cancel</button>
+                      <button type="button" class="event-action-btn event-remove-btn">Remove</button>
+                    </td>
+                  </tr>
+                <% }) %>
+              <% } else { %>
+                <tr>
+                  <td colspan="7" style="text-align:center; padding:20px;">No events available yet.</td>
+                </tr>
+              <% } %>
             </tbody>
           </table>
         </div>
@@ -148,34 +119,20 @@
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td>1</td>
-                <td>Noor Hassan</td>
-                <td>48</td>
-           
-                <td>96%</td>
-              </tr>
-              <tr>
-                <td>2</td>
-                <td>Ahmed Nasser</td>
-                <td>44</td>
-             
-                <td>92%</td>
-              </tr>
-              <tr>
-                <td>3</td>
-                <td>Mariam Adel</td>
-                <td>39</td>
-             
-                <td>89%</td>
-              </tr>
-              <tr>
-                <td>4</td>
-                <td>Fady Khalil</td>
-                <td>35</td>
-           
-                <td>84%</td>
-              </tr>
+              <% if (acceptedList.length > 0) { %>
+                <% acceptedList.forEach(item => { %>
+                  <tr>
+                    <td><%= item.rank %></td>
+                    <td><%= item.organizer %></td>
+                    <td><%= item.acceptedPackages %></td>
+                    <td><%= item.acceptanceRate %>%</td>
+                  </tr>
+                <% }) %>
+              <% } else { %>
+                <tr>
+                  <td colspan="4" style="text-align:center; padding:20px;">No organizer acceptance data yet.</td>
+                </tr>
+              <% } %>
             </tbody>
           </table>
         </div>
@@ -195,34 +152,20 @@
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td>1</td>
-                <td>Fady Khalil</td>
-                <td>31</td>
-              
-                <td>2026-04-09</td>
-              </tr>
-              <tr>
-                <td>2</td>
-                <td>Noor Hassan</td>
-                <td>28</td>
-               
-                <td>2026-04-06</td>
-              </tr>
-              <tr>
-                <td>3</td>
-                <td>Ahmed Nasser</td>
-                <td>24</td>
-               
-                <td>2026-04-03</td>
-              </tr>
-              <tr>
-                <td>4</td>
-                <td>Mariam Adel</td>
-                <td>20</td>
-                
-                <td>2026-03-30</td>
-              </tr>
+              <% if (createdList.length > 0) { %>
+                <% createdList.forEach(item => { %>
+                  <tr>
+                    <td><%= item.rank %></td>
+                    <td><%= item.organizer %></td>
+                    <td><%= item.eventsAdded %></td>
+                    <td><%= item.latestAddedEventDate %></td>
+                  </tr>
+                <% }) %>
+              <% } else { %>
+                <tr>
+                  <td colspan="4" style="text-align:center; padding:20px;">No organizer event data yet.</td>
+                </tr>
+              <% } %>
             </tbody>
           </table>
         </div>

@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const authController = require('../controllers/authController');
 const eventController = require('../controllers/eventController');
+const adminController = require('../controllers/adminController');
 const Booking = require('../models/Booking');
 const Event = require('../models/Event');
 
@@ -12,25 +13,42 @@ function userName(req, fallback) {
     return (u && u.name) || fallback;
 }
 
+function roleFromSession(req) {
+    const u = req.session && req.session.user;
+    return (u && u.role ? String(u.role).trim().toLowerCase() : 'client');
+}
+
+function redirectByRole(req, res) {
+    const role = roleFromSession(req);
+    if (role === 'admin') return res.redirect('/admin-index');
+    if (role === 'organizer') return res.redirect('/organizer-index');
+    return res.redirect('/client-index');
+}
+
 // Generic pages (no session data needed)
 const pages = [
     'about',
-    'admin-dashboard',
-    'client-reservation',
     'contact',
     'help-center',
-    'manage-users',
-    'organizer-event',
     'package-details',
     'packages',
-    'reports',
     'resources',
     'security'
 ];
 
+router.get('/manage-users', adminController.getManageUsers);
+router.get('/admin-index', adminController.getAdminIndex);
+router.get('/admin-dashboard', adminController.getAdminDashboard);
+router.get('/admin-dashboard/export-csv', adminController.exportReportsCsv);
+router.get('/reports', adminController.getReports);
+router.get('/client-reservation', adminController.getClientReservation);
+router.get('/organizer-event', adminController.getOrganizerEvent);
+
 // Client pages that need session data
 router.get('/client-dashboard', (req, res) => {
     const u = (req.session && req.session.user) || {};
+    if (roleFromSession(req) === 'admin') return res.redirect('/admin-index');
+    if (roleFromSession(req) === 'organizer') return res.redirect('/organizer-index');
     res.render('client-dashboard', {
         name:  u.name  || 'Client',
         photo: u.photo || ''
@@ -119,10 +137,6 @@ router.post('/book-event', async (req, res) => {
 });
 
 // Index pages — pass name from session
-router.get('/admin-index', (req, res) => {
-    res.render('admin-index', { name: userName(req, 'Admin') });
-});
-
 router.get('/organizer-index', async (req, res) => {
     const u = (req.session && req.session.user) || {};
     let events = [];
@@ -135,6 +149,8 @@ router.get('/organizer-index', async (req, res) => {
 });
 
 router.get('/client-index', async (req, res) => {
+    if (roleFromSession(req) === 'admin') return res.redirect('/admin-index');
+    if (roleFromSession(req) === 'organizer') return res.redirect('/organizer-index');
     const events = await eventController.getAllEvents();
     res.render('client-index', { name: userName(req, 'Client'), events });
 });
@@ -142,6 +158,8 @@ router.get('/client-index', async (req, res) => {
 // Profile pages
 router.get('/client-profile', (req, res) => {
     const u = (req.session && req.session.user) || {};
+    if (roleFromSession(req) === 'admin') return res.redirect('/admin-index');
+    if (roleFromSession(req) === 'organizer') return res.redirect('/organizer-index');
     const memberSince = u.memberSince
         ? new Date(u.memberSince).toLocaleDateString('en-US', { month: 'short', year: 'numeric' })
         : 'N/A';
@@ -190,6 +208,10 @@ router.get('/organizer-profile', (req, res) => {
 });
 
 router.get('/', async (req, res) => {
+    if (roleFromSession(req) === 'admin' || roleFromSession(req) === 'organizer') {
+        return redirectByRole(req, res);
+    }
+
     const events = await eventController.getAllEvents();
     res.render('index', { events });
 });
@@ -231,5 +253,6 @@ router.get('/logout', authController.logout);
 // POST routes
 router.post('/register', authController.register);
 router.post('/login', authController.login);
+router.post('/admin/users/edit', adminController.editUser);
 
 module.exports = router;

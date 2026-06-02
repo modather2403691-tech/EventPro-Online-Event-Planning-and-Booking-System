@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>EventPro - Manage Users</title>
 
-<link rel="stylesheet" href="/css/Admin.css">
+  <link rel="stylesheet" href="/css/Admin.css">
   <link rel="stylesheet" href="/css/responsive.css">
   <link rel="stylesheet" href="/css/darkmode.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
@@ -15,6 +15,8 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&family=Poppins:wght@400;500;600;700&display=swap">
 </head>
 <body class="admin-page" id="manageUsersPage">
+
+  <% var users = typeof users !== 'undefined' ? users : []; %>
 
   <div class="dashboard-container">
     <aside class="sidebar">
@@ -29,7 +31,7 @@
         <h2 id="sidebarTitle">Admin Panel</h2>
         <ul id="sidebarMenu">
           <li id="sidebarItemDashboard"><a id="navDashboard" href="/admin-dashboard">Dashboard</a></li>
-          <li id="sidebarItemUsers"><a id="navUsers" href="/manage-users">Manage Users</a></li>
+          <li id="sidebarItemUsers"><a id="navUsers" href="/admin/users">Manage Users</a></li>
           <li id="sidebarItemClientReservations"><a id="navClientReservations" href="/client-reservation">Client Reservation</a></li>
           <li id="sidebarItemOrganizerEvents"><a id="navOrganizerEvents" href="/organizer-event">Organizer Event</a></li>
           <li id="sidebarItemReports"><a id="navReports" href="/reports">Reports</a></li>
@@ -40,31 +42,45 @@
 
     <div class="dashboard-content">
       <h1>Manage Users</h1>
-      <div class="page-meta" id="pageMeta">
-      </div>
+      <div class="page-meta" id="pageMeta"></div>
 
       <section class="manage-users-form-wrap" aria-label="Add a new user">
         <h2>Add New User</h2>
-        <form id="addUserForm" class="manage-users-form">
+        <form action="/admin/users" method="POST" id="addUserForm" class="manage-users-form">
           <div class="manage-users-form-grid">
             <label>
               User ID
-              <input type="text" id="newUserId" placeholder="U004" required>
+              <input type="text" name="userId" id="newUserId" placeholder="U004" required>
               <span class="error" id="newUserIdError"></span>
             </label>
             <label>
               Name
-              <input type="text" id="newUserName" placeholder="Full name" minlength="10" required>
+              <input type="text" name="name" id="newUserName" placeholder="Full name" minlength="3" required>
               <span class="error" id="newUserNameError"></span>
             </label>
             <label>
               Email
-              <input type="email" id="newUserEmail" placeholder="user@example.com" required>
+              <input type="email" name="email" id="newUserEmail" placeholder="user@example.com" required>
               <span class="error" id="newUserEmailError"></span>
             </label>
             <label>
+              Password
+              <input type="password" name="password" id="newUserPassword" placeholder="Password" required>
+              <span class="error" id="newUserPasswordError"></span>
+            </label>
+            <label>
+              Phone
+              <input type="tel" name="phone" id="newUserPhone" placeholder="01xxxxxxxxx" required>
+              <span class="error" id="newUserPhoneError"></span>
+            </label>
+            <label>
+              Date of Birth
+              <input type="date" name="dob" id="newUserDob" required>
+              <span class="error" id="newUserDobError"></span>
+            </label>
+            <label>
               Role
-              <select id="newUserRole" required>
+              <select name="role" id="newUserRole" required>
                 <option value="Client">Client</option>
                 <option value="Organizer">Organizer</option>
                 <option value="Admin">Admin</option>
@@ -72,7 +88,7 @@
             </label>
             <label>
               Status
-              <select id="newUserStatus" required>
+              <select name="status" id="newUserStatus" required>
                 <option value="Active">Active</option>
                 <option value="Inactive">Inactive</option>
               </select>
@@ -89,12 +105,38 @@
               <th>User ID</th>
               <th>Name</th>
               <th>Email</th>
+              <th>Phone</th>
+              <th>DOB</th>
               <th>Role</th>
               <th>Status</th>
               <th>Actions</th>
             </tr>
           </thead>
-          <tbody id="manageUsersTableBody"></tbody>
+          <tbody id="manageUsersTableBody">
+            <% if (users && users.length > 0) { %>
+                <% users.forEach(user => { %>
+                    <tr data-user-id="<%= user._id %>">
+                      <td data-field="userId"><%= user.userId || user._id.toString().substring(0, 6) %></td>
+                      <td data-field="name"><%= user.name %></td>
+                      <td data-field="email"><%= user.email %></td>
+                      <td data-field="phone"><%= user.phone || 'N/A' %></td>
+                      <td data-field="dob"><%= user.dob ? new Date(user.dob).toLocaleDateString() : 'N/A' %></td>
+                      <td data-field="role"><%= user.role %></td>
+                      <td data-field="status"><%= user.status || 'Active' %></td>
+                      <td class="user-actions-cell">
+                        <button type="button" class="user-action-btn user-edit-btn">Edit</button>
+                        <button type="button" class="user-action-btn user-save-btn is-hidden">Save</button>
+                        <button type="button" class="user-action-btn user-cancel-btn is-hidden">Cancel</button>
+                        <button type="button" class="user-action-btn user-delete-btn">Delete</button>
+                      </td>
+                    </tr>
+                <% }) %>
+            <% } else { %>
+                <tr>
+                    <td colspan="8" style="text-align: center; padding: 20px;">No users found in the database.</td>
+                </tr>
+            <% } %>
+          </tbody>
         </table>
       </div>
     </div>
@@ -106,4 +148,3 @@
   <script src="/js/icons.js"></script>
 </body>
 </html>
-
