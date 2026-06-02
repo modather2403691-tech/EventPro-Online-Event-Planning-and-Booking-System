@@ -169,6 +169,7 @@ document.addEventListener("DOMContentLoaded", function () {
       if (isValid) {
         const sourceInput = document.getElementById('source');
         const priceInput = document.getElementById('price');
+        const eventIdInput = document.getElementById('eventId');
         const eventTypeInput = document.getElementById('eventType');
 
         const body = {
@@ -179,7 +180,8 @@ document.addEventListener("DOMContentLoaded", function () {
           eventDate,
           guests: guestsInput ? guestsInput.value.trim() : '',
           price: priceInput ? priceInput.value : 0,
-          source: sourceInput ? sourceInput.value : 'unknown'
+          source: sourceInput ? sourceInput.value : 'unknown',
+          eventId: eventIdInput ? eventIdInput.value : ''
         };
 
         fetch('/book-event', {
@@ -189,6 +191,11 @@ document.addEventListener("DOMContentLoaded", function () {
         })
           .then(async response => {
             const data = await response.json();
+            if (response.status === 401) {
+              alert('Please log in to book an event.');
+              window.location.href = '/login';
+              return;
+            }
             if (!response.ok) {
               throw new Error(data.error || 'Booking failed.');
             }
@@ -219,8 +226,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const sourceInput = document.getElementById('source');
   const priceInput = document.getElementById('price');
+  const eventIdInput = document.getElementById('eventId');
   if (sourceInput) sourceInput.value = source || 'unknown';
   if (priceInput) priceInput.value = price || '0';
+  if (eventIdInput) eventIdInput.value = params.get('eventId') || '';
 
   const eventTypeInput = document.getElementById("eventType");
   const additionalServicesSection = document.getElementById("additionalServicesSection");

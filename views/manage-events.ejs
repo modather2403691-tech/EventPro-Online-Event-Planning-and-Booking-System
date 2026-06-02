@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EventPro - My Events</title>
+
+  <link rel="stylesheet" href="/css/organizer.css">
+  <link rel="stylesheet" href="/css/responsive.css">
+  <link rel="stylesheet" href="/css/darkmode.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+  <link rel="stylesheet" href="/css/theme.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&family=Poppins:wght@400;500;600;700&display=swap">
+</head>
+<body class="organizer-page">
+
+  <div class="dashboard-container">
+    <%- include('partials/sidebar', { role: 'organizer', active: 'manage-events' }) %>
+
+    <div class="dashboard-content">
+      <h1><i class="fa-solid fa-calendar-check" style="color:#4f46e5; margin-inline-end:10px;"></i>My Events</h1>
+      <p class="dashboard-subtitle">
+        Manage the events you created and see who booked each one.
+      </p>
+
+      <% if (!events || events.length === 0) { %>
+        <div class="empty-card">
+          <i class="fa-solid fa-calendar-plus"></i>
+          <p>You haven't created any events yet.</p>
+          <a href="/addevent" class="ep-btn ep-btn-primary"><i class="fa-solid fa-plus"></i> Create Your First Event</a>
+        </div>
+      <% } else { %>
+        <div class="events-manage-list">
+          <% events.forEach(event => {
+               const key = event._id.toString();
+               const bookings = (bookingsByEvent && bookingsByEvent[key]) || [];
+               const dateStr = event.date ? event.date.toISOString().slice(0, 10) : '';
+          %>
+            <article class="event-manage-card">
+              <div class="event-manage-top">
+                <img class="event-manage-thumb" src="<%= event.image ? event.image : '/images/event1.jpg' %>" alt="<%= event.title %>">
+                <div class="event-manage-info">
+                  <h2><%= event.title %></h2>
+                  <div class="event-meta-row">
+                    <span class="event-chip"><i class="fa-solid fa-tag"></i> <%= event.category %></span>
+                    <span class="event-chip"><i class="fa-solid fa-calendar-day"></i> <%= dateStr || 'TBD' %></span>
+                    <span class="event-chip"><i class="fa-solid fa-location-dot"></i> <%= event.location %></span>
+                    <span class="event-chip"><i class="fa-solid fa-users"></i> <%= event.capacity %></span>
+                    <span class="event-chip"><i class="fa-solid fa-dollar-sign"></i> <%= event.price %></span>
+                  </div>
+
+                  <div class="event-manage-actions">
+                    <form action="/manage-events/delete" method="POST" onsubmit="return confirm('Delete this event?');">
+                      <input type="hidden" name="eventId" value="<%= event._id %>">
+                      <button type="submit" class="ep-btn ep-btn-danger"><i class="fa-solid fa-trash"></i> Delete</button>
+                    </form>
+                  </div>
+                </div>
+              </div>
+
+              <details class="event-edit-panel">
+                <summary><i class="fa-solid fa-pen-to-square"></i> Edit event details</summary>
+                <form action="/manage-events/edit" method="POST">
+                  <input type="hidden" name="eventId" value="<%= event._id %>">
+                  <div class="event-edit-grid">
+                    <label class="full">Title
+                      <input type="text" name="title" value="<%= event.title %>" required>
+                    </label>
+                    <label>Category
+                      <select name="category">
+                        <% ['party','corporate','wedding','birthday','other'].forEach(c => { %>
+                          <option value="<%= c %>" <%= event.category === c ? 'selected' : '' %>><%= c.charAt(0).toUpperCase() + c.slice(1) %></option>
+                        <% }) %>
+                      </select>
+                    </label>
+                    <label>Date
+                      <input type="date" name="date" value="<%= dateStr %>">
+                    </label>
+                    <label>Capacity
+                      <input type="number" name="capacity" min="1" value="<%= event.capacity %>">
+                    </label>
+                    <label>Price ($)
+                      <input type="number" name="price" min="0" value="<%= event.price %>">
+                    </label>
+                    <label class="full">Location
+                      <input type="text" name="location" value="<%= event.location %>">
+                    </label>
+                    <label class="full">Rules
+                      <textarea name="rules" rows="2"><%= event.rules %></textarea>
+                    </label>
+                  </div>
+                  <div class="event-manage-actions">
+                    <button type="submit" class="ep-btn ep-btn-primary"><i class="fa-solid fa-floppy-disk"></i> Save Changes</button>
+                  </div>
+                </form>
+              </details>
+
+              <div class="bookings-block">
+                <h3><i class="fa-solid fa-user-group"></i> Bookings (<%= bookings.length %>)</h3>
+                <% if (bookings.length === 0) { %>
+                  <p class="muted">No bookings for this event yet.</p>
+                <% } else { %>
+                  <table class="ep-table">
+                    <thead>
+                      <tr>
+                        <th>Ticket ID</th>
+                        <th>Client</th>
+                        <th>Email</th>
+                        <th>Phone</th>
+                        <th>Guests</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <% bookings.forEach(b => {
+                           const ticket = 'EVP-' + b._id.toString().slice(-6).toUpperCase();
+                      %>
+                        <tr>
+                          <td><span class="ticket-id-tag"><i class="fa-solid fa-ticket"></i> <%= ticket %></span></td>
+                          <td><%= b.userName %></td>
+                          <td><%= b.userEmail %></td>
+                          <td><%= b.phone %></td>
+                          <td><%= b.guests %></td>
+                          <td><span class="ep-pill <%= b.status.toLowerCase() %>"><%= b.status %></span></td>
+                          <td>
+                            <form action="/manage-events/booking-status" method="POST" style="display:flex; gap:6px; flex-wrap:wrap;">
+                              <input type="hidden" name="bookingId" value="<%= b._id %>">
+                              <button type="submit" name="status" value="Confirmed" class="ep-btn ep-btn-light" title="Confirm booking"><i class="fa-solid fa-check"></i></button>
+                              <button type="submit" name="status" value="CheckedIn" class="ep-btn ep-btn-success" title="Check in at the door"><i class="fa-solid fa-door-open"></i> In</button>
+                              <button type="submit" name="status" value="Declined" class="ep-btn ep-btn-danger" title="Decline"><i class="fa-solid fa-xmark"></i></button>
+                            </form>
+                          </td>
+                        </tr>
+                      <% }) %>
+                    </tbody>
+                  </table>
+                <% } %>
+              </div>
+            </article>
+          <% }) %>
+        </div>
+      <% } %>
+    </div>
+  </div>
+
+  <script src="/js/profile-role-styles.js"></script>
+  <script src="/js/darkmode.js"></script>
+  <script src="/js/translate.js"></script>
+  <script src="/js/icons.js"></script>
+</body>
+</html>

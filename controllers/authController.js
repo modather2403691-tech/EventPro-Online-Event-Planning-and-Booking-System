@@ -1,6 +1,6 @@
 const bcrypt  = require('bcryptjs');
 const User    = require('../models/User');
-const { store } = require('../middleware/session');
+const { store, persist } = require('../middleware/session');
 
 exports.register = async (req, res) => {
     try {
@@ -41,6 +41,7 @@ exports.login = async (req, res) => {
         if (email === 'jana@eventpro.com' && password === 'Jana123#') {
             store[sid].user = { name: 'Jana', role: 'admin' };
             console.log('[login] admin session saved:', store[sid]);
+            persist();
             return res.redirect('/admin-index');
         }
 
@@ -64,6 +65,7 @@ exports.login = async (req, res) => {
             role:        user.role.trim().toLowerCase()
         };
         console.log('[login] session saved for sid', sid.slice(0,8), ':', store[sid].user);
+        persist();
 
         const dbRole = user.role.trim().toLowerCase();
         return res.redirect(dbRole === 'organizer' ? '/organizer-index' : '/client-index');
@@ -77,6 +79,7 @@ exports.login = async (req, res) => {
 exports.logout = (req, res) => {
     const sid = req.sessionId;
     if (sid && store[sid]) delete store[sid];
+    persist();
     res.clearCookie('sid', { path: '/' });
     res.redirect('/');
 };

@@ -1,0 +1,19 @@
+{
+  "name": "eventpro-online-event-planning-and-booking-system",
+  "version": "1.0.0",
+  "description": "EventPro Online Event Planning and Booking System",
+  "main": "event.js",
+  "scripts": {
+    "start": "node event.js",
+    "dev": "nodemon event.js"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "ejs": "^3.1.10",
+    "express": "^4.19.2",
+    "mongoose": "^8.5.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.4"
+  }
+}

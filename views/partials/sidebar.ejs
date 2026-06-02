@@ -1,0 +1,41 @@
+<%
+  // Single source of truth for the dashboard sidebar (client + organizer).
+  // Params: role ('client' | 'organizer'), active (link key).
+  // Optional parent locals: name, photo.
+  const _role   = (typeof role !== 'undefined') ? role : 'client';
+  const _active = (typeof active !== 'undefined') ? active : '';
+  const _name   = (typeof name !== 'undefined' && name) ? name : (_role === 'organizer' ? 'Organizer' : 'Client');
+  const _photo  = (typeof photo !== 'undefined' && photo) ? photo : (_role === 'organizer' ? '/images/333.jpeg' : '/images/my-photo.jpg');
+  const items = _role === 'organizer'
+    ? [
+        { key: 'dashboard',        href: '/organizer-dashboard', label: 'Dashboard' },
+        { key: 'addevent',         href: '/addevent',            label: 'Add Event' },
+        { key: 'manage-events',    href: '/manage-events',       label: 'My Events' },
+        { key: 'booking-requests', href: '/booking-requests',    label: 'Booking Requests' },
+        { key: 'profile',          href: '/organizer-profile',   label: 'Profile' },
+        { key: 'home',             href: '/organizer-index',     label: 'Back to Home' }
+      ]
+    : [
+        { key: 'dashboard',    href: '/client-dashboard', label: 'My Dashboard' },
+        { key: 'new-request',  href: '/new-request',      label: 'Request Custom Event' },
+        { key: 'my-requests',  href: '/my-requests',      label: 'My Requests' },
+        { key: 'my-bookings',  href: '/my-bookings',      label: 'My Bookings' },
+        { key: 'profile',      href: '/client-profile',   label: 'Profile' },
+        { key: 'home',         href: '/client-index',     label: 'Back to Home' }
+      ];
+%>
+<aside class="sidebar">
+  <div class="sidebar-profile">
+    <img id="sidebarPhoto" src="<%= _photo %>" alt="Profile">
+    <div>
+      <h3><%= _name %></h3>
+      <p><%= _role === 'organizer' ? 'Organizer' : 'Client' %></p>
+    </div>
+  </div>
+  <h2><%= _role === 'organizer' ? 'Organizer Panel' : 'Client Panel' %></h2>
+  <ul>
+    <% items.forEach(it => { %>
+      <li><a href="<%= it.href %>"<%= it.key === _active ? ' class="active"' : '' %>><%= it.label %></a></li>
+    <% }) %>
+  </ul>
+</aside>

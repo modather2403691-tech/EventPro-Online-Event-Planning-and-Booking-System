@@ -8,6 +8,11 @@
   <link rel="stylesheet" href="/css/responsive.css">
 <link rel="stylesheet" href="/css/client&homepages&footer.css">
   <link rel="stylesheet" href="/css/darkmode.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+  <link rel="stylesheet" href="/css/theme.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&family=Poppins:wght@400;500;600;700&display=swap">
 </head>
 <body class="modern-bg modern-font">
 
@@ -30,22 +35,23 @@
       <form id="bookingForm" method="POST" action="/book-event">
         <input type="hidden" id="source" name="source" value="">
         <input type="hidden" id="price" name="price" value="0">
+        <input type="hidden" id="eventId" name="eventId" value="">
 
         <div>
   <label for="name">Full Name</label>
-  <input type="text" id="name" name="name" class="modern-input">
+  <input type="text" id="name" name="name" class="modern-input" value="<%= name %>">
   <span id="nameError" class="error"></span>
 </div>
 
 <div>
   <label for="email">Email</label>
-  <input type="email" id="email" name="email" class="modern-input">
+  <input type="email" id="email" name="email" class="modern-input" value="<%= email %>" readonly>
   <span id="emailError" class="error"></span>
 </div>
 
 <div>
   <label for="phone">Phone Number</label>
- <input type="tel" id="phone" name="phone" class="modern-input" placeholder="01xxxxxxxxx">
+ <input type="tel" id="phone" name="phone" class="modern-input" placeholder="01xxxxxxxxx" value="<%= phone %>">
   <span id="phoneError" class="error"></span>
 </div>
 
@@ -79,6 +85,8 @@
   <script src="/js/login&regester&contact.js"></script>
   <script src="/js/packages.js"></script>
   <script src="/js/darkmode.js"></script>
+  <script src="/js/translate.js"></script>
+  <script src="/js/icons.js"></script>
 </body>
 </html>
 

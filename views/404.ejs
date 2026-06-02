@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EventPro - Page Not Found</title>
+  <link rel="stylesheet" href="/css/darkmode.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+  <link rel="stylesheet" href="/css/theme.css">
+  <style>
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+      color: #fff;
+      text-align: center;
+      padding: 20px;
+    }
+    .nf-card {
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 24px;
+      padding: 50px 40px;
+      max-width: 520px;
+      backdrop-filter: blur(6px);
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
+    }
+    .nf-icon { font-size: 4rem; margin-bottom: 10px; color: #fde68a; }
+    .nf-code { font-size: 5.5rem; font-weight: 700; margin: 0; line-height: 1; letter-spacing: 2px; }
+    .nf-title { font-size: 1.6rem; margin: 10px 0 6px; }
+    .nf-text { opacity: 0.9; margin-bottom: 28px; }
+    .nf-actions { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+    .nf-btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 12px 22px; border-radius: 12px; font-weight: 600;
+      text-decoration: none; transition: transform 0.15s ease, filter 0.15s ease;
+    }
+    .nf-btn:hover { transform: translateY(-2px); filter: brightness(1.05); }
+    .nf-btn-primary { background: #fff; color: #5b21b6; }
+    .nf-btn-ghost { background: rgba(255,255,255,0.15); color: #fff; border: 1px solid rgba(255,255,255,0.35); }
+  </style>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&family=Poppins:wght@400;500;600;700&display=swap">
+</head>
+<body>
+  <div class="nf-card">
+    <div class="nf-icon"><i class="fa-solid fa-compass"></i></div>
+    <h1 class="nf-code">404</h1>
+    <h2 class="nf-title">Page Not Found</h2>
+    <p class="nf-text">Oops! The page you're looking for doesn't exist or has moved.</p>
+    <div class="nf-actions">
+      <a href="/" class="nf-btn nf-btn-primary"><i class="fa-solid fa-house"></i> Go Home</a>
+      <a href="/login" class="nf-btn nf-btn-ghost"><i class="fa-solid fa-right-to-bracket"></i> Sign In</a>
+    </div>
+  </div>
+
+  <script src="/js/darkmode.js"></script>
+  <script src="/js/translate.js"></script>
+  <script src="/js/icons.js"></script>
+</body>
+</html>

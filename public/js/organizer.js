@@ -368,6 +368,13 @@ document.addEventListener("DOMContentLoaded", function () {
       isValid = false;
     }
 
+    // Price validation
+    const price = document.getElementById("price").value;
+    if (price === "" || isNaN(price) || Number(price) < 0) {
+      document.getElementById("priceError").textContent = "Price must be 0 or a positive number";
+      isValid = false;
+    }
+
     // Location validation
     const location = document.getElementById("location").value.trim();
     if (location.length <= 10) {
@@ -377,9 +384,45 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Rules are not required, so no validation
 
-    if (isValid) {
-      alert("🎉 Event created successfully! Your event is now live and ready to shine!");
-      addEventForm.reset();
+    if (!isValid) return;
+
+    // Read the image as a base64 data URL, then save the event to the server.
+    const reader = new FileReader();
+    reader.onload = () => sendEvent(reader.result);
+    reader.onerror = () => sendEvent("");
+    if (imageFile) {
+      reader.readAsDataURL(imageFile);
+    } else {
+      sendEvent("");
+    }
+
+    function sendEvent(imageData) {
+      const body = {
+        title,
+        image: imageData,
+        category: document.getElementById("category").value,
+        date,
+        capacity,
+        price,
+        location,
+        rules: document.getElementById("rules").value.trim()
+      };
+
+      fetch("/addevent", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body)
+      })
+        .then(async (response) => {
+          const data = await response.json();
+          if (!response.ok) throw new Error(data.error || "Could not create event.");
+          alert("🎉 Event created successfully! Your event is now live.");
+          window.location.href = "/manage-events";
+        })
+        .catch((error) => {
+          console.error("Create event error:", error);
+          alert(error.message || "Unable to create event. Please try again.");
+        });
     }
   });
 });

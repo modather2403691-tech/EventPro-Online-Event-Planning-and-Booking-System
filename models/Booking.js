@@ -10,6 +10,13 @@ const bookingSchema = new mongoose.Schema({
   price:      { type: Number, default: 0 },
   source:     { type: String, default: 'unknown' },
   status:     { type: String, default: 'Pending' },
+
+  // Set when the booking is for an organizer-created event (Join Event flow),
+  // so the organizer can manage who booked their event.
+  eventId:        { type: mongoose.Schema.Types.ObjectId, ref: 'Event', default: null },
+  organizerEmail: { type: String, default: '' },
+  organizerName:  { type: String, default: '' },
+
   createdAt:  { type: Date, default: Date.now }
 });
 

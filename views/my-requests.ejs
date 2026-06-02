@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EventPro - My Requests</title>
+
+  <link rel="stylesheet" href="/css/client&homepages&footer.css">
+  <link rel="stylesheet" href="/css/responsive.css">
+  <link rel="stylesheet" href="/css/darkmode.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+  <link rel="stylesheet" href="/css/theme.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&family=Poppins:wght@400;500;600;700&display=swap">
+</head>
+<body class="client-dashboard-page">
+
+  <div class="dashboard-container">
+    <%- include('partials/sidebar', { role: 'client', active: 'my-requests' }) %>
+
+    <div class="dashboard-content">
+      <h1>My Requests</h1>
+      <p class="dashboard-subtitle">
+        Track your custom event requests and the offers organizers send you.
+      </p>
+
+      <section class="dashboard-section">
+        <div class="booking-cards-grid">
+          <% if (requests && requests.length) { %>
+            <% requests.forEach(r => { %>
+              <div class="booking-card">
+                <div class="booking-card-top">
+                  <div>
+                    <p class="booking-id">Request ID: <%= r._id.toString().slice(-6).toUpperCase() %></p>
+                    <h3><%= r.eventType %></h3>
+                  </div>
+                  <span class="booking-status <%= r.status.toLowerCase() %>"><%= r.status %></span>
+                </div>
+
+                <div class="booking-card-body">
+                  <div class="booking-info">
+                    <span>Preferred Date</span>
+                    <strong><%= r.eventDate ? r.eventDate.toISOString().slice(0, 10) : 'Flexible' %></strong>
+                  </div>
+                  <div class="booking-info">
+                    <span>Guests</span>
+                    <strong><%= r.guests %></strong>
+                  </div>
+                  <% if (r.notes) { %>
+                    <div class="booking-info">
+                      <span>Notes</span>
+                      <strong><%= r.notes %></strong>
+                    </div>
+                  <% } %>
+                </div>
+
+                <% if (r.status === 'Confirmed') { %>
+                  <div class="request-offers">
+                    <p><strong>Confirmed with <%= r.acceptedOrganizerName %></strong> for $<%= r.acceptedPrice %>.</p>
+                  </div>
+                <% } else if (r.status === 'Cancelled') { %>
+                  <div class="request-offers">
+                    <p>This request was cancelled.</p>
+                  </div>
+                <% } else { %>
+                  <div class="request-offers">
+                    <h4>Offers (<%= (r.offers || []).length %>)</h4>
+                    <% if (!r.offers || r.offers.length === 0) { %>
+                      <p class="muted">No offers yet. Organizers will reply soon.</p>
+                    <% } else { %>
+                      <% r.offers.forEach(o => { %>
+                        <div class="offer-row" style="display:flex; justify-content:space-between; align-items:center; gap:10px; padding:8px 0; border-bottom:1px solid #eee;">
+                          <span><strong><%= o.organizerName %></strong> — $<%= o.price %></span>
+                          <form action="/booking-requests/accept" method="POST">
+                            <input type="hidden" name="requestId" value="<%= r._id %>">
+                            <input type="hidden" name="organizerEmail" value="<%= o.organizerEmail %>">
+                            <button type="submit">Accept</button>
+                          </form>
+                        </div>
+                      <% }) %>
+                    <% } %>
+
+                    <form action="/booking-requests/cancel" method="POST" style="margin-top:12px;"
+                          onsubmit="return confirm('Cancel this request?');">
+                      <input type="hidden" name="requestId" value="<%= r._id %>">
+                      <button type="submit" class="request-action-btn reject-btn">Cancel Request</button>
+                    </form>
+                  </div>
+                <% } %>
+              </div>
+            <% }) %>
+          <% } else { %>
+            <div class="empty-state">
+              <p>You haven't made any requests yet.</p>
+              <a href="/new-request"><button>Request a Custom Event</button></a>
+            </div>
+          <% } %>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <script src="/js/profile-role-styles.js"></script>
+  <script src="/js/darkmode.js"></script>
+  <script src="/js/translate.js"></script>
+  <script src="/js/icons.js"></script>
+</body>
+</html>

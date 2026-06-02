@@ -7,29 +7,16 @@
   <link rel="stylesheet" href="/css/profile.css">
   <link rel="stylesheet" href="/css/responsive.css">
   <link rel="stylesheet" href="/css/darkmode.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+  <link rel="stylesheet" href="/css/theme.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&family=Poppins:wght@400;500;600;700&display=swap">
 </head>
 <body class="profile-dashboard-page">
 
   <div class="dashboard-container">
-    <aside class="sidebar">
-      <div class="sidebar-profile">
-        <img id="sidebarPhoto"
-             src="<%= photo ? photo : '/images/my-photo.jpg' %>"
-             alt="Profile">
-        <div>
-          <h3><%= name %></h3>
-          <p>Client</p>
-        </div>
-      </div>
-
-      <h2>Client Panel</h2>
-      <ul>
-        <li><a href="/client-dashboard">My Dashboard</a></li>
-        <li><a href="/my-bookings">My Bookings</a></li>
-        <li><a href="/client-profile" class="active">Profile</a></li>
-        <li><a href="/client-index">Back to Home</a></li>
-      </ul>
-    </aside>
+    <%- include('partials/sidebar', { role: 'client', active: 'profile' }) %>
 
     <div class="dashboard-content">
       <div class="profile-header">
@@ -150,5 +137,7 @@
 
   <script src="/js/darkmode.js"></script>
   <script src="/js/client-profile.js"></script>
+  <script src="/js/translate.js"></script>
+  <script src="/js/icons.js"></script>
 </body>
 </html>
