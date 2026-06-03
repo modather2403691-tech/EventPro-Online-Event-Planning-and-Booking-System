@@ -45,13 +45,41 @@ router.get('/client-reservation', adminController.getClientReservation);
 router.get('/organizer-event', adminController.getOrganizerEvent);
 
 // Client pages that need session data
-router.get('/client-dashboard', (req, res) => {
+router.get('/client-dashboard', async (req, res) => {
     const u = (req.session && req.session.user) || {};
     if (roleFromSession(req) === 'admin') return res.redirect('/admin-index');
     if (roleFromSession(req) === 'organizer') return res.redirect('/organizer-index');
+    if (!u.email) return res.redirect('/login');
+
+    let bookings = [];
+    try {
+        bookings = await Booking.find({ userEmail: u.email }).sort({ createdAt: -1 });
+    } catch (err) {
+        console.error('CLIENT DASHBOARD ERROR:', err);
+    }
+
+    const total     = bookings.length;
+    const pending   = bookings.filter(b => b.status === 'Pending');
+    const confirmed = bookings.filter(b => b.status === 'Confirmed');
+    const upcoming  = bookings.filter(b => {
+        const d = b.eventDate;
+        return d && new Date(d) >= new Date() && b.status !== 'Declined';
+    });
+    const completionRate = total > 0 ? Math.round((confirmed.length / total) * 100) : 0;
+
     res.render('client-dashboard', {
         name:  u.name  || 'Client',
-        photo: u.photo || ''
+        photo: u.photo || '',
+        bookings,
+        stats: {
+            total,
+            upcoming:  upcoming.length,
+            completed: confirmed.length,
+            pending:   pending.length,
+            completionRate
+        },
+        pending,
+        confirmed
     });
 });
 
@@ -156,20 +184,102 @@ router.get('/client-index', async (req, res) => {
 });
 
 // Profile pages
-router.get('/client-profile', (req, res) => {
+router.get('/client-profile', async (req, res) => {
     const u = (req.session && req.session.user) || {};
     if (roleFromSession(req) === 'admin') return res.redirect('/admin-index');
     if (roleFromSession(req) === 'organizer') return res.redirect('/organizer-index');
     const memberSince = u.memberSince
         ? new Date(u.memberSince).toLocaleDateString('en-US', { month: 'short', year: 'numeric' })
         : 'N/A';
+
+    let bookings = [];
+    try {
+        bookings = await Booking.find({ userEmail: u.email }).sort({ createdAt: -1 }).limit(4);
+    } catch (err) {
+        console.error('PROFILE BOOKINGS ERROR:', err);
+    }
+
     res.render('client-profile', {
         name:        u.name  || 'Client',
         email:       u.email || 'N/A',
         phone:       u.phone || 'N/A',
         photo:       u.photo || '',
-        memberSince
+        memberSince,
+        bookings
     });
+});
+
+// POST — update account active status
+router.post('/client-profile/update-account', async (req, res) => {
+    const u = req.session && req.session.user;
+    if (!u) return res.status(401).json({ error: 'Not logged in' });
+    const { active } = req.body;
+    try {
+        const User = require('../models/User');
+        await User.findOneAndUpdate({ email: u.email }, { active: !!active });
+        res.json({ success: true });
+    } catch (err) {
+        console.error('UPDATE ACCOUNT STATUS ERROR:', err);
+        res.status(500).json({ error: 'Server error' });
+    }
+});
+
+// POST — delete account
+router.post('/client-profile/delete-account', async (req, res) => {
+    const u = req.session && req.session.user;
+    if (!u) return res.status(401).json({ error: 'Not logged in' });
+    try {
+        const User           = require('../models/User');
+        const Booking        = require('../models/Booking');
+        const BookingRequest = require('../models/BookingRequest');
+        const Event          = require('../models/Event');
+
+        const email = u.email;
+
+        // Delete in parallel: user record, all bookings, all booking requests, all events
+        await Promise.all([
+            User.findOneAndDelete({ email }),
+            Booking.deleteMany({ userEmail: email }),
+            BookingRequest.deleteMany({ clientEmail: email }),
+            Event.deleteMany({ organizerEmail: email })
+        ]);
+
+        // Destroy session and clear cookie
+        const sid = req.sessionId;
+        const { store } = require('../middleware/session');
+        if (sid && store[sid]) delete store[sid];
+        res.clearCookie('sid', { path: '/' });
+
+        res.json({ success: true });
+    } catch (err) {
+        console.error('DELETE ACCOUNT ERROR:', err);
+        res.status(500).json({ error: 'Server error' });
+    }
+});
+
+// POST — update profile info (name + phone)
+router.post('/client-profile/update-info', async (req, res) => {
+    const u = req.session && req.session.user;
+    if (!u) return res.status(401).json({ error: 'Not logged in' });
+
+    const { name, phone } = req.body;
+    if (!name || name.trim().length < 9)        return res.status(400).json({ error: 'Name must be at least 9 characters' });
+    if (!phone || !/^\d{11}$/.test(phone.trim())) return res.status(400).json({ error: 'Phone must be exactly 11 digits' });
+
+    try {
+        const User = require('../models/User');
+        await User.findOneAndUpdate(
+            { email: u.email },
+            { name: name.trim(), phone: phone.trim() }
+        );
+        // Update session immediately
+        req.session.user.name  = name.trim();
+        req.session.user.phone = phone.trim();
+        res.json({ success: true });
+    } catch (err) {
+        console.error('UPDATE INFO ERROR:', err);
+        res.status(500).json({ error: 'Server error' });
+    }
 });
 
 // POST — update profile photo
@@ -200,11 +310,13 @@ router.post('/client-profile/update-photo', async (req, res) => {
 });
 
 router.get('/organizer-dashboard', (req, res) => {
-    res.render('organizer-dashboard', { name: userName(req, 'Organizer') });
+    const u = (req.session && req.session.user) || {};
+    res.render('organizer-dashboard', { name: u.name || 'Organizer', photo: u.photo || '' });
 });
 
 router.get('/organizer-profile', (req, res) => {
-    res.render('organizer-profile', { name: userName(req, 'Organizer') });
+    const u = (req.session && req.session.user) || {};
+    res.render('organizer-profile', { name: u.name || 'Organizer', photo: u.photo || '' });
 });
 
 router.get('/', async (req, res) => {

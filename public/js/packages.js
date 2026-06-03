@@ -371,7 +371,7 @@ const packages = {
       { name: "Premium Catering", price: 150 },
       { name: "Videography", price: 120 }
     ],
-    video: "assets/videos/wedding.mp4"
+    video: "/images/wedding.mp4"
   },
 
   birthday: {
@@ -383,7 +383,7 @@ const packages = {
       { name: "Extra Balloons", price: 50 },
       { name: "Photobooth", price: 70 }
     ],
-    video: "assets/videos/birthday.mp4"
+    video: "/images/birthday.mp4"
   },
 
   party: {
@@ -396,7 +396,7 @@ const packages = {
       { name: "Live DJ", price: 120 },
       { name: "Photo Booth", price: 100 }
     ],
-    video: "assets/videos/party.mp4"
+    video: "/images/party.mp4"
   }
 };
 document.addEventListener("DOMContentLoaded", () => {

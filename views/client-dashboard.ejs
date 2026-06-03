@@ -4,7 +4,6 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>EventPro - Client Dashboard</title>
-
   <link rel="stylesheet" href="/css/client&homepages&footer.css">
   <link rel="stylesheet" href="/css/responsive.css">
   <link rel="stylesheet" href="/css/darkmode.css">
@@ -17,7 +16,7 @@
 <body class="client-dashboard-page">
 
   <div class="dashboard-container">
-    <%- include('partials/sidebar', { role: 'client', active: 'dashboard' }) %>
+    <%- include('partials/sidebar', { role: 'client', active: 'dashboard', name: name, photo: photo }) %>
 
     <div class="dashboard-content">
       <h1>Client Dashboard</h1>
@@ -28,156 +27,133 @@
       <div class="client-dashboard-grid">
         <div class="client-main-panel">
 
+          <!-- Pending bookings -->
           <div class="client-status-block teal">
             <div class="status-label-box">
               <h3>Awaiting Confirmation</h3>
-              <p>Wedding Event</p>
-              <p>Party Booking</p>
+              <% if (pending && pending.length > 0) { %>
+                <% pending.slice(0, 3).forEach(b => { %><p><%= b.eventType %></p><% }) %>
+              <% } else { %>
+                <p style="color:#aaa;">No pending bookings</p>
+              <% } %>
             </div>
 
             <div class="status-table-box">
               <div class="status-table-header">
                 <span>Event</span>
-                <span>Progress</span>
-                <span>Package</span>
+                <span>Status</span>
                 <span>Price</span>
                 <span>Date</span>
               </div>
 
-              <div class="status-row">
-                <span>Wedding</span>
-                <span><div class="progress-bar"><div class="fill teal-fill w40"></div></div></span>
-                <span>Gold</span>
-                <span>$800</span>
-                <span>May 20</span>
-              </div>
-
-              <div class="status-row">
-                <span>Party</span>
-                <span><div class="progress-bar"><div class="fill teal-fill w55"></div></div></span>
-                <span>Silver</span>
-                <span>$550</span>
-                <span>Jun 03</span>
-              </div>
+              <% if (pending && pending.length > 0) { %>
+                <% pending.slice(0, 4).forEach(b => { %>
+                <div class="status-row">
+                  <span><%= b.eventType %></span>
+                  <span><div class="progress-bar"><div class="fill teal-fill w40"></div></div></span>
+                  <span>$<%= b.price || 0 %></span>
+                  <span><%= b.eventDate ? new Date(b.eventDate).toLocaleDateString('en-US', {month:'short', day:'numeric'}) : 'TBD' %></span>
+                </div>
+                <% }) %>
+              <% } else { %>
+                <div class="status-row"><span colspan="4" style="color:#aaa;">No pending bookings</span></div>
+              <% } %>
             </div>
           </div>
 
-          <div class="client-status-block peach">
-            <div class="status-label-box">
-              <h3>Bookings in Progress</h3>
-              <p>Birthday Party</p>
-              <p>Private Event</p>
-            </div>
-
-            <div class="status-table-box">
-              <div class="status-table-header">
-                <span>Event</span>
-                <span>Progress</span>
-                <span>Package</span>
-                <span>Price</span>
-                <span>Date</span>
-              </div>
-
-              <div class="status-row">
-                <span>Birthday</span>
-                <span><div class="progress-bar"><div class="fill peach-fill w80"></div></div></span>
-                <span>Light</span>
-                <span>$400</span>
-                <span>Jun 10</span>
-              </div>
-
-              <div class="status-row">
-                <span>Private</span>
-                <span><div class="progress-bar"><div class="fill peach-fill w45"></div></div></span>
-                <span>Silver</span>
-                <span>$620</span>
-                <span>Jun 18</span>
-              </div>
-            </div>
-          </div>
-
+          <!-- Confirmed bookings -->
           <div class="client-status-block gold">
             <div class="status-label-box">
-              <h3>Completed Bookings</h3>
-              <p>Engagement Party</p>
-              <p>Family Gathering</p>
+              <h3>Confirmed Bookings</h3>
+              <% if (confirmed && confirmed.length > 0) { %>
+                <% confirmed.slice(0, 3).forEach(b => { %><p><%= b.eventType %></p><% }) %>
+              <% } else { %>
+                <p style="color:#aaa;">No confirmed bookings yet</p>
+              <% } %>
             </div>
 
             <div class="status-table-box">
               <div class="status-table-header">
                 <span>Event</span>
-                <span>Progress</span>
-                <span>Package</span>
+                <span>Status</span>
                 <span>Price</span>
                 <span>Date</span>
               </div>
 
-              <div class="status-row">
-                <span>Engagement</span>
-                <span><div class="progress-bar"><div class="fill gold-fill w100"></div></div></span>
-                <span>Silver</span>
-                <span>$700</span>
-                <span>Apr 14</span>
-              </div>
-
-              <div class="status-row">
-                <span>Gathering</span>
-                <span><div class="progress-bar"><div class="fill gold-fill w100"></div></div></span>
-                <span>Light</span>
-                <span>$500</span>
-                <span>Apr 28</span>
-              </div>
+              <% if (confirmed && confirmed.length > 0) { %>
+                <% confirmed.slice(0, 4).forEach(b => { %>
+                <div class="status-row">
+                  <span><%= b.eventType %></span>
+                  <span><div class="progress-bar"><div class="fill gold-fill w100"></div></div></span>
+                  <span>$<%= b.price || 0 %></span>
+                  <span><%= b.eventDate ? new Date(b.eventDate).toLocaleDateString('en-US', {month:'short', day:'numeric'}) : 'TBD' %></span>
+                </div>
+                <% }) %>
+              <% } else { %>
+                <div class="status-row"><span style="color:#aaa;">No confirmed bookings</span></div>
+              <% } %>
             </div>
           </div>
+
+          <!-- Empty state -->
+          <% if ((!bookings || bookings.length === 0)) { %>
+          <div class="client-status-block peach" style="text-align:center; padding:30px;">
+            <h3>No bookings yet</h3>
+            <p style="margin:10px 0 18px; color:#888;">Start by exploring our packages or joining an event.</p>
+            <a href="/packages" style="background:linear-gradient(90deg,#ff9a3c,#ff4fa0);color:#fff;padding:10px 24px;border-radius:999px;font-weight:700;text-decoration:none;">Browse Packages</a>
+          </div>
+          <% } %>
 
         </div>
 
+        <!-- Analytics panel -->
         <div class="client-analytics-panel">
           <h2>Analytics</h2>
 
           <div class="analytics-cards">
             <div class="analytics-card">
               <span>Total Bookings</span>
-              <strong>8</strong>
+              <strong><%= stats.total %></strong>
             </div>
             <div class="analytics-card">
               <span>Upcoming</span>
-              <strong>3</strong>
+              <strong><%= stats.upcoming %></strong>
             </div>
             <div class="analytics-card">
-              <span>Completed</span>
-              <strong>5</strong>
+              <span>Confirmed</span>
+              <strong><%= stats.completed %></strong>
             </div>
             <div class="analytics-card">
-              <span>Avg. Response</span>
-              <strong>2 Days</strong>
+              <span>Pending</span>
+              <strong><%= stats.pending %></strong>
             </div>
           </div>
 
           <div class="analytics-donut-box">
             <h3>Booking Completion Rate</h3>
             <div class="fake-donut">
-              <span>70%</span>
+              <span><%= stats.completionRate %>%</span>
             </div>
           </div>
 
           <div class="analytics-chart-box">
-            <h3>Applications Received</h3>
-            <div class="chart-number">11265</div>
-            <p>Total amount of booking requests</p>
+            <h3>Total Bookings</h3>
+            <div class="chart-number"><%= stats.total %></div>
+            <p>Total bookings placed on your account</p>
             <div class="fake-bars">
-              <span></span><span></span><span></span><span></span>
-              <span></span><span></span><span></span><span></span>
+              <% for(let i = 0; i < 8; i++) { %>
+                <span style="height:<%= Math.max(10, Math.round(Math.random() * 60 + 20)) %>px"></span>
+              <% } %>
             </div>
           </div>
         </div>
+
       </div>
     </div>
   </div>
-  <script src="/js/profile-role-styles.js"></script>
+
   <script src="/js/darkmode.js"></script>
   <script src="/js/translate.js"></script>
   <script src="/js/icons.js"></script>
 </body>
 </html>
-
