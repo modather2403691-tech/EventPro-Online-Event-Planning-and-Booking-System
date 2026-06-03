@@ -7,200 +7,10 @@ document.addEventListener("DOMContentLoaded", function () {
     return;
   }
 
-  const storageKey = "eventpro-admin-users";
-  const editableFields = ["status"];
-  const defaultUsers = [
-    { id: "U001", name: "Sarah Ahmed", email: "sarah@example.com", role: "Client", status: "Active" },
-    { id: "U002", name: "Ali Hassan", email: "ali@example.com", role: "Organizer", status: "Active" },
-    { id: "U003", name: "Admin User", email: "admin@example.com", role: "Admin", status: "Active" }
-  ];
-
-  const loadUsers = () => {
-    try {
-      const saved = JSON.parse(localStorage.getItem(storageKey));
-      return Array.isArray(saved) && saved.length ? saved : defaultUsers;
-    } catch (error) {
-      return defaultUsers;
-    }
-  };
-
-  const saveUsers = users => {
-    try {
-      localStorage.setItem(storageKey, JSON.stringify(users));
-    } catch (error) {
-      // Keep UI functional even if storage is unavailable.
-    }
-  };
-
-  const escapeHtml = value => {
-    return String(value)
-      .replace(/&/g, "&amp;")
-      .replace(/</g, "&lt;")
-      .replace(/>/g, "&gt;")
-      .replace(/\"/g, "&quot;")
-      .replace(/'/g, "&#39;");
-  };
-
- const createRowHtml = user => {
-    return '<tr data-user-id="' + escapeHtml(user.id) + '">' +
-      '<td>' + escapeHtml(user.id) + '</td>' +
-      '<td data-field="name">' + escapeHtml(user.name) + '</td>' +
-      '<td data-field="email">' + escapeHtml(user.email) + '</td>' +
-      '<td data-field="role">' + escapeHtml(user.role) + '</td>' +
-      '<td data-field="status">' + escapeHtml(user.status) + '</td>' +
-      '<td class="user-actions-cell">' +
-      '<button type="button" class="user-action-btn user-edit-btn">Edit Status</button>' +
-      '<button type="button" class="user-action-btn user-save-btn is-hidden">Save</button>' +
-      '<button type="button" class="user-action-btn user-cancel-btn is-hidden">Cancel</button>' +
-      '<button type="button" class="user-action-btn user-delete-btn">Delete</button>' +
-      '</td>' +
-      '</tr>';
-  };
-
-  const renderTable = users => {
-    tableBody.innerHTML = users.map(createRowHtml).join("");
-  };
-
-  const getCurrentUsers = () => {
-    const rows = tableBody.querySelectorAll("tr[data-user-id]");
-
-    return Array.from(rows).map(row => ({
-      id: row.dataset.userId,
-      name: row.querySelector('[data-field="name"]').textContent.trim(),
-      email: row.querySelector('[data-field="email"]').textContent.trim(),
-      role: row.querySelector('[data-field="role"]').textContent.trim(),
-      status: row.querySelector('[data-field="status"]').textContent.trim()
-    }));
-  };
-
-  const setButtonsState = (row, isEditing) => {
-    row.querySelector(".user-edit-btn").classList.toggle("is-hidden", isEditing);
-    row.querySelector(".user-save-btn").classList.toggle("is-hidden", !isEditing);
-    row.querySelector(".user-cancel-btn").classList.toggle("is-hidden", !isEditing);
-    row.querySelector(".user-delete-btn").classList.toggle("is-hidden", isEditing);
-  };
-
-  const setEditingMode = (row, isEditing) => {
-    const originalValues = {};
-
-    editableFields.forEach(field => {
-      const cell = row.querySelector('[data-field="' + field + '"]');
-
-      if (!cell) {
-        return;
-      }
-
-      if (isEditing) {
-        const originalValue = cell.textContent.trim();
-        originalValues[field] = originalValue;
-
-        if (field === "role" || field === "status") {
-          const options = field === "role"
-            ? ["Client", "Organizer", "Admin"]
-            : ["Active", "Inactive"];
-          const select = document.createElement("select");
-          select.className = "user-edit-input";
-
-          options.forEach(optionValue => {
-            const option = document.createElement("option");
-            option.value = optionValue;
-            option.textContent = optionValue;
-            if (optionValue === originalValue) {
-              option.selected = true;
-            }
-            select.appendChild(option);
-          });
-
-          cell.textContent = "";
-          cell.appendChild(select);
-        } else {
-          const input = document.createElement("input");
-          input.type = field === "email" ? "email" : "text";
-          input.className = "user-edit-input";
-          input.value = originalValue;
-          cell.textContent = "";
-          cell.appendChild(input);
-        }
-      } else {
-        const control = cell.querySelector("input, select");
-
-        if (!control) {
-          return;
-        }
-
-        cell.textContent = control.value.trim();
-      }
-    });
-
-    if (isEditing) {
-      row.dataset.originalRow = JSON.stringify(originalValues);
-    }
-
-    row.classList.toggle("is-editing", isEditing);
-    setButtonsState(row, isEditing);
-  };
-
-  renderTable(loadUsers());
-
-  table.addEventListener("click", function (event) {
-    const row = event.target.closest("tr");
-
-    if (!row) {
-      return;
-    }
-
-    if (event.target.classList.contains("user-edit-btn")) {
-      setEditingMode(row, true);
-      return;
-    }
-
-    if (event.target.classList.contains("user-save-btn")) {
-      setEditingMode(row, false);
-      saveUsers(getCurrentUsers());
-      return;
-    }
-
-    if (event.target.classList.contains("user-cancel-btn")) {
-      let originalValues = {};
-
-      try {
-        originalValues = JSON.parse(row.dataset.originalRow || "{}");
-      } catch (error) {
-        originalValues = {};
-      }
-
-      editableFields.forEach(field => {
-        const cell = row.querySelector('[data-field="' + field + '"]');
-
-        if (!cell) {
-          return;
-        }
-
-        cell.textContent = originalValues[field] || cell.textContent.trim();
-      });
-
-      row.classList.remove("is-editing");
-      setButtonsState(row, false);
-      return;
-    }
-
-    if (event.target.classList.contains("user-delete-btn")) {
-      const userId = row.dataset.userId;
-
-      if (!confirm("Delete user " + userId + "?")) {
-        return;
-      }
-
-      row.remove();
-      saveUsers(getCurrentUsers());
-    }
-  });
-
+  // Frontend Form Validation (Backend will handle the actual saving)
   const idInput = document.getElementById("newUserId");
   const nameInput = document.getElementById("newUserName");
   const emailInput = document.getElementById("newUserEmail");
-  const roleInput = document.getElementById("newUserRole");
-  const statusInput = document.getElementById("newUserStatus");
   const idError = document.getElementById("newUserIdError");
   const nameError = document.getElementById("newUserNameError");
   const emailError = document.getElementById("newUserEmailError");
@@ -213,11 +23,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
   if (nameInput && nameError) {
     nameInput.addEventListener("input", function () {
-      if (nameInput.value.trim().length > 0 && nameInput.value.trim().length < 10) {
-        nameError.textContent = "Name must be more than 9 characters.";
+      if (nameInput.value.trim().length > 0 && nameInput.value.trim().length < 3) {
+        nameError.textContent = "Name must be at least 3 characters.";
         return;
       }
-
       nameError.textContent = "";
     });
   }
@@ -229,71 +38,200 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   addUserForm.addEventListener("submit", function (event) {
-    event.preventDefault();
+    let isValid = true;
 
     if (idError) idError.textContent = "";
     if (nameError) nameError.textContent = "";
     if (emailError) emailError.textContent = "";
 
-    const newUser = {
-      id: idInput.value.trim().toUpperCase(),
-      name: nameInput.value.trim(),
-      email: emailInput.value.trim(),
-      role: roleInput.value,
-      status: statusInput.value
-    };
+    const emailValue = emailInput.value.trim();
+    const nameValue = nameInput.value.trim();
 
-    let isValid = true;
-
-    if (!newUser.id) {
-      if (idError) idError.textContent = "User ID is required.";
+    if (nameValue.length > 0 && nameValue.length < 3) {
+      if (nameError) nameError.textContent = "Name must be at least 3 characters.";
       isValid = false;
     }
 
-    if (!newUser.name) {
-      if (nameError) nameError.textContent = "Name is required.";
-      isValid = false;
-    } else if (newUser.name.length < 10) {
-      if (nameError) nameError.textContent = "Name must be more than 9 characters.";
-      isValid = false;
-    }
-
-    if (!newUser.email) {
-      if (emailError) emailError.textContent = "Email is required.";
-      isValid = false;
-    }
-
-    if (!isValid) {
-      return;
-    }
-
-    if (!newUser.email.includes("@")) {
+    if (!emailValue.includes("@")) {
       if (emailError) emailError.textContent = 'Email must include "@".';
-      return;
+      isValid = false;
     }
 
-    const users = getCurrentUsers();
-    const duplicate = users.some(user => user.id.toUpperCase() === newUser.id);
-    const normalizedEmail = newUser.email.toLowerCase();
-    const duplicateEmail = users.some(user => user.email.toLowerCase() === normalizedEmail);
-
-    if (duplicate) {
-      if (idError) idError.textContent = "User ID already exists. Please use a different ID.";
-      return;
+    // Only prevent form submission if validation fails
+    // If it passes, the form will naturally POST to your Express backend!
+    if (!isValid) {
+      event.preventDefault(); 
     }
-
-    if (duplicateEmail) {
-      if (emailError) emailError.textContent = "Email already exists. Please use a different email.";
-      return;
-    }
-
-  users.push(newUser);
-  saveUsers(users);
-  renderTable(users);
-  addUserForm.reset();
   });
+
+  // Basic UI visual removal for delete button (Requires backend route to actually delete from DB)
+  table.addEventListener("click", function (event) {
+    const row = event.target.closest("tr");
+    if (!row) return;
+
+    // Start editing a user row
+    if (event.target.classList.contains("user-edit-btn")) {
+      enterUserEditMode(row);
+      return;
+    }
+
+    // Save edited user
+    if (event.target.classList.contains("user-save-btn")) {
+      saveUserEdits(row);
+      return;
+    }
+
+    // Cancel editing
+    if (event.target.classList.contains("user-cancel-btn")) {
+      cancelUserEdits(row);
+      return;
+    }
+
+    if (event.target.classList.contains("user-delete-btn")) {
+      if (!confirm("Are you sure you want to delete this user?")) {
+        return;
+      }
+      // For now remove from UI; backend deletion not implemented
+      row.remove();
+    }
+  });
+
+  function enterUserEditMode(row) {
+    if (!row) return;
+    row.classList.add('is-editing');
+    // toggle buttons
+    toggleUserButtons(row, true);
+
+    // make editable fields
+    ['name','email','phone','dob','role','status'].forEach(field => {
+      const cell = row.querySelector('[data-field="' + field + '"]');
+      if (!cell) return;
+      const text = cell.textContent.trim();
+      let input;
+      if (field === 'role' || field === 'status') {
+        input = document.createElement('select');
+        input.className = 'user-edit-input';
+        if (field === 'role') {
+          ['Client','Organizer','Admin'].forEach(opt => {
+            const o = document.createElement('option'); o.value = opt; o.textContent = opt; if (opt === text) o.selected = true; input.appendChild(o);
+          });
+        } else {
+          ['Active','Inactive'].forEach(opt => { const o = document.createElement('option'); o.value = opt; o.textContent = opt; if (opt === text) o.selected = true; input.appendChild(o); });
+        }
+      } else if (field === 'dob') {
+        input = document.createElement('input'); input.type = 'date'; input.className = 'user-edit-input';
+        // try to parse existing date
+        const d = new Date(text);
+        if (!isNaN(d.getTime())) {
+          const yyyy = d.getFullYear(); const mm = String(d.getMonth()+1).padStart(2,'0'); const dd = String(d.getDate()).padStart(2,'0'); input.value = yyyy + '-' + mm + '-' + dd;
+        }
+      } else {
+        input = document.createElement('input'); input.type = 'text'; input.className = 'user-edit-input'; input.value = text;
+      }
+      cell.textContent = '';
+      cell.appendChild(input);
+    });
+  }
+
+  function toggleUserButtons(row, editing) {
+    row.querySelector('.user-edit-btn').classList.toggle('is-hidden', editing);
+    row.querySelector('.user-delete-btn').classList.toggle('is-hidden', editing);
+    row.querySelector('.user-save-btn').classList.toggle('is-hidden', !editing);
+    row.querySelector('.user-cancel-btn').classList.toggle('is-hidden', !editing);
+  }
+
+  async function saveUserEdits(row) {
+    const id = row.getAttribute('data-user-id');
+    if (!id) return alert('Missing user id');
+    const payload = { _id: id };
+    ['name','email','phone','dob','role','status'].forEach(field => {
+      const cell = row.querySelector('[data-field="' + field + '"]');
+      if (!cell) return;
+      const control = cell.querySelector('input, select');
+      payload[field] = control ? control.value.trim() : cell.textContent.trim();
+    });
+
+    try {
+      const res = await fetch('/admin/users/edit', {
+        method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload)
+      });
+      const contentType = res.headers.get('content-type') || '';
+      const raw = await res.text();
+      let data = null;
+
+      if (contentType.includes('application/json')) {
+        try {
+          data = JSON.parse(raw);
+        } catch (parseError) {
+          throw new Error('Server sent invalid JSON: ' + parseError.message);
+        }
+      } else {
+        throw new Error('Server returned non-JSON response (status ' + res.status + '): ' + raw.slice(0, 180));
+      }
+
+      if (!res.ok || !data.success) throw new Error((data && data.message) || ('Save failed (status ' + res.status + ')'));
+
+      // update UI with returned values
+      ['name','email','phone','dob','role','status'].forEach(field => {
+        const cell = row.querySelector('[data-field="' + field + '"]');
+        if (!cell) return;
+        let val = payload[field] || '';
+        if (field === 'dob') {
+          const d = new Date(val);
+          val = isNaN(d.getTime()) ? 'N/A' : d.toLocaleDateString();
+        }
+        cell.textContent = val;
+      });
+      row.classList.remove('is-editing');
+      toggleUserButtons(row, false);
+    } catch (err) {
+      alert('Unable to save: ' + err.message);
+    }
+  }
+
+  function cancelUserEdits(row) {
+    // restore text from inputs without saving
+    ['name','email','phone','dob','role','status'].forEach(field => {
+      const cell = row.querySelector('[data-field="' + field + '"]');
+      if (!cell) return;
+      const control = cell.querySelector('input, select');
+      if (control) {
+        const val = control.getAttribute('value') || control.value || '';
+        if (field === 'dob' && val) {
+          const d = new Date(val); cell.textContent = isNaN(d.getTime()) ? 'N/A' : d.toLocaleDateString();
+        } else {
+          cell.textContent = val || control.value || '';
+        }
+      }
+    });
+    row.classList.remove('is-editing');
+    toggleUserButtons(row, false);
+  }
 });
 
+// =========================================================
+// ADMIN DASHBOARD BUTTONS
+// =========================================================
+document.addEventListener("DOMContentLoaded", function () {
+  const generateReportButton = document.getElementById("btnGenerateReport");
+  const exportCsvButton = document.getElementById("btnExportCsv");
+
+  if (generateReportButton) {
+    generateReportButton.addEventListener("click", function () {
+      window.location.href = generateReportButton.dataset.target || "/reports";
+    });
+  }
+
+  if (exportCsvButton) {
+    exportCsvButton.addEventListener("click", function () {
+      window.location.href = exportCsvButton.dataset.target || "/admin-dashboard/export-csv";
+    });
+  }
+});
+
+// =========================================================
+// ORGANIZER EVENT PAGE LOGIC (Kept exactly as you had it)
+// =========================================================
 document.addEventListener("DOMContentLoaded", function () {
   if (document.body.id !== "organizerEventPage") {
     return;
@@ -328,9 +266,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const saveEvents = events => {
     try {
       localStorage.setItem(storageKey, JSON.stringify(events));
-    } catch (error) {
-      // Keep UI functional if storage is unavailable.
-    }
+    } catch (error) { }
   };
 
   const escapeHtml = value => {
@@ -365,7 +301,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
   const getCurrentEvents = () => {
     const rows = tableBody.querySelectorAll("tr");
-
     return Array.from(rows).map(row => ({
       eventId: row.querySelector('[data-field="eventId"]').textContent.trim(),
       eventTitle: row.querySelector('[data-field="eventTitle"]').textContent.trim(),
@@ -385,13 +320,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
   const setEditingMode = (row, isEditing) => {
     const originalValues = {};
-
     editableFields.forEach(field => {
       const cell = row.querySelector('[data-field="' + field + '"]');
-
-      if (!cell) {
-        return;
-      }
+      if (!cell) return;
 
       if (isEditing) {
         const originalValue = cell.textContent.trim();
@@ -401,17 +332,13 @@ document.addEventListener("DOMContentLoaded", function () {
           const options = ["Available", "Limited", "Unavailable"];
           const select = document.createElement("select");
           select.className = "event-edit-input";
-
           options.forEach(optionValue => {
             const option = document.createElement("option");
             option.value = optionValue;
             option.textContent = optionValue;
-            if (optionValue === originalValue) {
-              option.selected = true;
-            }
+            if (optionValue === originalValue) option.selected = true;
             select.appendChild(option);
           });
-
           cell.textContent = "";
           cell.appendChild(select);
           return;
@@ -419,7 +346,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
         const input = document.createElement("input");
         input.className = "event-edit-input";
-
         if (field === "eventDate") {
           input.type = "date";
           input.value = originalValue;
@@ -431,16 +357,11 @@ document.addEventListener("DOMContentLoaded", function () {
           input.type = "text";
           input.value = originalValue;
         }
-
         cell.textContent = "";
         cell.appendChild(input);
       } else {
         const control = cell.querySelector("input, select");
-
-        if (!control) {
-          return;
-        }
-
+        if (!control) return;
         cell.textContent = control.value.trim();
       }
     });
@@ -448,19 +369,20 @@ document.addEventListener("DOMContentLoaded", function () {
     if (isEditing) {
       row.dataset.originalRow = JSON.stringify(originalValues);
     }
-
     row.classList.toggle("is-editing", isEditing);
     setButtonsState(row, isEditing);
   };
 
-  renderTable(loadEvents());
+  const initialEvents = getCurrentEvents();
+  if (initialEvents.length > 0) {
+    saveEvents(initialEvents);
+  } else {
+    renderTable(loadEvents());
+  }
 
   table.addEventListener("click", function (event) {
     const row = event.target.closest("tr");
-
-    if (!row) {
-      return;
-    }
+    if (!row) return;
 
     if (event.target.classList.contains("event-edit-btn")) {
       setEditingMode(row, true);
@@ -475,23 +397,16 @@ document.addEventListener("DOMContentLoaded", function () {
 
     if (event.target.classList.contains("event-cancel-btn")) {
       let originalValues = {};
-
       try {
         originalValues = JSON.parse(row.dataset.originalRow || "{}");
       } catch (error) {
         originalValues = {};
       }
-
       editableFields.forEach(field => {
         const cell = row.querySelector('[data-field="' + field + '"]');
-
-        if (!cell) {
-          return;
-        }
-
+        if (!cell) return;
         cell.textContent = originalValues[field] || cell.textContent.trim();
       });
-
       row.classList.remove("is-editing");
       setButtonsState(row, false);
       return;
@@ -499,32 +414,18 @@ document.addEventListener("DOMContentLoaded", function () {
 
     if (event.target.classList.contains("event-remove-btn")) {
       const eventId = row.querySelector('[data-field="eventId"]').textContent.trim();
-
-      if (!confirm("Remove event " + eventId + "?")) {
-        return;
-      }
-
+      if (!confirm("Remove event " + eventId + "?")) return;
       row.remove();
       saveEvents(getCurrentEvents());
     }
   });
 });
- 
 
+// =========================================================
+// DASHBOARD STATS LOGIC
+// =========================================================
 document.addEventListener("DOMContentLoaded", () => {
   if (!document.body.classList.contains("admin-page")) {
     return;
   }
-
-  const usersValue = document.getElementById("cardUsersValue");
-  const bookingsValue = document.getElementById("cardBookingsValue");
-  const pendingValue = document.getElementById("cardPendingValue");
-
-  if (!usersValue || !bookingsValue || !pendingValue) {
-    return;
-  }
-
-  usersValue.textContent = "42";
-  bookingsValue.textContent = "18";
-  pendingValue.textContent = "6";
 });

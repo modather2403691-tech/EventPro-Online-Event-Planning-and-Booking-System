@@ -15,6 +15,8 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&family=Poppins:wght@400;500;600;700&display=swap">
 </head>
 <body class="admin-page" id="clientReservationPage">
+  <% const requestsList = typeof requests !== 'undefined' && Array.isArray(requests) ? requests : []; %>
+  <% const joinedList = typeof joinedEvents !== 'undefined' && Array.isArray(joinedEvents) ? joinedEvents : []; %>
 
   <div class="dashboard-container">
     <aside class="sidebar">
@@ -55,34 +57,21 @@
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td>CR-101</td>
-                <td>Lina Omar</td>
-                <td>Wedding Package</td>
-                <td>2026-05-12</td>
-                <td><span class="status-pill status-approved">Approved</span></td>
-              </tr>
-              <tr>
-                <td>CR-102</td>
-                <td>Ahmed Nasser</td>
-                <td>Party Package</td>
-                <td>2026-05-20</td>
-                <td><span class="status-pill status-pending">Pending</span></td>
-              </tr>
-              <tr>
-                <td>CR-103</td>
-                <td>Mariam Adel</td>
-                <td>Birthday Package</td>
-                <td>2026-06-04</td>
-                <td><span class="status-pill status-approved">Approved</span></td>
-              </tr>
-              <tr>
-                <td>CR-104</td>
-                <td>Youssef Tarek</td>
-                <td>Party Package</td>
-                <td>2026-06-18</td>
-                <td><span class="status-pill status-approved">Approved</span></td>
-              </tr>
+              <% if (requestsList.length > 0) { %>
+                <% requestsList.forEach(request => { %>
+                  <tr>
+                    <td>CR-<%= String(request._id).slice(-6).toUpperCase() %></td>
+                    <td><%= request.clientName %></td>
+                    <td><%= request.eventType %></td>
+                    <td><%= request.eventDate ? new Date(request.eventDate).toLocaleDateString('en-CA') : 'N/A' %></td>
+                    <td><span class="status-pill <%= request.status === 'Confirmed' ? 'status-approved' : request.status === 'Cancelled' ? 'status-declined' : 'status-pending' %>"><%= request.status %></span></td>
+                  </tr>
+                <% }) %>
+              <% } else { %>
+                <tr>
+                  <td colspan="5" style="text-align:center; padding:20px;">No client requests found.</td>
+                </tr>
+              <% } %>
             </tbody>
           </table>
         </div>
@@ -102,32 +91,21 @@
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td>JE-201</td>
-                <td>Lina Omar</td>
-                <td>Royal Wedding Night</td>
-                <td>2026-05-12</td>
-                <td><span class="status-pill status-joined">Yes</span></td>
-              </tr>
-              <tr>
-                <td>JE-202</td>
-                <td>Ahmed Nasser</td>
-                <td>Business Leaders Summit</td>
-                <td>2026-05-20</td>
-<td><span class="status-pill status-joined">Yes</span></td>              </tr>
-              <tr>
-                <td>JE-203</td>
-                <td>Mariam Adel</td>
-                <td>Family Birthday Gala</td>
-                <td>2026-06-04</td>
-                <td><span class="status-pill status-joined">Yes</span></td>
-              </tr>
-              <tr>
-                <td>JE-204</td>
-                <td>Youssef Tarek</td>
-                <td>Engagement Evening</td>
-                <td>2026-06-18</td>
-<td><span class="status-pill status-joined">Yes</span></td>              </tr>
+              <% if (joinedList.length > 0) { %>
+                <% joinedList.forEach(booking => { %>
+                  <tr>
+                    <td>JE-<%= String(booking._id).slice(-6).toUpperCase() %></td>
+                    <td><%= booking.userName %></td>
+                    <td><%= booking.eventType %></td>
+                    <td><%= booking.eventDate ? new Date(booking.eventDate).toLocaleDateString('en-CA') : 'N/A' %></td>
+                    <td><span class="status-pill status-joined"><%= booking.status === 'Confirmed' ? 'Yes' : booking.status %></span></td>
+                  </tr>
+                <% }) %>
+              <% } else { %>
+                <tr>
+                  <td colspan="5" style="text-align:center; padding:20px;">No joined events found.</td>
+                </tr>
+              <% } %>
             </tbody>
           </table>
         </div>
