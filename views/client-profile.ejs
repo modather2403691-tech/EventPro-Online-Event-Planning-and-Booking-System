@@ -16,7 +16,7 @@
 <body class="profile-dashboard-page">
 
   <div class="dashboard-container">
-    <%- include('partials/sidebar', { role: 'client', active: 'profile' }) %>
+    <%- include('partials/sidebar', { role: 'client', active: 'profile', name: name, photo: photo }) %>
 
     <div class="dashboard-content">
       <div class="profile-header">
@@ -56,11 +56,13 @@
           <div class="profile-info-list">
             <div class="profile-info-row">
               <span>Full Name</span>
-              <strong><%= name %></strong>
+              <strong id="displayName"><%= name %></strong>
+              <input id="inputName" class="profile-edit-input" type="text" value="<%= name %>" style="display:none">
             </div>
             <div class="profile-info-row">
               <span>Phone</span>
-              <strong><%= phone %></strong>
+              <strong id="displayPhone"><%= phone %></strong>
+              <input id="inputPhone" class="profile-edit-input" type="text" value="<%= phone %>" style="display:none">
             </div>
             <div class="profile-info-row">
               <span>Email</span>
@@ -70,6 +72,14 @@
               <span>Member Since</span>
               <strong><%= memberSince %></strong>
             </div>
+          </div>
+
+          <div id="profileEditStatus"></div>
+
+          <div class="profile-action-row">
+            <button class="profile-edit-toggle-btn" id="profileEditBtn">Edit Profile</button>
+            <button class="profile-save-data-btn" id="profileSaveBtn" style="display:none">Save Changes</button>
+            <button class="profile-cancel-btn" id="profileCancelBtn" style="display:none">Cancel</button>
           </div>
 
           <div class="profile-toggle-row">
@@ -83,52 +93,53 @@
           <div class="profile-box">
             <div class="profile-box-header">
               <h3>My EventPro account</h3>
-              <button class="small-edit-btn">Edit</button>
             </div>
 
-            <div class="account-status-row">
-              <div>
-                <span>Active account</span>
-                <p>Client booking access enabled</p>
-              </div>
-              <button class="status-btn orange">Active</button>
-            </div>
+            <div id="accountStatus" style="font-size:13px;font-weight:500;min-height:16px;margin-bottom:10px;text-align:center;"></div>
 
-            <div class="account-status-row">
-              <div>
-                <span>Booking privileges</span>
-                <p>Package booking + event joining enabled</p>
+            <div style="text-align:center;">
+              <button class="delete-account-btn" id="deleteAccountBtn">Delete Account</button>
+            </div>
+          </div>
+
+          <!-- Delete confirmation modal -->
+          <div id="deleteModal" class="delete-modal-overlay" style="display:none;">
+            <div class="delete-modal-box">
+              <h3>Delete Account</h3>
+              <p>This will permanently delete your account and all your bookings. This action <strong>cannot be undone</strong>.</p>
+              <p>Are you sure you want to continue?</p>
+              <div class="delete-modal-actions">
+                <button class="delete-modal-confirm" id="deleteConfirmBtn">Yes, Delete My Account</button>
+                <button class="delete-modal-cancel" id="deleteCancelBtn">Cancel</button>
               </div>
-              <button class="status-btn green">Enabled</button>
             </div>
           </div>
 
           <div class="profile-box">
             <div class="profile-box-header">
               <h3>My activity</h3>
-              <a href="/my-bookings" class="small-edit-btn">View</a>
+              <a href="/my-bookings" class="small-edit-btn">View all</a>
             </div>
 
-            <div class="bill-row">
-              <span class="bill-dot green"></span>
-              <span>Wedding booking</span>
-              <button class="mini-status green-btn">Paid</button>
-            </div>
-            <div class="bill-row">
-              <span class="bill-dot pink"></span>
-              <span>Conference request</span>
-              <button class="mini-status pink-btn">Pending</button>
-            </div>
-            <div class="bill-row">
-              <span class="bill-dot green"></span>
-              <span>Birthday package</span>
-              <button class="mini-status green-btn">Paid</button>
-            </div>
-            <div class="bill-row">
-              <span class="bill-dot green"></span>
-              <span>Private event</span>
-              <button class="mini-status green-btn">Paid</button>
-            </div>
+            <% if (bookings && bookings.length > 0) { %>
+              <% bookings.forEach(b => {
+                const isPaid      = b.status === 'Confirmed';
+                const isPending   = b.status === 'Pending';
+                const dotClass    = isPaid ? 'green' : 'pink';
+                const btnClass    = isPaid ? 'green-btn' : 'pink-btn';
+                const label       = isPaid ? 'Paid' : b.status;
+              %>
+              <div class="bill-row">
+                <span class="bill-dot <%= dotClass %>"></span>
+                <span><%= b.eventType %></span>
+                <button class="mini-status <%= btnClass %>"><%= label %></button>
+              </div>
+              <% }) %>
+            <% } else { %>
+              <p style="color:#888; font-size:14px; text-align:center; padding:12px 0;">
+                No bookings yet. <a href="/packages" style="color:#2563eb;">Browse packages</a>
+              </p>
+            <% } %>
           </div>
         </div>
       </div>

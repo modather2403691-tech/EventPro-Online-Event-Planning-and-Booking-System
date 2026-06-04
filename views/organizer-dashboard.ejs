@@ -17,62 +17,53 @@
 <body class="organizer-page">
 
   <div class="dashboard-container">
-    <%- include('partials/sidebar', { role: 'organizer', active: 'dashboard' }) %>
+    <%- include('partials/sidebar', { role: 'organizer', active: 'dashboard', name: name, photo: photo }) %>
 
     <div class="dashboard-content">
       <h1>Organizer Dashboard</h1>
 
       <div class="cards">
         <div class="card">
-          <h3>Total Packages</h3>
-          <p>6</p>
+          <h3>Total Events</h3>
+          <p><%= totalEvents %></p>
         </div>
 
         <div class="card">
-          <h3>Pending Requests</h3>
-          <p>4</p>
-        </div>
-
-        <div class="card">
-          <h3>Upcoming Events</h3>
-          <p>5</p>
+          <h3>Total Accepted Requests</h3>
+          <p><%= totalRequested %></p>
         </div>
       </div>
 
       <section class="dashboard-section">
-        <h2>Recent Booking Requests</h2>
+        <h2>Recent Client Activity</h2>
         <table class="dashboard-table">
           <thead>
             <tr>
-              <th>Request ID</th>
+              <th>#</th>
               <th>Client Name</th>
+              <th>Source</th>
               <th>Event Type</th>
               <th>Date</th>
-          
+              <th>Status</th>
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td>R001</td>
-              <td>Sarah Ahmed</td>
-              <td>Wedding</td>
-              <td>2025-05-18</td>
-              
-            </tr>
-            <tr>
-              <td>R002</td>
-              <td>Ali Hassan</td>
-              <td>Party</td>
-              <td>2025-06-02</td>
-              
-            </tr>
-            <tr>
-              <td>R003</td>
-              <td>Mona Khaled</td>
-              <td>Birthday</td>
-              <td>2025-06-15</td>
-          
-            </tr>
+            <% if (recentBookings && recentBookings.length > 0) { %>
+              <% recentBookings.forEach((booking, index) => { %>
+                <tr>
+                  <td><%= index + 1 %></td>
+                  <td><%= booking.userName || booking.userEmail %></td>
+                  <td><%= booking.source === 'request' ? 'Accepted Request' : 'Event Booking' %></td>
+                  <td><%= booking.eventType || 'Event' %></td>
+                  <td><%= booking.eventDate ? booking.eventDate.toISOString().slice(0, 10) : 'TBD' %></td>
+                  <td><%= booking.status || 'Pending' %></td>
+                </tr>
+              <% }) %>
+            <% } else { %>
+              <tr>
+                <td colspan="6" style="text-align:center; color:#666; padding:24px 0;">No client activity yet.</td>
+              </tr>
+            <% } %>
           </tbody>
         </table>
       </section>

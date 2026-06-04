@@ -23,7 +23,10 @@ async function getAllEvents() {
 // GET /addevent  (organizer)
 function showAddEvent(req, res) {
   const u = sessionUser(req);
-  res.render('addevent', { name: (u && u.name) || 'Organizer' });
+  res.render('addevent', {
+    name:  (u && u.name)  || 'Organizer',
+    photo: (u && u.photo) || ''
+  });
 }
 
 // POST /addevent  (organizer) — expects JSON (base64 image)
@@ -83,7 +86,8 @@ async function manageEvents(req, res) {
   }
 
   res.render('manage-events', {
-    name: u.name || 'Organizer',
+    name:  u.name  || 'Organizer',
+    photo: u.photo || '',
     events,
     bookingsByEvent
   });
@@ -157,6 +161,7 @@ function showNewRequest(req, res) {
   if (!u || !u.email) return res.redirect('/login');
   res.render('new-request', {
     name:  u.name  || 'Client',
+    photo: u.photo || '',
     email: u.email,
     phone: u.phone || ''
   });
@@ -204,7 +209,8 @@ async function organizerRequests(req, res) {
   }
 
   res.render('booking-requests', {
-    name: (u && u.name) || 'Organizer',
+    name:           (u && u.name)  || 'Organizer',
+    photo:          (u && u.photo) || '',
     organizerEmail: email,
     requests
   });
@@ -256,7 +262,8 @@ async function clientRequests(req, res) {
   }
 
   res.render('my-requests', {
-    name: u.name || 'Client',
+    name:  u.name  || 'Client',
+    photo: u.photo || '',
     requests
   });
 }

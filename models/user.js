@@ -11,6 +11,7 @@ userId:   { type: String },
     password: { type: String, required: true },
     phone:    { type: String, required: true },
     photo:    { type: String, default: '' }, // base64 data URL or empty
+    active:   { type: Boolean, default: true },
     role: {
         type: String,
         enum: ['Client', 'Organizer', 'Admin', 'client', 'organizer', 'admin'],

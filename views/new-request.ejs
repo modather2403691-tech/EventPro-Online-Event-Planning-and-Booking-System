@@ -37,23 +37,27 @@
       <form id="requestForm" method="POST" action="/booking-requests/create">
 
         <div>
-          <label for="name">Full Name</label>
-          <input type="text" id="name" name="name" class="modern-input" value="<%= name %>" required>
+          <label for="reqName">Full Name</label>
+          <input type="text" id="reqName" name="name" class="modern-input" value="<%= name %>">
+          <span id="nameError" class="error"></span>
         </div>
 
         <div>
-          <label for="email">Email</label>
-          <input type="email" id="email" name="email" class="modern-input" value="<%= email %>" readonly required>
+          <label for="reqEmail">Email</label>
+          <input type="email" id="reqEmail" name="email" class="modern-input" value="<%= email %>" readonly>
+          <span id="emailError" class="error"></span>
         </div>
 
         <div>
-          <label for="phone">Phone Number</label>
-          <input type="tel" id="phone" name="phone" class="modern-input" placeholder="01xxxxxxxxx" value="<%= phone %>" required>
+          <label for="reqPhone">Phone Number</label>
+          <input type="tel" id="reqPhone" name="phone" class="modern-input" placeholder="01xxxxxxxxx" value="<%= phone %>">
+          <span id="phoneError" class="error"></span>
         </div>
 
         <div>
-          <label for="eventType">Event Type</label>
-          <select id="eventType" name="eventType" class="modern-input" required>
+          <label for="reqEventType">Event Type</label>
+          <select id="reqEventType" name="eventType" class="modern-input">
+            <option value="">Select event type</option>
             <option value="Party">Party</option>
             <option value="Wedding">Wedding</option>
             <option value="Birthday">Birthday</option>
@@ -61,21 +65,24 @@
             <option value="Engagement">Engagement</option>
             <option value="Other">Other</option>
           </select>
+          <span id="eventTypeError" class="error"></span>
         </div>
 
         <div>
-          <label for="eventDate">Preferred Date</label>
-          <input type="date" id="eventDate" name="eventDate" class="modern-input">
+          <label for="reqDate">Preferred Date</label>
+          <input type="date" id="reqDate" name="eventDate" class="modern-input">
+          <span id="dateError" class="error"></span>
         </div>
 
         <div>
-          <label for="guests">Number of Guests</label>
-          <input type="number" id="guests" name="guests" class="modern-input" min="1" placeholder="e.g. 100">
+          <label for="reqGuests">Number of Guests</label>
+          <input type="number" id="reqGuests" name="guests" class="modern-input" min="1" placeholder="e.g. 100">
+          <span id="guestsError" class="error"></span>
         </div>
 
         <div>
-          <label for="notes">Details / Notes</label>
-          <textarea id="notes" name="notes" class="modern-input" placeholder="Describe your event, theme, budget, services you need..."></textarea>
+          <label for="reqNotes">Details / Notes</label>
+          <textarea id="reqNotes" name="notes" class="modern-input" placeholder="Describe your event, theme, budget, services you need..."></textarea>
         </div>
 
         <button type="submit" class="modern-button">Send Request to Organizers</button>
@@ -83,6 +90,7 @@
     </div>
   </main>
 
+  <script src="/js/new-request.js"></script>
   <script src="/js/darkmode.js"></script>
   <script src="/js/translate.js"></script>
   <script src="/js/icons.js"></script>
