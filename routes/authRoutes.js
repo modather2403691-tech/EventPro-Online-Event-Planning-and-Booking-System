@@ -4,6 +4,7 @@ const authController = require('../controllers/authController');
 const eventController = require('../controllers/eventController');
 const adminController = require('../controllers/adminController');
 const Booking = require('../models/Booking');
+const BookingRequest = require('../models/BookingRequest');
 const Event = require('../models/Event');
 
 // Helper: get name from session or fallback
@@ -236,13 +237,21 @@ router.post('/client-profile/delete-account', async (req, res) => {
 
         const email = u.email;
 
-        // Delete in parallel: user record, all bookings, all booking requests, all events
         await Promise.all([
             User.findOneAndDelete({ email }),
-            Booking.deleteMany({ userEmail: email }),
+            Booking.deleteMany({ $or: [ { userEmail: email }, { organizerEmail: email } ] }),
             BookingRequest.deleteMany({ clientEmail: email }),
             Event.deleteMany({ organizerEmail: email })
         ]);
+
+        // Remove any organizer offers or accepted organizer references from remaining requests
+        await BookingRequest.updateMany(
+            { $or: [ { 'offers.organizerEmail': email }, { acceptedOrganizerEmail: email } ] },
+            {
+                $pull: { offers: { organizerEmail: email } },
+                $set: { acceptedOrganizerEmail: '' }
+            }
+        );
 
         // Destroy session and clear cookie
         const sid = req.sessionId;
@@ -309,14 +318,75 @@ router.post('/client-profile/update-photo', async (req, res) => {
     }
 });
 
-router.get('/organizer-dashboard', (req, res) => {
+router.get('/organizer-dashboard', async (req, res) => {
     const u = (req.session && req.session.user) || {};
-    res.render('organizer-dashboard', { name: u.name || 'Organizer', photo: u.photo || '' });
+    if (roleFromSession(req) === 'admin') return res.redirect('/admin-index');
+    if (roleFromSession(req) === 'client') return res.redirect('/client-index');
+    if (!u.email) return res.redirect('/login');
+
+    let totalEvents = 0;
+    let totalRequested = 0;
+    let recentBookings = [];
+
+    try {
+        totalEvents = await Event.countDocuments({ organizerEmail: u.email });
+        totalRequested = await BookingRequest.countDocuments({ acceptedOrganizerEmail: u.email });
+        recentBookings = await Booking.find({ organizerEmail: u.email })
+            .sort({ createdAt: -1 })
+            .limit(8);
+    } catch (err) {
+        console.error('ORGANIZER DASHBOARD ERROR:', err);
+    }
+
+    res.render('organizer-dashboard', {
+        name: u.name || 'Organizer',
+        photo: u.photo || '',
+        totalEvents,
+        totalRequested,
+        recentBookings
+    });
 });
 
-router.get('/organizer-profile', (req, res) => {
+router.get('/organizer-profile', async (req, res) => {
     const u = (req.session && req.session.user) || {};
-    res.render('organizer-profile', { name: u.name || 'Organizer', photo: u.photo || '' });
+    if (roleFromSession(req) === 'admin') return res.redirect('/admin-index');
+    if (roleFromSession(req) === 'client') return res.redirect('/client-index');
+    if (!u.email) return res.redirect('/login');
+
+    const memberSince = u.memberSince
+        ? new Date(u.memberSince).toLocaleDateString('en-US', { month: 'short', year: 'numeric' })
+        : 'N/A';
+
+    let events = [];
+    let bookings = [];
+    let stats = {
+        totalEvents: 0,
+        totalBookings: 0,
+        pendingBookings: 0,
+        confirmedBookings: 0
+    };
+
+    try {
+        events = await Event.find({ organizerEmail: u.email }).sort({ createdAt: -1 }).limit(4);
+        bookings = await Booking.find({ organizerEmail: u.email }).sort({ createdAt: -1 }).limit(4);
+        stats.totalEvents = await Event.countDocuments({ organizerEmail: u.email });
+        stats.totalBookings = await Booking.countDocuments({ organizerEmail: u.email });
+        stats.pendingBookings = await Booking.countDocuments({ organizerEmail: u.email, status: 'Pending' });
+        stats.confirmedBookings = await Booking.countDocuments({ organizerEmail: u.email, status: 'Confirmed' });
+    } catch (err) {
+        console.error('ORGANIZER PROFILE ERROR:', err);
+    }
+
+    res.render('organizer-profile', {
+        name: u.name || 'Organizer',
+        email: u.email || 'N/A',
+        phone: u.phone || 'N/A',
+        photo: u.photo || '',
+        memberSince,
+        events,
+        bookings,
+        stats
+    });
 });
 
 router.get('/', async (req, res) => {

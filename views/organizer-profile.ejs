@@ -28,97 +28,143 @@
 
       <div class="profile-layout">
         <div class="profile-main-card">
-          <img src="/assets/images/333.jpeg" alt="Profile Photo" class="profile-main-image">
+          <div class="photo-wrapper" id="photoWrapper" title="Click to change photo">
+            <img id="profilePhoto" src="<%= photo ? photo : '/images/my-photo.jpg' %>" alt="Profile Photo">
+            <div class="photo-overlay">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/>
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"/>
+              </svg>
+              Change Photo
+            </div>
+          </div>
+          <input type="file" id="photoInput" accept="image/jpeg,image/png,image/webp,image/gif">
+
+          <div id="uploadStatus"></div>
 
           <h3>Organizer Details</h3>
 
           <div class="profile-info-list">
             <div class="profile-info-row">
               <span>Full Name</span>
-              <strong>Elham</strong>
+              <strong id="displayName"><%= name %></strong>
+              <input id="inputName" class="profile-edit-input" type="text" value="<%= name %>" style="display:none">
             </div>
             <div class="profile-info-row">
-              <span>Business Phone</span>
-              <strong>+20 100 000 0000</strong>
+              <span>Phone</span>
+              <strong id="displayPhone"><%= phone %></strong>
+              <input id="inputPhone" class="profile-edit-input" type="text" value="<%= phone %>" style="display:none">
             </div>
             <div class="profile-info-row">
-              <span>Business Email</span>
-              <strong>Elham@email.com</strong>
+              <span>Email</span>
+              <strong><%= email %></strong>
             </div>
             <div class="profile-info-row">
               <span>Organizer Since</span>
-              <strong>Aug 2024</strong>
+              <strong><%= memberSince %></strong>
             </div>
             <div class="profile-info-row">
-              <span>Primary Category</span>
-              <strong>Weddings and Corporate Events</strong>
+              <span>Role</span>
+              <strong>Organizer</strong>
             </div>
+          </div>
+
+          <div id="profileEditStatus"></div>
+
+          <div class="profile-action-row">
+            <button class="profile-edit-toggle-btn" id="profileEditBtn">Edit Profile</button>
+            <button class="profile-save-data-btn" id="profileSaveBtn" style="display:none">Save Changes</button>
+            <button class="profile-cancel-btn" id="profileCancelBtn" style="display:none">Cancel</button>
           </div>
 
           <div class="profile-toggle-row">
             <span>New request notifications</span>
             <span class="toggle-dot"></span>
           </div>
-
-          <button class="profile-save-btn">Save Changes</button>
         </div>
 
         <div class="profile-side-column">
           <div class="profile-box">
             <div class="profile-box-header">
               <h3>Organizer Account</h3>
-              <button class="small-edit-btn">Edit</button>
             </div>
 
-            <div class="account-status-row">
-              <div>
-                <span>Verification Status</span>
-                <p>Organizer identity and payment profile verified</p>
-              </div>
-              <button class="status-btn orange">Verified</button>
+            <div style="text-align:center; margin-top: 18px;">
+              <button class="delete-account-btn" id="deleteAccountBtn">Delete Account</button>
             </div>
+          </div>
 
-            <div class="account-status-row">
-              <div>
-                <span>Publishing Access</span>
-                <p>Package publishing and request responses enabled</p>
+          <div id="deleteModal" class="delete-modal-overlay" style="display:none;">
+            <div class="delete-modal-box">
+              <h3>Delete Account</h3>
+              <p>This will permanently delete your account, your events, bookings, and related data. This action <strong>cannot be undone</strong>.</p>
+              <p>Are you sure you want to continue?</p>
+              <div class="delete-modal-actions">
+                <button class="delete-modal-confirm" id="deleteConfirmBtn">Yes, Delete My Account</button>
+                <button class="delete-modal-cancel" id="deleteCancelBtn">Cancel</button>
               </div>
-              <button class="status-btn green">Enabled</button>
             </div>
           </div>
 
           <div class="profile-box">
             <div class="profile-box-header">
               <h3>Organizer Activity</h3>
-              <a href="/booking-requests" class="small-edit-btn">View</a>
+              <a href="/manage-events" class="small-edit-btn">Manage events</a>
             </div>
 
-            <div class="bill-row">
-              <span class="bill-dot green"></span>
-              <span>Wedding request approved</span>
-              <button class="mini-status green-btn">Done</button>
+            <div class="activity-summary-grid">
+              <div class="activity-stat">
+                <span>Events created</span>
+                <strong><%= stats.totalEvents %></strong>
+              </div>
+              <div class="activity-stat">
+                <span>Bookings received</span>
+                <strong><%= stats.totalBookings %></strong>
+              </div>
+              <div class="activity-stat">
+                <span>Pending bookings</span>
+                <strong><%= stats.pendingBookings %></strong>
+              </div>
+              <div class="activity-stat">
+                <span>Confirmed bookings</span>
+                <strong><%= stats.confirmedBookings %></strong>
+              </div>
             </div>
-            <div class="bill-row">
-              <span class="bill-dot pink"></span>
-              <span>Conference request awaiting reply</span>
-              <button class="mini-status pink-btn">Pending</button>
-            </div>
-            <div class="bill-row">
-              <span class="bill-dot green"></span>
-              <span>Availability updated for next week</span>
-              <button class="mini-status green-btn">Saved</button>
-            </div>
-            <div class="bill-row">
-              <span class="bill-dot green"></span>
-              <span>Premium package published</span>
-              <button class="mini-status green-btn">Live</button>
-            </div>
+
+            <% if (events && events.length > 0) { %>
+              <% events.forEach(event => { %>
+                <div class="bill-row">
+                  <span class="bill-dot <%= event.category === 'wedding' ? 'green' : 'pink' %>"></span>
+                  <span><%= event.title %> — <%= event.category.charAt(0).toUpperCase() + event.category.slice(1) %></span>
+                  <button class="mini-status green-btn">Published</button>
+                </div>
+              <% }) %>
+            <% } else { %>
+              <p style="color:#888; font-size:14px; text-align:center; padding:12px 0;">
+                No events created yet. <a href="/addevent" style="color:#2563eb;">Create your first event</a>
+              </p>
+            <% } %>
+
+            <% if (bookings && bookings.length > 0) { %>
+              <hr style="margin: 14px 0; border-color: #e5e7eb;">
+              <h4 style="margin:0 0 10px; font-size:14px; color:#333;">Recent bookings</h4>
+              <% bookings.forEach(b => { %>
+                <div class="bill-row">
+                  <span class="bill-dot <%= b.status === 'Confirmed' ? 'green' : 'pink' %>"></span>
+                  <span><%= b.userName %> — <%= b.eventType %></span>
+                  <button class="mini-status <%= b.status === 'Confirmed' ? 'green-btn' : 'pink-btn' %>"><%= b.status %></button>
+                </div>
+              <% }) %>
+            <% } %>
           </div>
         </div>
       </div>
     </div>
   </div>
 
+  <script src="/js/client-profile.js"></script>
   <script src="/js/darkmode.js"></script>
   <script src="/js/translate.js"></script>
   <script src="/js/icons.js"></script>
