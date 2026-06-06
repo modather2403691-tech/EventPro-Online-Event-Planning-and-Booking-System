@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const bcrypt = require('bcrypt');
 const authController = require('../controllers/authController');
 const eventController = require('../controllers/eventController');
 const adminController = require('../controllers/adminController');
@@ -225,15 +226,28 @@ router.post('/client-profile/update-account', async (req, res) => {
     }
 });
 
-// POST — delete account
-router.post('/client-profile/delete-account', async (req, res) => {
+async function deleteAccountHandler(req, res) {
     const u = req.session && req.session.user;
     if (!u) return res.status(401).json({ error: 'Not logged in' });
+
+    const { password } = req.body;
+    if (!password || password.trim().length === 0) {
+        return res.status(400).json({ error: 'Password is required to delete the account.' });
+    }
+
     try {
         const User           = require('../models/User');
         const Booking        = require('../models/Booking');
         const BookingRequest = require('../models/BookingRequest');
         const Event          = require('../models/Event');
+
+        const user = await User.findOne({ email: u.email });
+        if (!user) return res.status(400).json({ error: 'Unable to verify account.' });
+
+        const isMatch = await bcrypt.compare(password, user.password);
+        if (!isMatch) {
+            return res.status(400).json({ error: 'Password is incorrect.' });
+        }
 
         const email = u.email;
 
@@ -244,7 +258,6 @@ router.post('/client-profile/delete-account', async (req, res) => {
             Event.deleteMany({ organizerEmail: email })
         ]);
 
-        // Remove any organizer offers or accepted organizer references from remaining requests
         await BookingRequest.updateMany(
             { $or: [ { 'offers.organizerEmail': email }, { acceptedOrganizerEmail: email } ] },
             {
@@ -253,7 +266,6 @@ router.post('/client-profile/delete-account', async (req, res) => {
             }
         );
 
-        // Destroy session and clear cookie
         const sid = req.sessionId;
         const { store } = require('../middleware/session');
         if (sid && store[sid]) delete store[sid];
@@ -262,6 +274,46 @@ router.post('/client-profile/delete-account', async (req, res) => {
         res.json({ success: true });
     } catch (err) {
         console.error('DELETE ACCOUNT ERROR:', err);
+        res.status(500).json({ error: 'Server error' });
+    }
+}
+
+router.post('/profile/delete-account', deleteAccountHandler);
+router.post('/client-profile/delete-account', deleteAccountHandler);
+
+router.post('/profile/change-password', async (req, res) => {
+    const u = req.session && req.session.user;
+    if (!u) return res.status(401).json({ error: 'Not logged in' });
+
+    const { currentPassword, newPassword, confirmPassword } = req.body;
+    if (!currentPassword || currentPassword.trim().length === 0) {
+        return res.status(400).json({ error: 'Current password is required.' });
+    }
+    if (!newPassword || !/^(?=.*\d)(?=.*[^A-Za-z0-9]).{8,}$/.test(newPassword)) {
+        return res.status(400).json({ error: 'New password must be at least 8 characters and include a number and special symbol.' });
+    }
+    if (newPassword !== confirmPassword) {
+        return res.status(400).json({ error: 'New password and confirm password do not match.' });
+    }
+
+    try {
+        const User = require('../models/User');
+        const user = await User.findOne({ email: u.email });
+        if (!user) return res.status(400).json({ error: 'Unable to verify account.' });
+
+        const isMatch = await bcrypt.compare(currentPassword, user.password);
+        if (!isMatch) {
+            return res.status(400).json({ error: 'Current password is incorrect.' });
+        }
+        if (currentPassword === newPassword) {
+            return res.status(400).json({ error: 'New password must be different from the current password.' });
+        }
+
+        const hashed = await bcrypt.hash(newPassword, 10);
+        await User.findOneAndUpdate({ email: u.email }, { password: hashed });
+        res.json({ success: true });
+    } catch (err) {
+        console.error('CHANGE PASSWORD ERROR:', err);
         res.status(500).json({ error: 'Server error' });
     }
 });

@@ -8,6 +8,7 @@
     "dev": "nodemon event.js"
   },
   "dependencies": {
+    "bcrypt": "^6.0.0",
     "bcryptjs": "^2.4.3",
     "ejs": "^3.1.10",
     "express": "^4.19.2",
