@@ -12,6 +12,7 @@
     '/addevent': 'fa-calendar-plus',
     '/manage-events': 'fa-calendar-check',
     '/booking-requests': 'fa-inbox',
+    '/accepted-requests': 'fa-circle-check',
     '/new-request': 'fa-square-plus',
     '/my-requests': 'fa-paper-plane',
     '/my-bookings': 'fa-ticket',

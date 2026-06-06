@@ -192,115 +192,6 @@ function showEditStatus(msg, type) {
   profileEditStatus.className   = type;
 }
 
-// ── Password change & deletion helpers ──
-const currentPasswordInput   = document.getElementById('currentPassword');
-const newPasswordInput       = document.getElementById('newPassword');
-const confirmPasswordInput   = document.getElementById('confirmPassword');
-const changePasswordBtn      = document.getElementById('changePasswordBtn');
-const passwordChangeStatus   = document.getElementById('passwordChangeStatus');
-const currentPasswordError   = document.getElementById('currentPasswordError');
-const newPasswordError       = document.getElementById('newPasswordError');
-const confirmPasswordError   = document.getElementById('confirmPasswordError');
-const deletePasswordInput    = document.getElementById('deletePassword');
-const deletePasswordError    = document.getElementById('deletePasswordError');
-
-const passwordPattern = /^(?=.*\d)(?=.*[^A-Za-z0-9]).{8,}$/;
-
-function clearPasswordErrors() {
-  if (currentPasswordError) currentPasswordError.textContent = '';
-  if (newPasswordError) newPasswordError.textContent = '';
-  if (confirmPasswordError) confirmPasswordError.textContent = '';
-  if (deletePasswordError) deletePasswordError.textContent = '';
-  if (passwordChangeStatus) passwordChangeStatus.textContent = '';
-  if (accountStatus) accountStatus.textContent = '';
-}
-
-function showPasswordChangeStatus(msg, type) {
-  if (!passwordChangeStatus) return;
-  passwordChangeStatus.textContent = msg;
-  passwordChangeStatus.className = type;
-}
-
-function validateNewPassword() {
-  const value = newPasswordInput ? newPasswordInput.value.trim() : '';
-  if (!value) {
-    if (newPasswordError) newPasswordError.textContent = 'New password is required.';
-    return false;
-  }
-  if (!passwordPattern.test(value)) {
-    if (newPasswordError) newPasswordError.textContent = 'Password must be at least 8 chars, include a number and special symbol.';
-    return false;
-  }
-  if (newPasswordError) newPasswordError.textContent = '';
-  return true;
-}
-
-function validateConfirmPassword() {
-  const confirmValue = confirmPasswordInput ? confirmPasswordInput.value.trim() : '';
-  if (!confirmValue) {
-    if (confirmPasswordError) confirmPasswordError.textContent = 'Confirm password is required.';
-    return false;
-  }
-  if (newPasswordInput && confirmValue !== newPasswordInput.value.trim()) {
-    if (confirmPasswordError) confirmPasswordError.textContent = 'Passwords do not match.';
-    return false;
-  }
-  if (confirmPasswordError) confirmPasswordError.textContent = '';
-  return true;
-}
-
-if (newPasswordInput) {
-  newPasswordInput.addEventListener('input', validateNewPassword);
-}
-if (confirmPasswordInput) {
-  confirmPasswordInput.addEventListener('input', validateConfirmPassword);
-}
-if (currentPasswordInput) {
-  currentPasswordInput.addEventListener('input', () => { if (currentPasswordError) currentPasswordError.textContent = ''; });
-}
-
-if (changePasswordBtn) {
-  changePasswordBtn.addEventListener('click', async () => {
-    clearPasswordErrors();
-
-    const currentPassword = currentPasswordInput ? currentPasswordInput.value.trim() : '';
-    const newPassword     = newPasswordInput ? newPasswordInput.value.trim() : '';
-    const confirmPassword = confirmPasswordInput ? confirmPasswordInput.value.trim() : '';
-
-    if (!currentPassword) {
-      if (currentPasswordError) currentPasswordError.textContent = 'Current password is required.';
-      return;
-    }
-    if (!validateNewPassword() || !validateConfirmPassword()) {
-      return;
-    }
-
-    changePasswordBtn.disabled = true;
-    showPasswordChangeStatus('Updating password...', '');
-
-    try {
-      const res = await fetch('/profile/change-password', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ currentPassword, newPassword, confirmPassword })
-      });
-      const data = await res.json();
-      if (data.success) {
-        showPasswordChangeStatus('Password updated successfully.', 'success');
-        if (currentPasswordInput) currentPasswordInput.value = '';
-        if (newPasswordInput) newPasswordInput.value = '';
-        if (confirmPasswordInput) confirmPasswordInput.value = '';
-      } else {
-        showPasswordChangeStatus(data.error || 'Unable to update password.', 'error');
-      }
-    } catch (err) {
-      showPasswordChangeStatus('Connection error. Please try again.', 'error');
-    } finally {
-      changePasswordBtn.disabled = false;
-    }
-  });
-}
-
 // ── Delete Account ──
 const deleteAccountBtn = document.getElementById('deleteAccountBtn');
 const deleteModal      = document.getElementById('deleteModal');
@@ -319,38 +210,22 @@ if (deleteModal) {
 }
 if (deleteConfirmBtn) {
   deleteConfirmBtn.addEventListener('click', async () => {
-    clearPasswordErrors();
-
-    const password = deletePasswordInput ? deletePasswordInput.value.trim() : '';
-    if (!password) {
-      if (deletePasswordError) deletePasswordError.textContent = 'Password is required.';
-      return;
-    }
-
     deleteConfirmBtn.disabled    = true;
     deleteConfirmBtn.textContent = 'Deleting...';
     try {
-      const res  = await fetch('/profile/delete-account', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ password })
+      const res  = await fetch('/client-profile/delete-account', {
+        method: 'POST', headers: { 'Content-Type': 'application/json' }
       });
       const data = await res.json();
       if (data.success) {
         window.location.href = '/index';
       } else {
-        if (data.error && deletePasswordError) {
-          deletePasswordError.textContent = data.error;
-        } else if (accountStatus) {
-          accountStatus.textContent = data.error || 'Delete failed.';
-          accountStatus.className = 'error';
-        }
+        deleteModal.style.display = 'none';
+        if (accountStatus) { accountStatus.textContent = data.error || 'Delete failed.'; accountStatus.className = 'error'; }
       }
     } catch (err) {
-      if (accountStatus) {
-        accountStatus.textContent = 'Connection error. Try again.';
-        accountStatus.className = 'error';
-      }
+      deleteModal.style.display = 'none';
+      if (accountStatus) { accountStatus.textContent = 'Connection error. Try again.'; accountStatus.className = 'error'; }
     } finally {
       deleteConfirmBtn.disabled    = false;
       deleteConfirmBtn.textContent = 'Yes, Delete My Account';

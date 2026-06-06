@@ -88,31 +88,6 @@
         <div class="profile-side-column">
           <div class="profile-box">
             <div class="profile-box-header">
-              <h3>Change Password</h3>
-            </div>
-            <div class="profile-box-body">
-              <div class="form-row">
-                <label for="currentPassword">Current Password</label>
-                <input type="password" id="currentPassword" placeholder="Enter current password" autocomplete="current-password">
-                <span id="currentPasswordError" class="error-msg"></span>
-              </div>
-              <div class="form-row">
-                <label for="newPassword">New Password</label>
-                <input type="password" id="newPassword" placeholder="New password" autocomplete="new-password">
-                <span id="newPasswordError" class="error-msg"></span>
-              </div>
-              <div class="form-row">
-                <label for="confirmPassword">Confirm New Password</label>
-                <input type="password" id="confirmPassword" placeholder="Confirm new password" autocomplete="new-password">
-                <span id="confirmPasswordError" class="error-msg"></span>
-              </div>
-              <button class="profile-save-data-btn" id="changePasswordBtn" type="button">Update Password</button>
-              <div id="passwordChangeStatus" style="margin-top:10px;font-size:13px;min-height:18px;"></div>
-            </div>
-          </div>
-
-          <div class="profile-box">
-            <div class="profile-box-header">
               <h3>Organizer Account</h3>
             </div>
 
@@ -125,11 +100,7 @@
             <div class="delete-modal-box">
               <h3>Delete Account</h3>
               <p>This will permanently delete your account, your events, bookings, and related data. This action <strong>cannot be undone</strong>.</p>
-              <p>Enter your password to confirm.</p>
-              <div class="form-row" style="margin-top:12px;">
-                <input type="password" id="deletePassword" placeholder="Enter password to delete account" autocomplete="current-password">
-                <span id="deletePasswordError" class="error-msg"></span>
-              </div>
+              <p>Are you sure you want to continue?</p>
               <div class="delete-modal-actions">
                 <button class="delete-modal-confirm" id="deleteConfirmBtn">Yes, Delete My Account</button>
                 <button class="delete-modal-cancel" id="deleteCancelBtn">Cancel</button>

@@ -216,6 +216,36 @@ async function organizerRequests(req, res) {
   });
 }
 
+// GET /accepted-requests  (organizer) — requests the client has accepted
+async function acceptedRequests(req, res) {
+  const u = sessionUser(req);
+  const email = (u && u.email) || '';
+
+  if (!u) {
+    return res.redirect('/login');
+  }
+  if (u.role !== 'organizer') {
+    return res.redirect(u.role === 'admin' ? '/admin-index' : '/client-index');
+  }
+
+  let requests = [];
+  try {
+    requests = await BookingRequest.find({
+      acceptedOrganizerEmail: email,
+      status: 'Confirmed'
+    }).sort({ createdAt: -1 });
+  } catch (err) {
+    console.error('ACCEPTED REQUESTS ERROR:', err);
+  }
+
+  res.render('accepted-requests', {
+    name:    (u && u.name)  || 'Organizer',
+    photo:   (u && u.photo) || '',
+    requests,
+    organizerEmail: email
+  });
+}
+
 // POST /booking-requests/offer  (organizer) — reply to a request with a price
 async function makeOffer(req, res) {
   const u = sessionUser(req);
@@ -340,6 +370,7 @@ module.exports = {
   showNewRequest,
   createRequest,
   organizerRequests,
+  acceptedRequests,
   makeOffer,
   clientRequests,
   acceptOffer,

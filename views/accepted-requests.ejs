@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EventPro - Accepted Requests</title>
+
+  <link rel="stylesheet" href="/css/organizer.css">
+  <link rel="stylesheet" href="/css/responsive.css">
+  <link rel="stylesheet" href="/css/darkmode.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+  <link rel="stylesheet" href="/css/theme.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&family=Poppins:wght@400;500;600;700&display=swap">
+</head>
+<body class="organizer-page">
+
+  <div class="dashboard-container">
+    <%- include('partials/sidebar', { role: 'organizer', active: 'accepted-requests', name: name, photo: photo }) %>
+
+    <div class="dashboard-content">
+      <h1>Accepted Requests</h1>
+      <p class="dashboard-subtitle">
+        Requests confirmed by your clients, with the client contact details and event information you need to follow up.
+      </p>
+
+      <% if (!requests || requests.length === 0) { %>
+        <div class="empty-state">
+          <p>No accepted requests yet.</p>
+        </div>
+      <% } else { %>
+        <% requests.forEach(r => {
+             const eventDate = r.eventDate ? r.eventDate.toISOString().slice(0, 10) : 'Flexible';
+        %>
+          <section class="request-details-panel" style="margin-bottom:18px;">
+            <div class="profile-box-header" style="margin-bottom:14px;">
+              <h3 style="margin:0;">Request <%= r._id.toString().slice(-6).toUpperCase() %></h3>
+              <span class="request-status accepted">Confirmed</span>
+            </div>
+
+            <div class="request-details-grid">
+              <p><span>Client name</span><strong class="detail-value"><%= r.clientName %></strong></p>
+              <p class="detail-email"><span>Client email</span><strong class="detail-value email-value"><%= r.clientEmail %></strong></p>
+              <p><span>Client phone</span><strong class="detail-value"><%= r.phone %></strong></p>
+              <p><span>Event type</span><strong class="detail-value"><%= r.eventType %></strong></p>
+              <p><span>Event date</span><strong class="detail-value"><%= eventDate %></strong></p>
+              <p><span>Guests</span><strong class="detail-value"><%= r.guests || 0 %></strong></p>
+              <p class="detail-email"><span>Notes</span><strong class="detail-value"><%= r.notes || '—' %></strong></p>
+              <p class="confirmed-price-row"><span>Accepted price</span><strong class="confirmed-price-value">$<%= r.acceptedPrice || 0 %></strong></p>
+            </div>
+          </section>
+        <% }) %>
+      <% } %>
+    </div>
+  </div>
+
+  <script src="/js/profile-role-styles.js"></script>
+  <script src="/js/darkmode.js"></script>
+  <script src="/js/translate.js"></script>
+  <script src="/js/icons.js"></script>
+</body>
+</html>
