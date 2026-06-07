@@ -292,41 +292,7 @@ section {
     margin-bottom: 18px;
   }
 
-  /* Mobile hamburger toggle */
-  .mobile-toggle {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 44px;
-    height: 44px;
-    background: transparent;
-    border: 1px solid rgba(0,0,0,0.06);
-    border-radius: 8px;
-    font-size: 20px;
-    cursor: pointer;
-    color: #1e2a38;
-    margin-left: 8px;
-  }
-
-  /* When nav has .open, show vertical mobile menu */
-  .home-navbar.open .home-nav-links,
-  .navbar.open .nav-links,
-  .inner-navbar.open .nav-links {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-    background: white;
-    padding: 12px;
-    position: absolute;
-    top: 64px;
-    right: 12px;
-    border-radius: 12px;
-    box-shadow: 0 12px 30px rgba(0,0,0,0.12);
-    z-index: 1000;
-  }
-
-  /* Hide the decorative animation on login for small screens */
-  .animation-side { display: none; }
+  /* Keep navbar markup unchanged on mobile (no injected hamburger) */
 }
 
 /* =========================

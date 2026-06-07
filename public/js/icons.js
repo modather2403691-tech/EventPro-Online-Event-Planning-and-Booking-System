@@ -48,31 +48,6 @@
       a.insertBefore(i, a.firstChild);
     });
 
-    // Inject a mobile hamburger toggle for navs and wire open/close
-    const navSelectors = ['.home-navbar', '.navbar', '.inner-navbar'];
-    navSelectors.forEach(sel => {
-      const nav = document.querySelector(sel);
-      if (!nav) return;
-      // create toggle if not already present
-      if (!nav.querySelector('.mobile-toggle')) {
-        const btn = document.createElement('button');
-        btn.className = 'mobile-toggle';
-        btn.setAttribute('aria-expanded', 'false');
-        btn.setAttribute('aria-label', 'Toggle menu');
-        btn.innerHTML = '\u2630'; // simple hamburger char
-        // insert after logo if exists, otherwise prepend
-        const logo = nav.querySelector('.home-logo, .logo, .brand-wrapper');
-        if (logo && logo.parentNode) {
-          logo.parentNode.insertBefore(btn, logo.nextSibling);
-        } else {
-          nav.insertBefore(btn, nav.firstChild);
-        }
-
-        btn.addEventListener('click', () => {
-          const isOpen = nav.classList.toggle('open');
-          btn.setAttribute('aria-expanded', String(isOpen));
-        });
-      }
-    });
+    // No mobile toggle injection - keep nav markup untouched
   });
 })();
