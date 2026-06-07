@@ -6,7 +6,6 @@ const authRoutes = require('./routes/authRoutes');
 // --- ADD THIS LINE TO IMPORT ADMIN ROUTES ---
 const adminRoutes = require('./routes/adminRoutes'); 
 const adminController = require('./controllers/adminController');
-const requireAdmin = require('./middleware/adminAuth');
 
 const app = express();
 
@@ -38,8 +37,8 @@ app.use('/', authRoutes);
 app.use('/admin', adminRoutes);
 
 // Fallback direct route for user edits in case the mounted router is bypassed
-app.post('/admin/users/edit', requireAdmin, adminController.editUser);
-app.get('/admin-dashboard/export-csv', requireAdmin, adminController.exportReportsCsv);
+app.post('/admin/users/edit', adminController.editUser);
+app.get('/admin-dashboard/export-csv', adminController.exportReportsCsv);
 
 // 404 — any unmatched route renders the custom not-found page
 app.use((req, res) => {

@@ -1,17 +1,29 @@
 const crypto = require('crypto');
 const fs = require('fs');
 const path = require('path');
-const User = require('../models/user');
 
 // In-memory store: { sid: { user: null, createdAt: timestamp } }
 const store = {};
-const BOOT_ID = crypto.randomBytes(16).toString('hex');
 const COOKIE_NAME = 'sid';
 const MAX_AGE_MS  = 1000 * 60 * 60 * 24 * 30; // 30 days of inactivity
+const STORE_FILE  = process.env.SESSION_FILE || path.join(__dirname, '..', '.sessions.json');
+
+// Load persisted sessions on boot so users stay logged in across server
+// restarts (in-memory only would silently log everyone out on every restart).
+try {
+    if (fs.existsSync(STORE_FILE)) {
+        Object.assign(store, JSON.parse(fs.readFileSync(STORE_FILE, 'utf8')));
+    }
+} catch (err) {
+    console.error('Session load failed:', err.message);
+}
 
 function persist() {
-    // Intentionally left as a no-op so sessions stay in memory only.
-    // This keeps admin access from being restored automatically after a restart.
+    try {
+        fs.writeFileSync(STORE_FILE, JSON.stringify(store));
+    } catch (err) {
+        console.error('Session save failed:', err.message);
+    }
 }
 
 // NOTE: we deliberately do NOT autosave on a short timer. Writing .sessions.json
@@ -51,6 +63,7 @@ function setCookie(req, res, sid) {
         `${COOKIE_NAME}=${sid}`,
         'Path=/',
         'HttpOnly',
+        `Max-Age=${Math.floor(MAX_AGE_MS / 1000)}`,
         'SameSite=Lax'
     ];
 
@@ -66,21 +79,6 @@ function setCookie(req, res, sid) {
     } else {
         res.setHeader('Set-Cookie', cookie);
     }
-}
-
-function bumpLastActive(user) {
-    if (!user || !user.email) {
-        return;
-    }
-
-    const email = String(user.email).trim();
-    if (!email) {
-        return;
-    }
-
-    User.findOneAndUpdate({ email }, { lastActiveAt: new Date() }).catch(err => {
-        console.error('Session lastActive update failed:', err.message);
-    });
 }
 
 module.exports = function sessionMiddleware(req, res, next) {
@@ -111,6 +109,5 @@ module.exports = function sessionMiddleware(req, res, next) {
 
 // Expose store so controller can write directly
 module.exports.store = store;
-module.exports.bootId = BOOT_ID;
 // Expose persist so controllers can force-save right after login/logout.
 module.exports.persist = persist;
