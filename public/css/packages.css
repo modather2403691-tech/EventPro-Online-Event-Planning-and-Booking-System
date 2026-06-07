@@ -405,6 +405,34 @@ body.modern-bg.modern-font .modern-input:focus {
   box-shadow: 0 0 14px rgba(139, 92, 246, 0.26);
 }
 
+/* Style the event type select on the new-request page */
+body.modern-bg.modern-font #reqEventType {
+  background-color: rgba(139, 92, 246, 0.12);
+  color: #eef2ff;
+  border: 1px solid rgba(139, 92, 246, 0.25);
+}
+
+body.modern-bg.modern-font #reqEventType option[disabled] {
+  color: rgba(238,242,255,0.6);
+}
+
+/* Options styling (note: some browsers limit styling of native option elements) */
+body.modern-bg.modern-font #reqEventType option {
+  background-color: #2f1b5b;
+  color: #eef2ff;
+}
+
+body.modern-bg.modern-font #reqEventType option:hover {
+  background-color: #4a2bd9;
+  color: #ffffff;
+}
+
+body.modern-bg.modern-font #reqEventType option:checked,
+body.modern-bg.modern-font #reqEventType option[selected] {
+  background-color: #5b3df0;
+  color: #ffffff;
+}
+
 body.modern-bg.modern-font .modern-button {
   background-color: #6366f1;
   color: #ffffff;

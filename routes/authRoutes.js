@@ -449,7 +449,7 @@ router.get('/booking-requests', requireRole('organizer'), eventController.organi
 router.get('/accepted-requests', requireRole('organizer'), eventController.acceptedRequests);
 router.post('/booking-requests/offer', requireRole('organizer'), eventController.makeOffer);
 router.get('/my-requests', requireRole('client'), eventController.clientRequests);
-router.post('/booking-requests/accept', requireRole('organizer'), eventController.acceptOffer);
+router.post('/booking-requests/accept', requireRole('client'), eventController.acceptOffer);
 router.post('/booking-requests/cancel', requireRole('client'), eventController.cancelRequest);
 
 pages.forEach((page) => {

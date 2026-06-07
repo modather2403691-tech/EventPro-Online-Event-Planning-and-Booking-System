@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
 const path = require('path');
@@ -23,11 +24,19 @@ app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views')); 
 
 // 3. Database Connection (MongoDB Atlas)
-// حط اللينك بتاع الـ Cluster0 بتاعك هنا بدل الـ <username> و الـ <password>
-const MONGO_URI = 'mongodb://modather2403691_db_user:Mody1234@ac-fdnr0yo-shard-00-00.o2ac2oh.mongodb.net:27017,ac-fdnr0yo-shard-00-01.o2ac2oh.mongodb.net:27017,ac-fdnr0yo-shard-00-02.o2ac2oh.mongodb.net:27017/eventpro?ssl=true&replicaSet=atlas-10hhdt-shard-0&authSource=admin&appName=Cluster0';
+// Require `MONGO_URI` to be set in the environment for security.
+const MONGO_URI = process.env.MONGO_URI;
+if (!MONGO_URI) {
+    console.error('Missing MONGO_URI environment variable. Create a .env file or set MONGO_URI in the environment.');
+    process.exit(1);
+}
+
 mongoose.connect(MONGO_URI)
-    .then(() => console.log('Connected to MongoDB Cluster0 successfully!'))
-    .catch((err) => console.error('Failed to connect to MongoDB', err));
+    .then(() => console.log('Connected to MongoDB successfully!'))
+    .catch((err) => {
+        console.error('Failed to connect to MongoDB', err);
+        process.exit(1);
+    });
 
 
 // 4. Routes
