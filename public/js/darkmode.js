@@ -1,8 +1,8 @@
 document.addEventListener("DOMContentLoaded", () => {
-  // 1. إنشاء الزرار العائم الشيك
+ 
   const toggleBtn = document.createElement("button");
   
-  // 2. فحص الذاكرة للتأكد من المود الحالي
+ 
   if (localStorage.getItem("theme") === "dark") {
     document.body.classList.add("dark-mode");
   }
@@ -10,7 +10,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const isDark = document.body.classList.contains("dark-mode");
   toggleBtn.innerHTML = isDark ? "☀️" : "🌙";
   
-  // تصميم الزرار العائم
+  
   toggleBtn.style.cssText = `
     position: fixed;
     bottom: 25px;
@@ -31,21 +31,21 @@ document.addEventListener("DOMContentLoaded", () => {
     transition: transform 0.2s ease;
   `;
 
-  // أنيميشن عند التمرير بالماوس
+ 
   toggleBtn.onmouseover = () => toggleBtn.style.transform = "scale(1.1)";
   toggleBtn.onmouseout = () => toggleBtn.style.transform = "scale(1)";
 
   document.body.appendChild(toggleBtn);
 
-  // 3. الأكشن لما اليوزر يدوس على الزرار
+  
   toggleBtn.addEventListener("click", () => {
     document.body.classList.toggle("dark-mode");
     const currentlyDark = document.body.classList.contains("dark-mode");
     
-    // حفظ المود في الـ LocalStorage
+    
     localStorage.setItem("theme", currentlyDark ? "dark" : "light");
     
-    // تغيير شكل وألوان الزرار
+    
     toggleBtn.innerHTML = currentlyDark ? "☀️" : "🌙";
     toggleBtn.style.backgroundColor = currentlyDark ? "#ffffff" : "#1e1e1e";
     toggleBtn.style.color = currentlyDark ? "#121212" : "#ffffff";

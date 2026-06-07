@@ -16,7 +16,7 @@ body {
     overflow: hidden;
 }
 
-/* ========== LEFT SIDE ========== */
+
 .animation-side {
     flex: 1.2;
     background-color: rgba(248, 249, 251, 0.1);
@@ -27,7 +27,7 @@ body {
     overflow: hidden;
 }
 
-/* Subtle background pattern */
+
 .animation-side::before {
     content: '';
     position: absolute;
@@ -47,7 +47,7 @@ body {
     height: 400px;
 }
 
-/* --- Character idle animations --- */
+
 @keyframes float-1 {
     0%, 100% { transform: translateY(0); }
     50% { transform: translateY(-6px); }
@@ -131,7 +131,7 @@ body {
     animation: entrance 0.6s ease-out 0.4s both, float-4 3.8s ease-in-out 1s infinite;
 }
 
-/* --- Eyes --- */
+
 .eye {
     background: white;
     width: 20px;
@@ -156,7 +156,7 @@ body {
     pointer-events: none;
 }
 
-/* Little highlight on pupil */
+
 .pupil::after {
     content: '';
     position: absolute;
@@ -168,7 +168,7 @@ body {
     right: 1px;
 }
 
-/* --- Mouth (on yellow pill) --- */
+
 .mouth {
     width: 16px;
     height: 8px;
@@ -178,12 +178,12 @@ body {
     transition: all 0.4s ease;
 }
 
-/* ========== SAD MODE ========== */
+
 .sad-mode .char {
     animation-play-state: paused !important;
 }
 
-/* Characters tilt their "heads" slightly away */
+
 .sad-mode .purple-rect {
     transform: rotate(-3deg) translateX(-4px);
 }
@@ -197,19 +197,19 @@ body {
     transform: rotate(-3deg) translateX(-4px);
 }
 
-/* Eyes stay normal shape but pupils shift left */
+
 .sad-mode .pupil {
     transform: translateX(-8px) !important;
 }
 
-/* Sad mouth - frown */
+
 .sad-mode .mouth {
     border-bottom: none;
     border-top: 2.5px solid #92400e;
     border-radius: 50% 50% 0 0;
 }
 
-/* Shake animation for errors */
+
 .shake {
     animation: shake 0.5s ease-in-out;
 }
@@ -220,7 +220,7 @@ body {
     20%, 40%, 60%, 80% { transform: translateX(5px); }
 }
 
-/* Error flash effect */
+
 .error-flash {
     animation: error-flash 0.5s ease-in-out;
 }
@@ -230,7 +230,7 @@ body {
     50% { background: linear-gradient(135deg, #4b0f0f, #7f2a2a, #8b0000); }
 }
 
-/* ========== SCARED MODE (Peeking back) ========== */
+
 .scared-mode .char {
     animation-play-state: paused !important;
 }
@@ -248,13 +248,13 @@ body {
     transform: rotate(-2deg) translateX(-2px);
 }
 
-/* Eyes get bigger — they're nervous */
+
 .scared-mode .eye {
     height: 24px;
     width: 22px;
 }
 
-/* Pupils shift slightly left but not as much — they're peeking */
+
 .scared-mode .pupil {
     width: 7px;
     height: 7px;
@@ -269,7 +269,7 @@ body {
     background: transparent;
 }
 
-/* ========== HAPPY MODE (submit) ========== */
+
 .happy-mode .char {
     animation-play-state: running !important;
 }
@@ -286,7 +286,7 @@ body {
     border-radius: 0 0 50% 50%;
 }
 
-/* ========== RIGHT SIDE ========== */
+
 .form-side {
     flex: 1;
     background: rgba(255, 255, 255, 0.95);
@@ -392,7 +392,7 @@ input:focus {
     color: #7c3aed;
 }
 
-/* Custom checkbox */
+
 .remember {
     display: flex;
     align-items: center;
@@ -516,7 +516,7 @@ input:focus {
     color: #8B5CF6;
 }
 
-/* ========== ERROR STATE ========== */
+
 .input-group.error input {
     border-bottom-color: #ef4444;
 }
@@ -539,7 +539,7 @@ input:focus {
     75% { transform: translateX(5px); }
 }
 
-/* ========== MOBILE ========== */
+
 @media (max-width: 768px) {
     .container {
         flex-direction: column-reverse;
@@ -572,7 +572,7 @@ input:focus {
     header p { margin-bottom: 25px; }
 }
 
-/* ========== REGISTER + CONTACT (scoped) ========== */
+
 .auth-page,
 .contact-page {
     min-height: 100vh;
@@ -807,18 +807,18 @@ input:focus {
     background: white !important;
 }
 
-/* نشيل الخلفية الجانبية الزرقا */
+
 .forgot-page .animation-side {
     display: none;
 }
 
-/* نخلي الفورم في النص */
+
 .forgot-page .container {
     justify-content: center;
     align-items: center;
 }
 
-/* نخلي الفورم white clean */
+
 .forgot-page .form-side {
     flex: none;
     background: white;
@@ -828,7 +828,7 @@ input:focus {
     align-items: center;
 }
 
-/* box يبقى في النص */
+
 .forgot-page .login-box {
     background: white;
     box-shadow: 0 10px 25px rgba(0,0,0,0.1);
@@ -836,14 +836,14 @@ input:focus {
     border-radius: 12px;
 }
 
-/* inputs تبقى clean */
+
 .forgot-page input {
     border: 1px solid #ddd;
     border-radius: 6px;
     padding: 12px;
 }
 
-/* button */
+
 .forgot-page .btn-login {
     background: #111;
     border-radius: 6px;

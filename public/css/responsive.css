@@ -171,9 +171,7 @@ section {
   margin-bottom: 50px;
 }
 
-/* ----------------------
-   Responsive: Tablet
-   ---------------------- */
+
 @media (max-width: 1024px) {
   .navbar, .home-navbar {
     padding: 12px 20px;
@@ -221,16 +219,14 @@ section {
   }
 }
 
-/* ----------------------
-   Responsive: Mobile
-   ---------------------- */
+
 @media (max-width: 640px) {
   .navbar, .home-navbar {
     padding: 10px 14px;
   }
 
   .home-nav-links {
-    display: none; /* collapse long nav on small screens */
+    display: none; 
   }
 
   .home-nav-actions {
@@ -280,24 +276,22 @@ section {
     padding: 16px;
   }
 
-  /* Forms and inputs scale better on mobile */
+ 
   input, select, textarea, button {
     font-size: 15px;
   }
 
-  /* Make sidebar-like blocks full width when present on page */
+ 
   aside.sidebar {
     position: relative;
     width: 100%;
     margin-bottom: 18px;
   }
 
-  /* Keep navbar markup unchanged on mobile (no injected hamburger) */
+  
 }
 
-/* =========================
-   HOMEPAGE ONLY - CVENT STYLE
-   ========================= */
+
 
 .home-navbar {
   display: flex;
@@ -703,7 +697,7 @@ section {
   margin-bottom: 24px;
 }
 
-/* Old cvent navbar code kept only if you still use it somewhere */
+
 .cvent-navbar {
   display: flex;
   justify-content: space-between;
@@ -1091,7 +1085,7 @@ section {
     padding: 16px;
   }
 }
-/* ===== Global responsive improvements ===== */
+
 html, body {
   overflow-x: hidden;
 }

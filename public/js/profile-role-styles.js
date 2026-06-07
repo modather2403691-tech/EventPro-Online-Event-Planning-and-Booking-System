@@ -1,4 +1,4 @@
-// Show the correct profile view based on ?role= query param
+
 (function () {
   const params = new URLSearchParams(window.location.search);
   const role = (params.get('role') || 'client').toLowerCase();

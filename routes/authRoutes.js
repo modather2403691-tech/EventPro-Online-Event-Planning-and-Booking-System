@@ -11,7 +11,7 @@ const Event = require('../models/Event');
 const requireAdmin = require('../middleware/adminAuth');
 const { requireRole } = require('../middleware/roleAuth');
 
-// Helper: get name from session or fallback
+
 function userName(req, fallback) {
     const u = req.session && req.session.user;
     console.log('[route] session.user =', u);
@@ -30,7 +30,7 @@ function redirectByRole(req, res) {
     return res.redirect('/client-index');
 }
 
-// Generic pages (no session data needed)
+
 const pages = [
     'about',
     'contact',
@@ -49,7 +49,7 @@ router.get('/reports', requireAdmin, adminController.getReports);
 router.get('/client-reservation', requireAdmin, adminController.getClientReservation);
 router.get('/organizer-event', requireAdmin, adminController.getOrganizerEvent);
 
-// Client pages that need session data
+
 router.get('/client-dashboard', requireRole('client'), async (req, res) => {
     const u = (req.session && req.session.user) || {};
     if (roleFromSession(req) === 'admin') return res.redirect('/admin-index');
@@ -107,7 +107,7 @@ router.get('/my-bookings', requireRole('client'), async (req, res) => {
     });
 });
 
-// Booking form — must be logged in so the booking is tied to the account.
+
 router.get('/book-event', requireRole('client'), (req, res) => {
     const u = req.session && req.session.user;
     if (!u || !u.email) return res.redirect('/login');
@@ -154,8 +154,7 @@ router.post('/book-event', requireRole('client'), async (req, res) => {
     }
 
     try {
-        // If this booking is for an organizer-created event, attach the event
-        // and its organizer so it shows up in the organizer's management page.
+      
         let linkedEvent = null;
         if (eventId) {
             try { linkedEvent = await Event.findById(eventId); } catch (e) { /* ignore bad id */ }
@@ -163,7 +162,7 @@ router.post('/book-event', requireRole('client'), async (req, res) => {
 
         const booking = await new Booking({
             userName:  name || u.name,
-            userEmail: u.email,            // always the logged-in account
+            userEmail: u.email,           
             phone,
             eventType,
             eventDate: eventDate ? new Date(eventDate) : (linkedEvent ? linkedEvent.date : null),
@@ -183,7 +182,7 @@ router.post('/book-event', requireRole('client'), async (req, res) => {
     }
 });
 
-// Index pages — pass name from session
+
 router.get('/organizer-index', requireRole('organizer'), async (req, res) => {
     const u = (req.session && req.session.user) || {};
     let events = [];
@@ -200,7 +199,7 @@ router.get('/client-index', requireRole('client'), async (req, res) => {
     res.render('client-index', { name: userName(req, 'Client'), events });
 });
 
-// Profile pages
+
 router.get('/client-profile', requireRole('client'), async (req, res) => {
     const u = (req.session && req.session.user) || {};
     const memberSince = u.memberSince
@@ -224,7 +223,7 @@ router.get('/client-profile', requireRole('client'), async (req, res) => {
     });
 });
 
-// POST — update account active status
+
 router.post('/client-profile/update-account', requireRole('client'), async (req, res) => {
     const u = req.session && req.session.user;
     if (!u) return res.status(401).json({ error: 'Not logged in' });
@@ -239,7 +238,7 @@ router.post('/client-profile/update-account', requireRole('client'), async (req,
     }
 });
 
-// POST — delete account (shared)
+
 router.post('/profile/delete-account', async (req, res) => {
     const u = req.session && req.session.user;
     if (!u) return res.status(401).json({ error: 'Not logged in' });
@@ -269,7 +268,7 @@ router.post('/profile/delete-account', async (req, res) => {
             Event.deleteMany({ organizerEmail: email })
         ]);
 
-        // Remove any organizer offers or accepted organizer references from remaining requests
+        
         await BookingRequest.updateMany(
             { $or: [ { 'offers.organizerEmail': email }, { acceptedOrganizerEmail: email } ] },
             {
@@ -278,7 +277,7 @@ router.post('/profile/delete-account', async (req, res) => {
             }
         );
 
-        // Destroy session and clear cookie
+    
         const sid = req.sessionId;
         const { store } = require('../middleware/session');
         if (sid && store[sid]) delete store[sid];
@@ -291,7 +290,7 @@ router.post('/profile/delete-account', async (req, res) => {
     }
 });
 
-// POST — update profile info (name + phone)
+
 router.post('/client-profile/update-info', requireRole('client'), async (req, res) => {
     const u = req.session && req.session.user;
     if (!u) return res.status(401).json({ error: 'Not logged in' });
@@ -306,7 +305,7 @@ router.post('/client-profile/update-info', requireRole('client'), async (req, re
             { email: u.email },
             { name: name.trim(), phone: phone.trim() }
         );
-        // Update session immediately
+       
         req.session.user.name  = name.trim();
         req.session.user.phone = phone.trim();
         res.json({ success: true });
@@ -316,7 +315,7 @@ router.post('/client-profile/update-info', requireRole('client'), async (req, re
     }
 });
 
-// POST — update profile photo
+
 router.post('/client-profile/update-photo', requireRole('client'), async (req, res) => {
     const u = req.session && req.session.user;
     console.log('[DEBUG] /client-profile/update-photo headers.cookie=', req.headers && req.headers.cookie);
@@ -326,7 +325,7 @@ router.post('/client-profile/update-photo', requireRole('client'), async (req, r
     const { photo } = req.body; // base64 data URL from client
     if (!photo) return res.status(400).json({ error: 'No photo provided' });
 
-    // Validate it's an image data URL
+  
     if (!photo.startsWith('data:image/')) {
         return res.status(400).json({ error: 'Invalid image format' });
     }
@@ -335,7 +334,7 @@ router.post('/client-profile/update-photo', requireRole('client'), async (req, r
         const User = require('../models/user');
         await User.findOneAndUpdate({ email: u.email }, { photo });
 
-        // Update session too so it reflects immediately
+        
         req.session.user.photo = photo;
 
         res.json({ success: true, photo });
@@ -345,7 +344,7 @@ router.post('/client-profile/update-photo', requireRole('client'), async (req, r
     }
 });
 
-// POST — update organizer profile photo (same as client endpoint but for organizers)
+
 router.post('/organizer-profile/update-photo', requireRole('organizer'), async (req, res) => {
     const u = req.session && req.session.user;
     console.log('[DEBUG] /organizer-profile/update-photo headers.cookie=', req.headers && req.headers.cookie);
@@ -370,7 +369,7 @@ router.post('/organizer-profile/update-photo', requireRole('organizer'), async (
     }
 });
 
-// POST — change password (shared)
+
 router.post('/profile/change-password', async (req, res) => {
     try {
         const u = req.session && req.session.user;
@@ -475,7 +474,7 @@ router.get('/', async (req, res) => {
     res.render('index', { events });
 });
 
-// ---- Events (organizer) ----
+
 router.get('/addevent', requireRole('organizer'), eventController.showAddEvent);
 router.post('/addevent', requireRole('organizer'), eventController.createEvent);
 router.get('/manage-events', requireRole('organizer'), eventController.manageEvents);
@@ -483,7 +482,7 @@ router.post('/manage-events/delete', requireRole('organizer'), eventController.d
 router.post('/manage-events/edit', requireRole('organizer'), eventController.editEvent);
 router.post('/manage-events/booking-status', requireRole('organizer'), eventController.updateBookingStatus);
 
-// ---- Booking requests (marketplace) ----
+
 router.get('/new-request', requireRole('client'), eventController.showNewRequest);
 router.post('/booking-requests/create', requireRole('client'), eventController.createRequest);
 router.get('/booking-requests', requireRole('organizer'), eventController.organizerRequests);
@@ -508,10 +507,10 @@ router.get('/login', (req, res) => {
     res.render('login', { error: null });
 });
 
-// Logout
+
 router.get('/logout', authController.logout);
 
-// POST rout
+
 router.post('/register', authController.register);
 router.post('/login', authController.login);
 router.post('/admin/users/edit', adminController.editUser);

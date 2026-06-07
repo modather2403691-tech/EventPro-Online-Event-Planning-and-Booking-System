@@ -49,7 +49,7 @@ document.addEventListener("DOMContentLoaded", () => {
     try {
       localStorage.setItem(storageKey, JSON.stringify(statuses));
     } catch (error) {
-      // Ignore storage failures and keep the UI working.
+
     }
   };
 
@@ -65,7 +65,7 @@ document.addEventListener("DOMContentLoaded", () => {
     try {
       localStorage.setItem(priceStorageKey, JSON.stringify(prices));
     } catch (error) {
-      // Ignore storage failures and keep the UI working.
+    
     }
   };
 
@@ -273,7 +273,7 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 });
 
-/* All Admin */
+
 document.addEventListener("DOMContentLoaded", function () {
   const table = document.getElementById("manageUsersTable");
   const tableBody = document.getElementById("manageUsersTableBody");
@@ -304,7 +304,7 @@ document.addEventListener("DOMContentLoaded", function () {
     try {
       localStorage.setItem(storageKey, JSON.stringify(users));
     } catch (error) {
-      // Keep UI functional even if storage is unavailable.
+      
     }
   };
 
@@ -318,7 +318,7 @@ document.addEventListener("DOMContentLoaded", function () {
     };
   });
 
-  // Add Event Form Validation
+ 
 document.addEventListener("DOMContentLoaded", function () {
   const addEventForm = document.getElementById("form-box");
 
@@ -329,10 +329,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
     let isValid = true;
 
-    // Clear previous errors
+   
     document.querySelectorAll("#form-box .error").forEach(error => error.textContent = "");
 
-    // Event Image validation
+    
     const imageInput = document.getElementById("image");
     const imageFile = imageInput.files[0];
     if (!imageFile) {
@@ -343,14 +343,14 @@ document.addEventListener("DOMContentLoaded", function () {
       isValid = false;
     }
 
-    // Title validation
+   
     const title = document.getElementById("title").value.trim();
     if (title.length <= 5) {
       document.getElementById("titleError").textContent = "Title must be more than 5 characters";
       isValid = false;
     }
 
-    // Date of Event validation
+    
     const date = document.getElementById("date").value;
     const today = new Date().toISOString().split('T')[0]; // YYYY-MM-DD
     if (!date) {
@@ -361,32 +361,32 @@ document.addEventListener("DOMContentLoaded", function () {
       isValid = false;
     }
 
-    // Capacity validation
+   
     const capacity = document.getElementById("capacity").value;
     if (!capacity || isNaN(capacity) || capacity <= 0) {
       document.getElementById("capacityError").textContent = "Capacity must be a positive number";
       isValid = false;
     }
 
-    // Price validation
+    
     const price = document.getElementById("price").value;
     if (price === "" || isNaN(price) || Number(price) < 0) {
       document.getElementById("priceError").textContent = "Price must be 0 or a positive number";
       isValid = false;
     }
 
-    // Location validation
+   
     const location = document.getElementById("location").value.trim();
     if (location.length <= 10) {
       document.getElementById("locationError").textContent = "Location must be more than 10 characters";
       isValid = false;
     }
 
-    // Rules are not required, so no validation
+    
 
     if (!isValid) return;
 
-    // Read the image as a base64 data URL, then save the event to the server.
+    
     const reader = new FileReader();
     reader.onload = () => sendEvent(reader.result);
     reader.onerror = () => sendEvent("");

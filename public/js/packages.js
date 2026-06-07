@@ -1,4 +1,4 @@
-// Ahmed Fares - Event pricing data
+
 const eventPrices = {
   "Founders Live Cairo": 150,
   "Investors Founders Meetup": 250,
@@ -6,7 +6,7 @@ const eventPrices = {
   "AI Party Egypt": 300
 };
 
-// Ahmed Fares - Handle Join Event button clicks
+
 document.addEventListener("DOMContentLoaded", function() {
   const joinButtons = document.querySelectorAll(".event-card button");
   
@@ -21,7 +21,7 @@ document.addEventListener("DOMContentLoaded", function() {
     });
   });
   
-  // Ahmed Fares - Hide Additional Notes field when coming from Join Event
+ 
   const urlParams = new URLSearchParams(window.location.search);
   const source = urlParams.get("source");
   const eventName = urlParams.get("event");
@@ -53,7 +53,7 @@ document.addEventListener("DOMContentLoaded", function() {
     }
   }
 });
-//ahmed Fares
+
 function setupPriceCalculation(basePrice) {
   const totalPrice = document.getElementById("totalPrice");
   const services = document.querySelectorAll(".service");
@@ -75,11 +75,11 @@ function setupPriceCalculation(basePrice) {
   });
 }
 
-//validation 
+
 document.addEventListener("DOMContentLoaded", function () {
   const bookingForm = document.getElementById('bookingForm');
 
-  // --- 1. منع الحروف والأرقام السالبة "لحظياً" في الموبايل والضيوف ---
+ 
   const numericFields = ['phone', 'guests'];
   numericFields.forEach(id => {
     const field = document.getElementById(id);
@@ -93,13 +93,13 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   });
 
-  // --- 2. التحقق عند إرسال الفورم (Submit) ---
+  
   if (bookingForm) {
     bookingForm.addEventListener('submit', function (e) {
       e.preventDefault();
       let isValid = true;
 
-      // مسح رسايل الخطأ القديمة
+    
       document.querySelectorAll('.error').forEach(span => span.textContent = '');
 
       const name = document.getElementById('name').value.trim();
@@ -110,7 +110,7 @@ document.addEventListener("DOMContentLoaded", function () {
       const guestsSection = document.getElementById('guestsSection');
       const isEventSource = new URLSearchParams(window.location.search).get('source') === 'event';
 
-      // ✅ الـ Name (مطلوب + 9 حروف)
+      
       if (name === '') {
         document.getElementById('nameError').textContent = 'Full Name is required.';
         isValid = false;
@@ -119,7 +119,7 @@ document.addEventListener("DOMContentLoaded", function () {
         isValid = false;
       }
 
-      // ✅ الـ Email (مطلوب + صيغة صحيحة)
+  
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       if (email === '') {
         document.getElementById('emailError').textContent = 'Email is required.';
@@ -129,7 +129,7 @@ document.addEventListener("DOMContentLoaded", function () {
         isValid = false;
       }
 
-      // ✅ الـ Phone (مطلوب + 11 رقم)
+      
       if (phone === '') {
         document.getElementById('phoneError').textContent = 'Phone number is required.';
         isValid = false;
@@ -138,7 +138,7 @@ document.addEventListener("DOMContentLoaded", function () {
         isValid = false;
       }
 
-      // ✅ الـ Date (مطلوب + مش في الماضي)
+      
       if (!isEventSource) {
         if (eventDate === '') {
           document.getElementById('dateError').textContent = 'Event date is required.';
@@ -153,7 +153,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }
       }
 
-      // ✅ الـ Guests (مطلوب لو القسم ظاهر)
+   
       if (guestsSection && window.getComputedStyle(guestsSection).display !== 'none') {
         const guests = guestsInput.value.trim();
         if (guests === '') {
@@ -165,7 +165,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }
       }
 
-      // لو كله تمام
+      
       if (isValid) {
         const sourceInput = document.getElementById('source');
         const priceInput = document.getElementById('price');
@@ -214,7 +214,7 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 });
 
-/*book event*/
+
   const guestsSection = document.getElementById("guestsSection");
 document.addEventListener("DOMContentLoaded", () => {
   const params = new URLSearchParams(window.location.search);
@@ -500,7 +500,7 @@ document.addEventListener("DOMContentLoaded", () => {
     try {
       localStorage.setItem(storageKey, JSON.stringify(statuses));
     } catch (error) {
-      // Ignore storage failures and keep the UI working.
+     
     }
   };
 
@@ -522,9 +522,9 @@ document.addEventListener("DOMContentLoaded", () => {
     const description = card.querySelector("p").innerText.toLowerCase();
 
     if (title.includes(searchValue) || description.includes(searchValue)) {
-      card.style.display = "block"; // أظهر الكارت لو مطابق للبحث
+      card.style.display = "block"; 
     } else {
-      card.style.display = "none";  // اخفي الكارت لو مش مطابق
+      card.style.display = "none";  
     }
   });
 });
@@ -536,7 +536,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const priceFilter = document.getElementById("priceFilter");
     const wrapper = document.querySelector(".packages-wrapper");
 
-    // إنشاء رسالة "لا يوجد نتائج" وإخفائها في الأول
+    
     const noResultsMsg = document.createElement("p");
     noResultsMsg.id = "noResults";
     noResultsMsg.innerText = "No packages found matching your criteria.";
@@ -568,7 +568,7 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         });
 
-        // إظهار أو إخفاء رسالة "No Results"
+       
         noResultsMsg.style.display = foundAny ? "none" : "block";
     }
 

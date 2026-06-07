@@ -2,13 +2,13 @@ const Event = require('../models/Event');
 const Booking = require('../models/Booking');
 const BookingRequest = require('../models/BookingRequest');
 
-// ---- helpers ---------------------------------------------------------------
+
 
 function sessionUser(req) {
   return (req.session && req.session.user) || null;
 }
 
-// Load all events (newest first) — used to populate the home pages.
+
 async function getAllEvents() {
   try {
     return await Event.find().sort({ createdAt: -1 });
@@ -18,9 +18,9 @@ async function getAllEvents() {
   }
 }
 
-// ---- events: create --------------------------------------------------------
 
-// GET /addevent  (organizer)
+
+
 function showAddEvent(req, res) {
   const u = sessionUser(req);
   res.render('addevent', {
@@ -29,7 +29,7 @@ function showAddEvent(req, res) {
   });
 }
 
-// POST /addevent  (organizer) 
+
 async function createEvent(req, res) {
   const u = sessionUser(req);
   if (!u || u.role !== 'organizer') {
@@ -63,9 +63,7 @@ async function createEvent(req, res) {
   }
 }
 
-// ---- events: organizer management -----------------------------------------
 
-// GET /manage-events  (organizer) — the organizer's own events + who booked each
 async function manageEvents(req, res) {
   const u = sessionUser(req);
   const email = (u && u.email) || null;
@@ -109,7 +107,7 @@ async function deleteEvent(req, res) {
   res.redirect('/manage-events');
 }
 
-// POST /manage-events/edit  (organizer) — update an event's details
+
 async function editEvent(req, res) {
   const u = sessionUser(req);
   const email = (u && u.email) || null;
@@ -136,7 +134,7 @@ async function editEvent(req, res) {
   res.redirect('/manage-events');
 }
 
-// POST /manage-events/booking-status  (organizer) — confirm/decline a booking on an event
+
 async function updateBookingStatus(req, res) {
   const u = sessionUser(req);
   const email = (u && u.email) || null;
@@ -153,9 +151,7 @@ async function updateBookingStatus(req, res) {
   res.redirect('/manage-events');
 }
 
-// ---- booking requests: marketplace ----------------------------------------
 
-// GET /new-request  (client) — form to broadcast a custom request
 function showNewRequest(req, res) {
   const u = sessionUser(req);
   if (!u || !u.email) return res.redirect('/login');
@@ -167,7 +163,7 @@ function showNewRequest(req, res) {
   });
 }
 
-// POST /booking-requests/create  (client)
+
 async function createRequest(req, res) {
   const u = sessionUser(req);
   if (!u || !u.email) return res.redirect('/login');
@@ -181,7 +177,7 @@ async function createRequest(req, res) {
   try {
     await new BookingRequest({
       clientName:  name || u.name,
-      clientEmail: u.email,            // always the logged-in account
+      clientEmail: u.email,           
       phone,
       eventType,
       eventDate: eventDate ? new Date(eventDate) : null,
@@ -196,7 +192,7 @@ async function createRequest(req, res) {
   }
 }
 
-// GET /booking-requests  (organizer) — dashboard of ALL open requests
+
 async function organizerRequests(req, res) {
   const u = sessionUser(req);
   const email = (u && u.email) || '';
@@ -216,7 +212,7 @@ async function organizerRequests(req, res) {
   });
 }
 
-// GET /accepted-requests  (organizer) — requests the client has accepted
+
 async function acceptedRequests(req, res) {
   const u = sessionUser(req);
   const email = (u && u.email) || '';
@@ -246,7 +242,7 @@ async function acceptedRequests(req, res) {
   });
 }
 
-// POST /booking-requests/offer  (organizer) — reply to a request with a price
+
 async function makeOffer(req, res) {
   const u = sessionUser(req);
   if (!u || u.role !== 'organizer') {
@@ -278,7 +274,7 @@ async function makeOffer(req, res) {
   res.redirect('/booking-requests');
 }
 
-// GET /my-requests  (client) — the client's own requests + offers received
+
 async function clientRequests(req, res) {
   const u = sessionUser(req);
   const email = (u && u.email) || null;
@@ -298,7 +294,7 @@ async function clientRequests(req, res) {
   });
 }
 
-// POST /booking-requests/accept  (client) — accept one organizer's offer
+
 async function acceptOffer(req, res) {
   const u = sessionUser(req);
   const email = (u && u.email) || null;
@@ -316,8 +312,7 @@ async function acceptOffer(req, res) {
           request.acceptedPrice = offer.price;
           await request.save();
 
-          // Mirror the confirmed request into the organizer's event bookings,
-          // so it appears in their management view as well.
+         
           await new Booking({
             userName:  request.clientName,
             userEmail: request.clientEmail,
@@ -340,7 +335,7 @@ async function acceptOffer(req, res) {
   res.redirect('/my-requests');
 }
 
-// POST /booking-requests/cancel  (client)
+
 async function cancelRequest(req, res) {
   const u = sessionUser(req);
   const email = (u && u.email) || null;

@@ -1,4 +1,4 @@
-//admin
+
 document.addEventListener("DOMContentLoaded", function () {
   const table = document.getElementById("manageUsersTable");
   const tableBody = document.getElementById("manageUsersTableBody");
@@ -8,7 +8,7 @@ document.addEventListener("DOMContentLoaded", function () {
     return;
   }
 
-  // Frontend Form Validation (Backend will handle the actual saving)
+ 
   const idInput = document.getElementById("newUserId");
   const nameInput = document.getElementById("newUserName");
   const emailInput = document.getElementById("newUserEmail");
@@ -200,25 +200,25 @@ document.addEventListener("DOMContentLoaded", function () {
     const phoneValue = phoneInput ? phoneInput.value.trim() : "";
     const dobValue = dobInput ? dobInput.value : "";
 
-    // clear previous errors
+   
     [idError, nameError, emailError, passwordError, phoneError, dobError].forEach(clearError);
 
     let isValid = true;
 
-    // User ID: required and will be checked for uniqueness below
+   
     if (!valueId) {
       setError(idError, 'User ID is required.');
       isValid = false;
     }
 
-    // Name: 9 characters or more
+
     validateName();
     if (nameValue.length < 9) {
       setError(nameError, 'Name must be at least 9 characters.');
       isValid = false;
     }
 
-    // Email: basic format validation
+    
     validateEmail();
     if (!emailValue) {
       setError(emailError, 'Email is required.');
@@ -228,7 +228,7 @@ document.addEventListener("DOMContentLoaded", function () {
       isValid = false;
     }
 
-    // Password: 8+ chars, uppercase, number, and special character
+   
     validatePassword();
     if (!passwordValue) {
       setError(passwordError, 'Password is required.');
@@ -238,7 +238,7 @@ document.addEventListener("DOMContentLoaded", function () {
       isValid = false;
     }
 
-    // Phone: must start with 01
+    
     validatePhone();
     if (!phoneValue) {
       setError(phoneError, 'Phone number is required.');
@@ -248,7 +248,7 @@ document.addEventListener("DOMContentLoaded", function () {
       isValid = false;
     }
 
-    // DOB: must be at least 18 years old
+   
     validateDob();
     if (!dobValue) {
       setError(dobError, 'Date of birth is required.');
@@ -261,7 +261,7 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     }
 
-    // Check userId uniqueness via AJAX before final submit
+   
     if (valueId && isValid) {
       try {
         const res = await fetch('/admin/users/check-id?userId=' + encodeURIComponent(valueId), {
@@ -277,7 +277,7 @@ document.addEventListener("DOMContentLoaded", function () {
           }
         }
       } catch (err) {
-        // network error — allow server-side validation to catch it
+      
         console.warn('ID uniqueness check failed', err);
       }
     }
@@ -318,24 +318,24 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   });
 
-  // Basic UI visual removal for delete button (Requires backend route to actually delete from DB)
+ 
   table.addEventListener("click", function (event) {
     const row = event.target.closest("tr");
     if (!row) return;
 
-    // Start editing a user row
+    
     if (event.target.classList.contains("user-edit-btn")) {
       enterUserEditMode(row);
       return;
     }
 
-    // Save edited user
+  
     if (event.target.classList.contains("user-save-btn")) {
       saveUserEdits(row);
       return;
     }
 
-    // Cancel editing
+   
     if (event.target.classList.contains("user-cancel-btn")) {
       cancelUserEdits(row);
       return;
@@ -345,7 +345,7 @@ document.addEventListener("DOMContentLoaded", function () {
       if (!confirm("Are you sure you want to delete this user?")) {
         return;
       }
-      // For now remove from UI; backend deletion not implemented
+    
       row.remove();
     }
   });
@@ -353,10 +353,10 @@ document.addEventListener("DOMContentLoaded", function () {
   function enterUserEditMode(row) {
     if (!row) return;
     row.classList.add('is-editing');
-    // toggle buttons
+   
     toggleUserButtons(row, true);
 
-    // make editable fields
+   
     ['name','email','phone','dob','role','status'].forEach(field => {
       const cell = row.querySelector('[data-field="' + field + '"]');
       if (!cell) return;
@@ -374,7 +374,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }
       } else if (field === 'dob') {
         input = document.createElement('input'); input.type = 'date'; input.className = 'user-edit-input';
-        // try to parse existing date
+        
         const d = new Date(text);
         if (!isNaN(d.getTime())) {
           const yyyy = d.getFullYear(); const mm = String(d.getMonth()+1).padStart(2,'0'); const dd = String(d.getDate()).padStart(2,'0'); input.value = yyyy + '-' + mm + '-' + dd;
@@ -459,7 +459,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
       if (!res.ok || !data.success) throw new Error((data && data.message) || ('Save failed (status ' + res.status + ')'));
 
-      // update UI with returned values
+    
       ['name','email','phone','dob','role','status'].forEach(field => {
         const cell = row.querySelector('[data-field="' + field + '"]');
         if (!cell) return;
@@ -478,7 +478,7 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   function cancelUserEdits(row) {
-    // restore text from inputs without saving
+    
     ['name','email','phone','dob','role','status'].forEach(field => {
       const cell = row.querySelector('[data-field="' + field + '"]');
       if (!cell) return;
@@ -497,9 +497,7 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 });
 
-// =========================================================
-// ADMIN DASHBOARD BUTTONS
-// =========================================================
+
 document.addEventListener("DOMContentLoaded", function () {
   const generateReportButton = document.getElementById("btnGenerateReport");
   const exportCsvButton = document.getElementById("btnExportCsv");
@@ -517,9 +515,7 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 });
 
-// =========================================================
-// ORGANIZER EVENT PAGE LOGIC (Kept exactly as you had it)
-// =========================================================
+
 document.addEventListener("DOMContentLoaded", function () {
   if (document.body.id !== "organizerEventPage") {
     return;
@@ -709,9 +705,7 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 });
 
-// =========================================================
-// DASHBOARD STATS LOGIC
-// =========================================================
+
 document.addEventListener("DOMContentLoaded", () => {
   if (!document.body.classList.contains("admin-page")) {
     return;

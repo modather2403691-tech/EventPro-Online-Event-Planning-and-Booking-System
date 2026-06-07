@@ -1,4 +1,4 @@
-// ── Photo upload ──
+
 const photoWrapper = document.getElementById('photoWrapper');
 const photoInput   = document.getElementById('photoInput');
 const profilePhoto = document.getElementById('profilePhoto');
@@ -8,7 +8,7 @@ const uploadStatus = document.getElementById('uploadStatus');
 const DEFAULT_PHOTO = '/images/my-photo.jpg';
 const originalSrc   = profilePhoto ? (profilePhoto.src || DEFAULT_PHOTO) : DEFAULT_PHOTO;
 
-// detect page role; organizer pages set <body data-role="organizer">
+
 const pageRole = document.body && document.body.dataset && document.body.dataset.role ? document.body.dataset.role : 'client';
 
 if (photoWrapper && photoInput) {
@@ -98,14 +98,14 @@ function showStatus(msg, type) {
   }
 }
 
-// ── Numbers only on phone input ──
+
 const inputPhone = document.getElementById('inputPhone');
 if (inputPhone) {
   inputPhone.addEventListener('input',    () => { inputPhone.value = inputPhone.value.replace(/[^0-9]/g, ''); });
   inputPhone.addEventListener('keypress', (e) => { if (e.which < 48 || e.which > 57) e.preventDefault(); });
 }
 
-// ── Inline profile edit (name + phone) ──
+
 const profileEditBtn    = document.getElementById('profileEditBtn');
 const profileSaveBtn    = document.getElementById('profileSaveBtn');
 const profileCancelBtn  = document.getElementById('profileCancelBtn');
@@ -205,7 +205,7 @@ function showEditStatus(msg, type) {
   profileEditStatus.className   = type;
 }
 
-// ── Delete Account ──
+
 const deleteAccountBtn = document.getElementById('deleteAccountBtn');
 const deleteModal      = document.getElementById('deleteModal');
 const deleteConfirmBtn = document.getElementById('deleteConfirmBtn');
@@ -270,7 +270,7 @@ if (deleteConfirmBtn) {
   });
 }
 
-// ── Change Password ──
+
 const changePasswordForm = document.getElementById('changePasswordForm');
 const changePasswordStatus = document.getElementById('changePasswordStatus');
 if (changePasswordForm) {

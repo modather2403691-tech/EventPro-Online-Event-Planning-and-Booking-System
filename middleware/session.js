@@ -7,7 +7,7 @@ const User = require('../models/user');
 const store = {};
 const BOOT_ID = crypto.randomBytes(16).toString('hex');
 const COOKIE_NAME = 'sid';
-const MAX_AGE_MS  = 1000 * 60 * 60 * 24 * 30; // 30 days of inactivity
+const MAX_AGE_MS  = 1000 * 60 * 60 * 24 * 30; 
 
 function persist() {
    

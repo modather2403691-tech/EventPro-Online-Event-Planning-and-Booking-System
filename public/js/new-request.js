@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const dateInput = document.getElementById('reqDate');
   const guestsInput = document.getElementById('reqGuests');
 
-  // ── Numbers only on phone ──
+  
   if (phoneInput) {
     phoneInput.addEventListener('keypress', (e) => {
       if (e.which < 48 || e.which > 57) e.preventDefault();
@@ -17,7 +17,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // ── Numbers only on guests ──
+ 
   if (guestsInput) {
     guestsInput.addEventListener('keypress', (e) => {
       if (e.which < 48 || e.which > 57) e.preventDefault();
@@ -27,7 +27,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // ── Inline live validation ──
+ 
   if (nameInput) {
     nameInput.addEventListener('input', () => validateName(false));
   }
@@ -35,7 +35,7 @@ document.addEventListener('DOMContentLoaded', () => {
     phoneInput.addEventListener('input', () => validatePhone(false));
   }
 
-  // ── Auto-fill event type from package details query ──
+ 
   const params = new URLSearchParams(window.location.search);
   const packageType = params.get('type');
   const packageTypeMap = {
@@ -51,10 +51,10 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  // ── Submit ──
+  
   if (form) {
     form.addEventListener('submit', (e) => {
-      // Clear all errors
+      
       document.querySelectorAll('#requestForm .error')
         .forEach(el => el.textContent = '');
 
@@ -70,7 +70,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // ── Validators ──
+
 
   function validateName(showError) {
     const val = nameInput ? nameInput.value.trim() : '';

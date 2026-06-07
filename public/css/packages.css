@@ -1,4 +1,4 @@
-﻿/* Package flow pages: packages, package details, and book event */
+﻿
 * {
   margin: 0;
   padding: 0;
@@ -405,7 +405,7 @@ body.modern-bg.modern-font .modern-input:focus {
   box-shadow: 0 0 14px rgba(139, 92, 246, 0.26);
 }
 
-/* Style the event type select on the new-request page */
+
 body.modern-bg.modern-font #reqEventType {
   background-color: rgba(139, 92, 246, 0.12);
   color: #eef2ff;
@@ -416,7 +416,7 @@ body.modern-bg.modern-font #reqEventType option[disabled] {
   color: rgba(238,242,255,0.6);
 }
 
-/* Options styling (note: some browsers limit styling of native option elements) */
+
 body.modern-bg.modern-font #reqEventType option {
   background-color: #2f1b5b;
   color: #eef2ff;
@@ -461,8 +461,7 @@ body.modern-bg.modern-font .error {
   display: block;
   margin-top: 6px;
 }
-cd "C:\Users\modat\Desktop\project\EventPro-Online-Event-Planning-and-Booking-System"; @'
-/* Package flow pages: packages, package details, and book event */
+
 * {
   margin: 0;
   padding: 0;

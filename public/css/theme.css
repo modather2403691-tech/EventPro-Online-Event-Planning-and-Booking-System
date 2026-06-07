@@ -1,12 +1,4 @@
-/* ============================================================
-   EventPro shared theme — custom fonts, unified sidebar, cards.
-   Loaded last on every page so it harmonises the look across the
-   client and organizer areas without touching each page's markup.
-   (The Poppins/Cairo fonts are loaded via <link> in each <head>;
-    icons are injected by /js/icons.js.)
-   ============================================================ */
 
-/* ---- Custom font across the whole site ---- */
 body,
 button,
 input,
@@ -17,7 +9,7 @@ h1, h2, h3, h4, h5, h6,
   font-family: 'Poppins', 'Cairo', 'Segoe UI', sans-serif;
 }
 
-/* Arabic mode reads better in Cairo */
+
 html[dir="rtl"] body,
 html[dir="rtl"] button,
 html[dir="rtl"] input,
@@ -30,12 +22,7 @@ html[dir="rtl"] h4 {
   font-family: 'Cairo', 'Poppins', sans-serif;
 }
 
-/* ============================================================
-   Unified sidebar (same design for Client + Organizer panels).
-   Scoped to desktop widths so the existing responsive/mobile
-   layout in responsive.css is left untouched. !important is the
-   deliberate override of the per-page body-scoped sidebar rules.
-   ============================================================ */
+
 @media (min-width: 1101px) {
   .dashboard-container {
     display: flex !important;
@@ -138,17 +125,15 @@ html[dir="rtl"] h4 {
   }
 }
 
-/* Injected sidebar/nav icons (see /js/icons.js) */
+
 .sidebar ul li a .nav-ic { width: 20px; text-align: center; flex-shrink: 0; }
 .home-nav-links a .nav-ic,
 .nav-links a .nav-ic { margin-inline-end: 7px; opacity: 0.85; }
 
-/* ============================================================
-   Reusable bits for the redesigned pages
-   ============================================================ */
+
 .btn-icon { margin-inline-end: 8px; }
 
-/* My Events cards */
+
 .events-manage-list {
   display: grid;
   gap: 22px;
@@ -310,7 +295,7 @@ html[dir="rtl"] h4 {
 .ep-pill.declined  { background: #fee2e2; color: #991b1b; }
 .ep-pill.checkedin { background: #cffafe; color: #155e75; }
 
-/* Organizer bookings: ticket id chip */
+
 .ticket-id-tag {
   display: inline-flex;
   align-items: center;
@@ -325,7 +310,7 @@ html[dir="rtl"] h4 {
   white-space: nowrap;
 }
 
-/* Client entry ticket (My Bookings) */
+
 .ticket-card { position: relative; overflow: hidden; }
 .ticket-card::before,
 .ticket-card::after {
@@ -387,7 +372,7 @@ body.dark-mode .ticket-card::after { background: #12121a; }
 }
 .empty-card i { font-size: 2.4rem; color: #c4b5fd; margin-bottom: 12px; }
 
-/* dark mode harmony for the new cards */
+
 body.dark-mode .event-manage-card,
 body.dark-mode .empty-card { background: #1f2230; border-color: #2c2f44; }
 body.dark-mode .event-manage-info h2,

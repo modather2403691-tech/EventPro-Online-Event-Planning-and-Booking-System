@@ -1,4 +1,4 @@
-/* ================= THE ULTIMATE DARK MODE ================= */
+
 :root {
   --dark-bg: #121212;
   --dark-surface: #1e1e1e;
@@ -7,7 +7,7 @@
   --dark-border: #333;
 }
 
-/* 1. الخلفية الأساسية لكل الصفحات والمقاطع */
+
 body.dark-mode,
 body.dark-mode .dashboard-container,
 body.dark-mode .dashboard-content,
@@ -27,7 +27,7 @@ body.dark-mode .form-side {
   color: var(--dark-text) !important;
 }
 
-/* 2. الكروت، القوائم، والكونتينرز المرفوعة */
+
 body.dark-mode .sidebar,
 body.dark-mode .home-navbar,
 body.dark-mode .inner-navbar,
@@ -58,7 +58,7 @@ body.dark-mode .promo-banner {
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4) !important;
 }
 
-/* 3. الجداول وحالات الـ Rows */
+
 body.dark-mode .dashboard-table,
 body.dark-mode .dashboard-table th,
 body.dark-mode .dashboard-table td,
@@ -68,7 +68,7 @@ body.dark-mode .status-row {
   border-bottom: 1px solid var(--dark-border) !important;
 }
 
-/* 4. النصوص (مع الحفاظ على البادجات الملونه والزراير) */
+
 body.dark-mode h1, 
 body.dark-mode h2, 
 body.dark-mode h3, 
@@ -79,7 +79,7 @@ body.dark-mode span:not(.status-pill):not(.booking-status):not(.mini-status):not
   color: var(--dark-text) !important;
 }
 
-/* 5. الـ Inputs وأماكن الكتابة */
+
 body.dark-mode input:not([type="checkbox"]):not([type="radio"]), 
 body.dark-mode select, 
 body.dark-mode textarea {
@@ -88,7 +88,7 @@ body.dark-mode textarea {
   border: 1px solid var(--dark-border) !important;
 }
 
-/* ================= إصلاح مربعات الإحصائيات (الـ 4 بوكسات) ================= */
+
 body.dark-mode .stats-grid div {
   background: var(--dark-surface) !important;
   border: 1px solid var(--dark-border) !important;
@@ -101,34 +101,32 @@ body.dark-mode .stats-grid div p {
   color: #ffffff !important;
 }
 
-/* ================= تظبيط أشكال الرسوم البيانية (الدونات والأعمدة) ================= */
 
-/* 1. تحسين شكل البوكسات (إضافة زوايا مدورة وظل ناعم) */
 body.dark-mode .analytics-donut-box,
 body.dark-mode .analytics-chart-box,
 body.dark-mode .analytics-card {
   background: var(--dark-surface) !important;
   border: 1px solid var(--dark-border) !important;
-  border-radius: 16px !important; /* زوايا مدورة شيك */
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4) !important; /* ظل عميق */
+  border-radius: 16px !important; 
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4) !important; 
   padding: 20px !important;
 }
 
-/* 2. الأرقام الكبيرة (إضافة تأثير نيون خفيف) */
+
 body.dark-mode .analytics-card strong,
 body.dark-mode .chart-number {
   color: #4facfe !important; 
   text-shadow: 0 0 10px rgba(79, 172, 254, 0.3) !important; 
 }
 
-/* 3. تظبيط الدائرة (Donut Chart) */
+
 body.dark-mode .fake-donut {
-  background: conic-gradient(#4facfe 70%, #2a2a2a 0) !important; /* لون أزرق فاتح مع رمادي غامق */
+  background: conic-gradient(#4facfe 70%, #2a2a2a 0) !important; 
   border-radius: 50% !important;
-  box-shadow: 0 0 15px rgba(0, 0, 0, 0.5) inset !important; /* عمق للدائرة */
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.5) inset !important; 
 }
 
-/* لون الجزء المفرغ من الدائرة عشان يندمج مع البوكس */
+
 body.dark-mode .fake-donut::before,
 body.dark-mode .fake-donut::after {
   background-color: var(--dark-surface) !important; 
@@ -140,33 +138,31 @@ body.dark-mode .fake-donut span {
   font-weight: bold !important;
 }
 
-/* 4. تظبيط الأعمدة (Bar Chart) */
+
 body.dark-mode .fake-bars {
-  gap: 8px !important; /* مسافة أوسع بين الأعمدة */
+  gap: 8px !important; 
 }
 
 body.dark-mode .fake-bars span {
-  background: linear-gradient(180deg, #4facfe 0%, #00f2fe 100%) !important; /* تدريج لوني للأعمدة العالية */
-  border-radius: 6px 6px 0 0 !important; /* تدوير الأعمدة من فوق بس */
+  background: linear-gradient(180deg, #4facfe 0%, #00f2fe 100%) !important; 
+  border-radius: 6px 6px 0 0 !important; 
   opacity: 1 !important;
 }
 
 body.dark-mode .fake-bars span:nth-child(odd),
 body.dark-mode .fake-bars span:nth-child(3n) {
-  background: linear-gradient(180deg, #444 0%, #222 100%) !important; /* تدريج للأعمدة القصيرة */
+  background: linear-gradient(180deg, #444 0%, #222 100%) !important; 
 }
 
 
-/* ================= إصلاحات صفحة الـ Register والـ Login ================= */
 
-/* 1. إزالة التدرج اللوني (Gradient) لتوحيد لون الخلفية */
 body.dark-mode.auth-page,
 body.dark-mode.login-page,
 body.dark-mode {
   background-image: none !important;
 }
 
-/* 2. تظبيط ألوان الـ Navbar واللينكات جوه صفحات التسجيل */
+
 body.dark-mode .auth-page .navbar,
 body.dark-mode .navbar {
   background-color: var(--dark-surface) !important;
@@ -179,7 +175,7 @@ body.dark-mode .logo {
   color: #ffffff !important;
 }
 
-/* Login-specific polish: make the right form card feel integrated in dark mode */
+
 body.dark-mode .form-side {
   background: linear-gradient(180deg, rgba(30,30,30,0.6), rgba(12,12,12,0.85)) !important;
   backdrop-filter: blur(6px) !important;
@@ -233,14 +229,14 @@ body.dark-mode .btn-google {
   border: 1px solid rgba(255,255,255,0.06) !important;
 }
 
-/* Improve visibility for small helper text */
+
 body.dark-mode .form-options,
 body.dark-mode .footer-text,
 body.dark-mode .remember label {
   color: rgba(230,238,252,0.7) !important;
 }
 
-/* Keep login header content clean; global dark header card styles make it look broken */
+
 body.dark-mode.login-page header,
 body.dark-mode.login-page .login-box header {
   background: transparent !important;
@@ -248,7 +244,7 @@ body.dark-mode.login-page .login-box header {
   box-shadow: none !important;
 }
 
-/* Ensure Sign Up link is always visible in dark mode */
+
 body.dark-mode .footer-text a {
   color: #9be3ff !important;
 }
@@ -259,9 +255,7 @@ body.dark-mode .footer-text a:hover {
 }
 
 
-/* ================= إصلاحات هيدر الـ Admin Dashboard ================= */
 
-/* 1. إزالة الظل والخلفية من الهيدر عشان يبان كعنوان مش كارت */
 body.dark-mode .top-bar,
 body.dark-mode .activity-header {
   background: transparent !important;
@@ -269,7 +263,7 @@ body.dark-mode .activity-header {
   border: none !important;
 }
 
-/* 2. إصلاح المربع الأبيض اللي على اليمين (تاريخ التحديث) */
+
 body.dark-mode .page-meta,
 body.dark-mode .page-meta span {
   background-color: var(--dark-surface-alt) !important;
@@ -278,7 +272,7 @@ body.dark-mode .page-meta span {
   border-radius: 8px !important;
 }
 
-/* 3. تظبيط زراير الـ Admin (Generate Report & Export) عشان تنطق في الضلمة */
+
 body.dark-mode .dashboard-actions button {
   background-color: #3b82f6 !important;
   color: #ffffff !important;
@@ -287,9 +281,7 @@ body.dark-mode .dashboard-actions button {
 }
 
 
-/* ================= إصلاح بوكس إضافة مستخدم (Manage Users) ================= */
 
-/* 1. تظبيط البوكس نفسه (خلفية غامقة وزوايا مدورة وظل) */
 body.dark-mode .manage-users-form-wrap,
 body.dark-mode .manage-users-form {
   background: var(--dark-surface) !important;
@@ -299,13 +291,13 @@ body.dark-mode .manage-users-form {
   padding: 25px !important;
 }
 
-/* 2. تلوين العناوين والكلام جوه البوكس أبيض */
+
 body.dark-mode .manage-users-form-wrap h2,
 body.dark-mode .manage-users-form label {
   color: #ffffff !important;
 }
 
-/* 3. تظبيط خانات الإدخال (Inputs & Selects) جوه الفورم */
+
 body.dark-mode .manage-users-form input,
 body.dark-mode .manage-users-form select {
   background: var(--dark-surface-alt) !important;
@@ -315,7 +307,7 @@ body.dark-mode .manage-users-form select {
   padding: 10px !important;
 }
 
-/* 4. تظبيط زرار (Add User) عشان يدي شكل Modern */
+
 body.dark-mode .manage-users-add-btn {
   background-color: #3b82f6 !important;
   color: #ffffff !important;
@@ -334,9 +326,7 @@ body.dark-mode .manage-users-add-btn:hover {
 
 
 
-/* ================= إصلاح بوكس إضافة فعالية (Add Event) للـ Organizer ================= */
 
-/* 1. تظبيط البوكس نفسه (خلفية غامقة وزوايا مدورة وظل) */
 body.dark-mode #form-box {
   background: var(--dark-surface) !important;
   border: 1px solid var(--dark-border) !important;
@@ -345,13 +335,13 @@ body.dark-mode #form-box {
   padding: 30px !important;
 }
 
-/* 2. تلوين العناوين (Labels) أبيض */
+
 body.dark-mode #form-box .label {
   color: #ffffff !important;
   font-weight: bold !important;
 }
 
-/* 3. تظبيط خانات الإدخال (Inputs & Textarea) */
+
 body.dark-mode #form-box .input-field {
   background: var(--dark-surface-alt) !important;
   color: #ffffff !important;
@@ -359,7 +349,7 @@ body.dark-mode #form-box .input-field {
   border-radius: 8px !important;
 }
 
-/* 4. تظبيط زرار (Submit) */
+
 body.dark-mode #form-box #submit-btn {
   background-color: #3b82f6 !important;
   color: #ffffff !important;

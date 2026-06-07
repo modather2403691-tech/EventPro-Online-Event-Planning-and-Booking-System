@@ -1,6 +1,5 @@
-// Injects Font Awesome icons into sidebar + navbar links by their href.
-// Done in JS (real <i> elements) so it is immune to CSS specificity battles
-// with the per-page stylesheets and needs no markup changes per page.
+
+
 (function () {
   const ICONS = {
     '/client-index': 'fa-house',
@@ -40,7 +39,7 @@
   document.addEventListener('DOMContentLoaded', function () {
     const links = document.querySelectorAll('.sidebar a, .home-nav-links a, .nav-links a');
     links.forEach(function (a) {
-      if (a.querySelector('.nav-ic')) return; // already has one
+      if (a.querySelector('.nav-ic')) return; 
       const ic = iconFor(a.getAttribute('href'));
       if (!ic) return;
       const i = document.createElement('i');
@@ -49,6 +48,6 @@
       a.insertBefore(i, a.firstChild);
     });
 
-    // No mobile toggle injection - keep nav markup untouched
+   
   });
 })();

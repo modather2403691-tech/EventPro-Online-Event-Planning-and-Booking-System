@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-// An event created by an organizer. Shown on the home pages and bookable by clients.
+
 const eventSchema = new mongoose.Schema({
   title:          { type: String, required: true },
   image:          { type: String, default: '' }, // base64 data URL or empty

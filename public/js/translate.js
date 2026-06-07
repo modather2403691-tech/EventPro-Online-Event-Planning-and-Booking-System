@@ -1,11 +1,8 @@
-// EventPro — site-wide Arabic <-> English translation.
-// A floating toggle swaps static UI text using the dictionary below and flips
-// the page to RTL for Arabic. The choice is remembered in localStorage.
-// Dynamic data (event titles, names, user input) stays as entered.
+
 
 (function () {
   const EN_AR = {
-    // Brand / generic nav
+    
     "Home": "الرئيسية",
     "Packages": "الباقات",
     "Customize Your Packages": "خصّص باقاتك",
@@ -39,7 +36,7 @@
     "Client": "عميل",
     "Admin": "مشرف",
 
-    // Buttons / actions
+    
     "Explore Events": "استكشف الفعاليات",
     "Explore Packages": "استكشف الباقات",
     "Join Event": "انضم للفعالية",
@@ -69,7 +66,7 @@
     "Cancel": "إلغاء",
     "Remove": "إزالة",
 
-    // Headings
+   
     "Book Your Event": "احجز فعاليتك",
     "Organizer Dashboard": "لوحة تحكم المنظّم",
     "Client Dashboard": "لوحة تحكم العميل",
@@ -79,7 +76,7 @@
     "Plan Your Perfect Event": "خطّط لفعاليتك المثالية",
     "Your Events": "فعالياتك",
 
-    // Form labels
+    
     "Full Name": "الاسم الكامل",
     "Email": "البريد الإلكتروني",
     "Phone Number": "رقم الهاتف",
@@ -97,7 +94,7 @@
     "Rules:": "القواعد:",
     "Event Image:": "صورة الفعالية:",
 
-    // Categories / filters / statuses
+    
     "Party": "حفلة",
     "Parties": "حفلات",
     "Corporate": "شركات",
@@ -115,7 +112,7 @@
     "Active": "نشط",
     "Available": "متاح",
 
-    // Table headers / misc
+   
     "Request ID": "رقم الطلب",
     "Booking ID": "رقم الحجز",
     "Client Name": "اسم العميل",
@@ -134,7 +131,7 @@
     "Event Title": "عنوان الفعالية",
     "Event ID": "رقم الفعالية",
 
-    // Placeholders
+  
     "Enter event title": "أدخل عنوان الفعالية",
     "Enter number of people": "أدخل عدد الأشخاص",
     "Ticket price per guest": "سعر التذكرة للضيف",
@@ -144,7 +141,7 @@
     "Search events by name... 🔍": "ابحث عن الفعاليات بالاسم... 🔍",
     "Price $": "السعر $",
 
-    // Sentences
+    
     "No events available yet. Check back soon!": "لا توجد فعاليات متاحة بعد. تابعنا قريباً!",
     "No open booking requests right now.": "لا توجد طلبات حجز مفتوحة حالياً.",
     "You haven't created any events yet.": "لم تنشئ أي فعاليات بعد.",
@@ -152,7 +149,7 @@
     "You haven't made any requests yet.": "لم تقم بأي طلبات بعد.",
     "No offers yet. Organizers will reply soon.": "لا توجد عروض بعد. سيردّ المنظّمون قريباً.",
 
-    // Landing / hero
+  
     "Plan better events with EventPro": "خطّط لفعاليات أفضل مع EventPro",
     "Designed for smooth event planning, online booking, and easy management.": "مصمّم لتخطيط سلس للفعاليات، وحجز عبر الإنترنت، وإدارة سهلة.",
     "Find and book the right event package faster": "اعثر واحجز الباقة المناسبة بشكل أسرع",
@@ -172,7 +169,7 @@
     "Party Package": "باقة الحفلات",
     "Birthday Package": "باقة عيد الميلاد",
 
-    // Client / organizer hero copy
+    
     "Browse events, join activities, and manage your bookings easily with EventPro.": "تصفّح الفعاليات، شارك في الأنشطة، وأدر حجوزاتك بسهولة مع EventPro.",
     "Explore available events from organizers": "استكشف الفعاليات المتاحة من المنظّمين",
     "Join events and book services easily": "انضم للفعاليات واحجز الخدمات بسهولة",
@@ -183,7 +180,7 @@
     "Track upcoming events": "تابع الفعاليات القادمة",
     "Manage your events and bookings": "أدر فعالياتك وحجوزاتك",
 
-    // Footer
+    
     "About": "من نحن",
     "Resources": "الموارد",
     "Support": "الدعم",
@@ -198,7 +195,7 @@
     "Contact Support": "تواصل مع الدعم",
     "© 2026 EventPro. All rights reserved.": "© 2026 EventPro. جميع الحقوق محفوظة.",
 
-    // Section subtitles
+    
     "Manage the events you created and see who booked each one.": "أدر الفعاليات التي أنشأتها وشاهد من حجز كلاً منها.",
     "No bookings for this event yet.": "لا توجد حجوزات لهذه الفعالية بعد.",
     "Custom event requests from clients. Reply with your price — the client picks the offer they like best.": "طلبات فعاليات مخصّصة من العملاء. ردّ بسعرك — ويختار العميل العرض الأفضل له.",
@@ -207,7 +204,7 @@
     "View all your booked events, dates, costs, and current status.": "اعرض كل فعالياتك المحجوزة وتواريخها وتكاليفها وحالتها الحالية.",
     "Track your bookings, event progress, and activity overview in one place.": "تابع حجوزاتك وتقدّم فعالياتك ونظرة عامة على نشاطك في مكان واحد.",
 
-    // Dashboard cards / sections
+    
     "Total Packages": "إجمالي الباقات",
     "Pending Requests": "الطلبات المعلّقة",
     "Upcoming Events": "الفعاليات القادمة",
@@ -220,13 +217,13 @@
     "Bookings in Progress": "حجوزات قيد التنفيذ",
     "Completed Bookings": "الحجوزات المكتملة",
 
-    // Packages
+    
     "Customize your perfect event with our best packages": "خصّص فعاليتك المثالية مع أفضل باقاتنا",
     "Most Popular": "الأكثر شعبية",
     "Included Services:": "الخدمات المشمولة:",
     "Additional Services:": "خدمات إضافية:",
 
-    // 404 + edit panels
+   
     "Page Not Found": "الصفحة غير موجودة",
     "Go Home": "العودة للرئيسية",
     "Oops! The page you're looking for doesn't exist or has moved.": "عذراً! الصفحة التي تبحث عنها غير موجودة أو تم نقلها.",
@@ -240,7 +237,7 @@
     "Rules": "القواعد",
     "Create Your First Event": "أنشئ أول فعالية لك",
 
-    // Tickets / check-in
+    
     "Entry Ticket": "تذكرة الدخول",
     "Ticket ID": "رقم التذكرة",
     "Guest": "الضيف",
@@ -250,7 +247,7 @@
 
   const STORAGE_KEY = "eventpro-lang";
 
-  // Translate visible text nodes, remembering the English original on each node.
+  
   function walkText(translate) {
     const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, {
       acceptNode(node) {
@@ -280,7 +277,7 @@
     });
   }
 
-  // Placeholders on inputs / textareas.
+  
   function walkPlaceholders(translate) {
     document.querySelectorAll("input[placeholder], textarea[placeholder]").forEach((el) => {
       if (translate) {

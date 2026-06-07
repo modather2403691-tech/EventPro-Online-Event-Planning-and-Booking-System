@@ -1,9 +1,9 @@
-// ========== EYE TRACKING ==========
+
 document.addEventListener('mousemove', (e) => {
     const pupils = document.querySelectorAll('.pupil');
 
     pupils.forEach(pupil => {
-        // Skip while the password field is active or a mood class is set.
+       
         if (document.activeElement === passwordInput ||
             document.body.classList.contains('sad-mode') || 
             document.body.classList.contains('scared-mode')) return;
@@ -30,7 +30,6 @@ function resetPupilsToCenter() {
     });
 }
 
-// ========== PASSWORD TOGGLE ==========
 const loginEmailInput = document.querySelector('input[type="email"]');
 const passwordInput = document.getElementById('password');
 const toggleEye = document.getElementById('toggleEye');
@@ -52,10 +51,10 @@ if (loginEmailInput) {
     });
   }
 
-// ========== MOOD SYSTEM ==========
+
 const body = document.body;
 
-// Remove all mood classes cleanly
+
 function clearMoods() {
     body.classList.remove('sad-mode', 'scared-mode', 'happy-mode');
 }
@@ -88,7 +87,7 @@ if (passwordInput) {
     });
 
 }
-/*validation of admin in login page */
+
 
 
 document.addEventListener("DOMContentLoaded", function () {
@@ -106,16 +105,16 @@ document.addEventListener("DOMContentLoaded", function () {
 
     let isValid = true;
 
-    // clear errors
+    
     document.querySelectorAll("#contactForm .error").forEach(el => el.textContent = "");
 
-    // NAME
+   
     if (name.value.trim() === "") {
       document.getElementById("contactNameError").textContent = "Name is required";
       isValid = false;
     }
 
-    // EMAIL
+
     const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
     if (email.value.trim() === "") {
@@ -127,7 +126,7 @@ document.addEventListener("DOMContentLoaded", function () {
       isValid = false;
     }
 
-    // MESSAGE
+    
     if (message.value.trim() === "") {
       document.getElementById("contactMessageError").textContent = "Message is required";
       isValid = false;
@@ -137,7 +136,7 @@ document.addEventListener("DOMContentLoaded", function () {
       isValid = false;
     }
 
-    // SUCCESS — submit to server so it is saved and visible to admin
+   
     if (isValid) {
       contactForm.submit();
     }
@@ -330,13 +329,10 @@ dob.addEventListener("input", () => {
       document.getElementById("phoneError").textContent = "Phone must be 11 digits";
       isValid = false;
     }
-// ... (جزء الـ validation بتاعك)
+
 
     if (isValid) {
-        // alert("Registered successfully 🎉"); 
-        
-        // شلنا الـ if والـ window.location.href خالص
-        // وبنقول للـ form: ابعت البيانات للسيرفر دلوقتي
+       
         form.submit(); 
     }
 });
@@ -365,7 +361,7 @@ document.addEventListener("DOMContentLoaded", function () {
     emailError.textContent = "";
     passwordError.textContent = "";
 
-    // EMAIL
+    
     if (email.value.trim() === "") {
       emailError.textContent = "Email is required";
       isValid = false;
@@ -375,7 +371,7 @@ document.addEventListener("DOMContentLoaded", function () {
       isValid = false;
     }
 
-    // PASSWORD
+   
     if (password.value.trim() === "") {
       passwordError.textContent = "Password is required";
       isValid = false;
@@ -386,7 +382,7 @@ document.addEventListener("DOMContentLoaded", function () {
       isValid = false;
     }
 
-    // SUBMIT
+    
     if (isValid) {
       form.submit();
     }
