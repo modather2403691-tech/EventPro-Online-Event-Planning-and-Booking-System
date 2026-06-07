@@ -3,7 +3,7 @@ const User = require('../models/user');
 const Booking = require('../models/Booking');
 const BookingRequest = require('../models/BookingRequest');
 const Event = require('../models/Event');
-const { store: sessionStore } = require('../middleware/session');
+
 
 function sessionUser(req) {
     return (req.session && req.session.user) || {};
@@ -553,15 +553,3 @@ exports.editUser = async (req, res) => {
     }
 };
 
-// AJAX endpoint to check whether a userId is already present
-exports.checkUserId = async (req, res) => {
-    try {
-        const userId = req.query.userId;
-        if (!userId) return res.json({ exists: false });
-        const found = await User.findOne({ userId });
-        return res.json({ exists: !!found });
-    } catch (err) {
-        console.error('ADMIN:checkUserId ERROR:', err);
-        return res.status(500).json({ exists: false });
-    }
-};

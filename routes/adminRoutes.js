@@ -14,7 +14,4 @@ router.post('/users', adminController.addUser);
 // Route to handle editing a user via AJAX
 router.post('/users/edit', adminController.editUser);
 
-// Route to check if a userId is already taken (AJAX)
-router.get('/users/check-id', adminController.checkUserId);
-
 module.exports = router;

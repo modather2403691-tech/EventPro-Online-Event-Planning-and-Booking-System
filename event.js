@@ -8,6 +8,7 @@ const adminRoutes = require('./routes/adminRoutes');
 const adminController = require('./controllers/adminController');
 const requireAdmin = require('./middleware/adminAuth');
 
+
 const app = express();
 
 // 1. Middlewares
@@ -33,8 +34,8 @@ mongoose.connect(MONGO_URI)
 // أي مسار هيبدأ بـ / هيروح يدور فيnode event.js ملف الـ authRoutes
 app.use('/', authRoutes);
 
-// --- ADD THIS LINE TO USE ADMIN ROUTES ---
-// This connects the /admin prefix to your new controller
+
+
 app.use('/admin', adminRoutes);
 
 // Fallback direct route for user edits in case the mounted router is bypassed

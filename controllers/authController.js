@@ -2,6 +2,30 @@ const bcrypt  = require('bcryptjs');
 const User    = require('../models/User');
 const { store, persist, bootId } = require('../middleware/session');
 
+exports.forgotPassword = async (req, res) => {
+    console.log("BODY:", req.body);
+
+    const email = req.body.email?.trim().toLowerCase();
+    const newPassword = req.body.newPassword;
+
+    const user = await User.findOne({ email });
+
+    console.log("FOUND USER:", user);
+
+    if (!user) {
+        return res.render('forgot-password', {
+            error: 'Email not found'
+        });
+    }
+
+    // hash password
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+
+    user.password = hashedPassword;
+    await user.save();
+
+    return res.redirect('/login');
+};
 exports.register = async (req, res) => {
     try {
         const { name, email, dob, password, phone, role } = req.body;
@@ -85,11 +109,37 @@ exports.login = async (req, res) => {
         res.status(500).send('Server Error!');
     }
 };
+exports.forgotPassword = async (req, res) => {
+    try {
+        const { email, newPassword } = req.body;
 
+        const user = await User.findOne({ email });
+
+        if (!user) {
+            return res.render('forgot-password', {
+                error: 'Email not found'
+            });
+        }
+
+        user.password = await bcrypt.hash(newPassword, 10);
+        await user.save();
+
+        res.redirect('/login');
+
+    } catch (err) {
+        console.error(err);
+        res.status(500).send('Server Error');
+    }
+};
 exports.logout = (req, res) => {
     const sid = req.sessionId;
     if (sid && store[sid]) delete store[sid];
     persist();
     res.clearCookie('sid', { path: '/' });
     res.redirect('/');
+};
+exports.sendMessage = async (req, res) => {
+  const { name, email, message } = req.body;
+
+  // هنا الإيميل يروح Gmail
 };

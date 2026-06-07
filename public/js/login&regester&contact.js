@@ -343,3 +343,54 @@ dob.addEventListener("input", () => {
 });
 
 });
+document.addEventListener("DOMContentLoaded", function () {
+
+  const form = document.getElementById("forgotForm");
+  if (!form) return;
+
+  const email = document.getElementById("fpEmail");
+  const password = document.getElementById("fpPassword");
+
+  const emailError = document.getElementById("fpEmailError");
+  const passwordError = document.getElementById("fpPasswordError");
+
+  const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+  const passwordPattern = /^(?=.*\d)(?=.*[^A-Za-z0-9]).{8,}$/;
+
+  form.addEventListener("submit", function (e) {
+    e.preventDefault();
+
+    let isValid = true;
+
+    emailError.textContent = "";
+    passwordError.textContent = "";
+
+    // EMAIL
+    if (email.value.trim() === "") {
+      emailError.textContent = "Email is required";
+      isValid = false;
+    } 
+    else if (!emailPattern.test(email.value.trim())) {
+      emailError.textContent = "Enter a valid email";
+      isValid = false;
+    }
+
+    // PASSWORD
+    if (password.value.trim() === "") {
+      passwordError.textContent = "Password is required";
+      isValid = false;
+    }
+    else if (!passwordPattern.test(password.value.trim())) {
+      passwordError.textContent =
+        "Password must be at least 8 characters and include a number and special symbol";
+      isValid = false;
+    }
+
+    // SUBMIT
+    if (isValid) {
+      form.submit();
+    }
+  });
+
+});
