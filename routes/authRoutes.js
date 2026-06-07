@@ -111,11 +111,25 @@ router.get('/my-bookings', requireRole('client'), async (req, res) => {
 router.get('/book-event', requireRole('client'), (req, res) => {
     const u = req.session && req.session.user;
     if (!u || !u.email) return res.redirect('/login');
-    res.render('book-event', {
-        name:  u.name  || '',
-        email: u.email,
-        phone: u.phone || ''
-    });
+    (async () => {
+        const eventId = req.query && req.query.eventId ? req.query.eventId : null;
+        let event = null;
+        if (eventId) {
+            try { event = await Event.findById(eventId); } catch (e) { /* ignore bad id */ }
+        }
+
+        const price = req.query && req.query.price ? Number(req.query.price) : (event ? event.price : 0);
+        const source = req.query && req.query.source ? req.query.source : '';
+
+        return res.render('book-event', {
+            name:  u.name  || '',
+            email: u.email,
+            phone: u.phone || '',
+            event,
+            price,
+            source
+        });
+    })();
 });
 
 router.post('/book-event', requireRole('client'), async (req, res) => {
@@ -305,6 +319,8 @@ router.post('/client-profile/update-info', requireRole('client'), async (req, re
 // POST — update profile photo
 router.post('/client-profile/update-photo', requireRole('client'), async (req, res) => {
     const u = req.session && req.session.user;
+    console.log('[DEBUG] /client-profile/update-photo headers.cookie=', req.headers && req.headers.cookie);
+    console.log('[DEBUG] /client-profile/update-photo req.session.user=', u);
     if (!u) return res.status(401).json({ error: 'Not logged in' });
 
     const { photo } = req.body; // base64 data URL from client
@@ -325,6 +341,31 @@ router.post('/client-profile/update-photo', requireRole('client'), async (req, r
         res.json({ success: true, photo });
     } catch (err) {
         console.error('PHOTO UPDATE ERROR:', err);
+        res.status(500).json({ error: 'Server error' });
+    }
+});
+
+// POST — update organizer profile photo (same as client endpoint but for organizers)
+router.post('/organizer-profile/update-photo', requireRole('organizer'), async (req, res) => {
+    const u = req.session && req.session.user;
+    console.log('[DEBUG] /organizer-profile/update-photo headers.cookie=', req.headers && req.headers.cookie);
+    console.log('[DEBUG] /organizer-profile/update-photo req.session.user=', u);
+    if (!u) return res.status(401).json({ error: 'Not logged in' });
+
+    const { photo } = req.body; // base64 data URL from client
+    if (!photo) return res.status(400).json({ error: 'No photo provided' });
+
+    if (!photo.startsWith('data:image/')) {
+        return res.status(400).json({ error: 'Invalid image format' });
+    }
+
+    try {
+        const User = require('../models/user');
+        await User.findOneAndUpdate({ email: u.email }, { photo });
+        req.session.user.photo = photo;
+        res.json({ success: true, photo });
+    } catch (err) {
+        console.error('ORGANIZER PHOTO UPDATE ERROR:', err);
         res.status(500).json({ error: 'Server error' });
     }
 });

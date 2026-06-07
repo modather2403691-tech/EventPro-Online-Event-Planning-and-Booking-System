@@ -8,6 +8,9 @@ const uploadStatus = document.getElementById('uploadStatus');
 const DEFAULT_PHOTO = '/images/my-photo.jpg';
 const originalSrc   = profilePhoto ? (profilePhoto.src || DEFAULT_PHOTO) : DEFAULT_PHOTO;
 
+// detect page role; organizer pages set <body data-role="organizer">
+const pageRole = document.body && document.body.dataset && document.body.dataset.role ? document.body.dataset.role : 'client';
+
 if (photoWrapper && photoInput) {
   photoWrapper.addEventListener('click', () => photoInput.click());
 
@@ -27,14 +30,24 @@ if (photoWrapper && photoInput) {
     if (sidebarPhoto) sidebarPhoto.src = base64;
 
     try {
-      const res = await fetch('/client-profile/update-photo', {
+      const endpoint = pageRole === 'organizer' ? '/organizer-profile/update-photo' : '/client-profile/update-photo';
+      const res = await fetch(endpoint, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', 'X-Requested-With': 'XMLHttpRequest' },
+        credentials: 'same-origin',
         body: JSON.stringify({ photo: base64 })
       });
 
       const contentType = res.headers.get('content-type') || '';
-      if (!contentType.includes('application/json')) throw new Error(`Server error: ${res.status}`);
+      if (!contentType.includes('application/json')) {
+        const text = await res.text().catch(() => '');
+        const low = (text || '').toLowerCase();
+        if (low.includes('<!doctype') || low.includes('<html') || low.includes('login')) {
+          window.location.href = '/login';
+          return;
+        }
+        throw new Error(`Server error: ${res.status}`);
+      }
 
       const data = await res.json();
       if (data.success) {

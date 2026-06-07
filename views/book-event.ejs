@@ -31,11 +31,26 @@
   <main>
     <h1>Book Your Event</h1>
 
+    <% if (event) { %>
+      <div class="event-summary modern-card" style="margin-bottom:16px;padding:12px;">
+        <h2 style="margin-top:0; color: white;"><%= event.title %></h2>
+        <% if (event.location) { %>
+          <p><strong>Location:</strong> <%= event.location %></p>
+        <% } %>
+        <% if (event.date) { %>
+          <p><strong>Date:</strong> <%= event.date.toISOString().slice(0,10) %></p>
+        <% } %>
+        <% if (event.rules) { %>
+          <p style="margin-top:8px;"><strong>Event Rules:</strong><br><%= event.rules %></p>
+        <% } %>
+      </div>
+    <% } %>
+
     <div class="form-container modern-card" >
       <form id="bookingForm" method="POST" action="/book-event">
-        <input type="hidden" id="source" name="source" value="">
-        <input type="hidden" id="price" name="price" value="0">
-        <input type="hidden" id="eventId" name="eventId" value="">
+        <input type="hidden" id="source" name="source" value="<%= source || '' %>">
+        <input type="hidden" id="price" name="price" value="<%= price || 0 %>">
+        <input type="hidden" id="eventId" name="eventId" value="<%= event && event._id ? event._id : '' %>">
 
         <div>
   <label for="name">Full Name</label>
@@ -57,13 +72,13 @@
 
 <div>
   <label for="eventType">Event Type</label>
-  <input type="text" id="eventType" name="eventType" class="modern-input" readonly>
+  <input type="text" id="eventType" name="eventType" class="modern-input" readonly value="<%= event ? (event.category || event.title) : '' %>">
   <span id="eventTypeError" class="error"></span>
 </div>
 
 <div id="eventDateSection">
   <label for="eventDate">Event Date</label>
-  <input type="date" id="eventDate" name="eventDate" class="modern-input">
+  <input type="date" id="eventDate" name="eventDate" class="modern-input" value="<%= event && event.date ? event.date.toISOString().slice(0,10) : '' %>">
   <span id="dateError" class="error"></span>
 </div>
 

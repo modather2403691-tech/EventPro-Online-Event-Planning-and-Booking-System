@@ -20,6 +20,7 @@
     '/client-profile': 'fa-user',
     '/organizer-profile': 'fa-user',
     '/manage-users': 'fa-users',
+    '/admin/messages': 'fa-envelope',
     '/client-reservation': 'fa-calendar-day',
     '/organizer-event': 'fa-calendar-days',
     '/reports': 'fa-chart-line',

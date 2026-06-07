@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>EventPro - Messages</title>
 
-    <link rel="stylesheet" href="/css/organizer.css">
+    <link rel="stylesheet" href="/css/Admin.css">
     <link rel="stylesheet" href="/css/responsive.css">
     <link rel="stylesheet" href="/css/darkmode.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
@@ -14,12 +14,33 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&family=Poppins:wght@400;500;600;700&display=swap">
 </head>
-<body class="organizer-page">
+<body class="admin-page">
 
-    <div class="dashboard-container">
-        <%- include('partials/sidebar', { role: 'admin', active: 'messages', name: name }) %>
+        <div class="dashboard-container">
+                <% const adminName = typeof name !== 'undefined' && name ? name : 'Admin'; %>
+                <aside class="sidebar" id="sidebar">
+                    <div class="brand-wrapper" id="brandLogo">
+                        <div class="brand-mark"><%= adminName.charAt(0).toUpperCase() %></div>
+                        <div class="brand-text">
+                            <span class="brand-name"><%= adminName %></span>
+                            <span class="brand-subtitle">Admin</span>
+                        </div>
+                    </div>
+                    <nav aria-label="Admin navigation" id="adminNav">
+                        <h2 id="sidebarTitle">Admin Panel</h2>
+                        <ul id="sidebarMenu">
+                            <li id="sidebarItemDashboard"><a id="navDashboard" href="/admin-dashboard">Dashboard</a></li>
+                            <li id="sidebarItemUsers"><a id="navUsers" href="/manage-users">Manage Users</a></li>
+                            <li id="sidebarItemClientReservations"><a id="navClientReservations" href="/client-reservation">Client Reservation</a></li>
+                            <li id="sidebarItemOrganizerEvents"><a id="navOrganizerEvents" href="/organizer-event">Organizer Event</a></li>
+                            <li id="sidebarItemMessages"><a id="navMessages" class="active" href="/admin/messages">Messages</a></li>
+                            <li id="sidebarItemReports"><a id="navReports" href="/reports">Reports</a></li>
+                            <li id="sidebarItemHome"><a id="navHome" href="/admin-index">Back to Home</a></li>
+                        </ul>
+                    </nav>
+                </aside>
 
-        <div class="dashboard-content">
+                <div class="dashboard-content">
             <h1>Contact Messages</h1>
             <p class="dashboard-subtitle">Messages sent via the Contact form — you can review and remove items.</p>
 
