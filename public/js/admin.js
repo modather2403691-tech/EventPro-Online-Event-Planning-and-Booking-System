@@ -1,3 +1,4 @@
+//admin
 document.addEventListener("DOMContentLoaded", function () {
   const table = document.getElementById("manageUsersTable");
   const tableBody = document.getElementById("manageUsersTableBody");
