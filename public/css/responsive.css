@@ -171,6 +171,128 @@ section {
   margin-bottom: 50px;
 }
 
+/* ----------------------
+   Responsive: Tablet
+   ---------------------- */
+@media (max-width: 1024px) {
+  .navbar, .home-navbar {
+    padding: 12px 20px;
+  }
+
+  .home-nav-links {
+    gap: 16px;
+  }
+
+  .home-logo {
+    font-size: 20px;
+  }
+
+  .hero-modern {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 36px 24px 60px;
+    gap: 20px;
+  }
+
+  .hero-left, .hero-right {
+    width: 100%;
+  }
+
+  .hero-left h1 {
+    font-size: 40px;
+    max-width: 100%;
+  }
+
+  .hero-subtitle {
+    font-size: 18px;
+  }
+
+  .cards {
+    gap: 14px;
+  }
+
+  .card {
+    flex: 1 1 48%;
+    padding: 18px;
+  }
+
+  main {
+    padding: 24px;
+  }
+}
+
+/* ----------------------
+   Responsive: Mobile
+   ---------------------- */
+@media (max-width: 640px) {
+  .navbar, .home-navbar {
+    padding: 10px 14px;
+  }
+
+  .home-nav-links {
+    display: none; /* collapse long nav on small screens */
+  }
+
+  .home-nav-actions {
+    display: none;
+  }
+
+  .home-logo {
+    font-size: 18px;
+  }
+
+  .hero-modern {
+    padding: 20px 16px 36px;
+    gap: 12px;
+  }
+
+  .hero-left h1 {
+    font-size: 28px;
+  }
+
+  .hero-subtitle {
+    font-size: 15px;
+  }
+
+  .hero-points li {
+    font-size: 14px;
+  }
+
+  .hero-buttons {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .cards {
+    flex-direction: column;
+  }
+
+  .card {
+    flex: 1 1 100%;
+    padding: 14px;
+  }
+
+  main {
+    padding: 14px;
+  }
+
+  .footer {
+    padding: 16px;
+  }
+
+  /* Forms and inputs scale better on mobile */
+  input, select, textarea, button {
+    font-size: 15px;
+  }
+
+  /* Make sidebar-like blocks full width when present on page */
+  aside.sidebar {
+    position: relative;
+    width: 100%;
+    margin-bottom: 18px;
+  }
+}
+
 /* =========================
    HOMEPAGE ONLY - CVENT STYLE
    ========================= */
