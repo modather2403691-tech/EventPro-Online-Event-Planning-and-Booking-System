@@ -29,7 +29,7 @@ function showAddEvent(req, res) {
   });
 }
 
-// POST /addevent  (organizer) — expects JSON (base64 image)
+// POST /addevent  (organizer) 
 async function createEvent(req, res) {
   const u = sessionUser(req);
   if (!u || u.role !== 'organizer') {
