@@ -216,7 +216,7 @@ router.post('/client-profile/update-account', requireRole('client'), async (req,
     if (!u) return res.status(401).json({ error: 'Not logged in' });
     const { active } = req.body;
     try {
-        const User = require('../models/User');
+        const User = require('../models/user');
         await User.findOneAndUpdate({ email: u.email }, { active: !!active });
         res.json({ success: true });
     } catch (err) {
@@ -234,7 +234,7 @@ router.post('/profile/delete-account', async (req, res) => {
         if (!currentPassword) return res.status(400).json({ error: 'Current password required' });
 
         const bcrypt = require('bcryptjs');
-        const User           = require('../models/User');
+        const User           = require('../models/user');
         const Booking        = require('../models/Booking');
         const BookingRequest = require('../models/BookingRequest');
         const Event          = require('../models/Event');
@@ -287,7 +287,7 @@ router.post('/client-profile/update-info', requireRole('client'), async (req, re
     if (!phone || !/^\d{11}$/.test(phone.trim())) return res.status(400).json({ error: 'Phone must be exactly 11 digits' });
 
     try {
-        const User = require('../models/User');
+        const User = require('../models/user');
         await User.findOneAndUpdate(
             { email: u.email },
             { name: name.trim(), phone: phone.trim() }
@@ -316,7 +316,7 @@ router.post('/client-profile/update-photo', requireRole('client'), async (req, r
     }
 
     try {
-        const User = require('../models/User');
+        const User = require('../models/user');
         await User.findOneAndUpdate({ email: u.email }, { photo });
 
         // Update session too so it reflects immediately
