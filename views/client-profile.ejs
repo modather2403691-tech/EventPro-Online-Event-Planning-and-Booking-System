@@ -13,7 +13,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&family=Poppins:wght@400;500;600;700&display=swap">
 </head>
-<body class="profile-dashboard-page">
+<body class="profile-dashboard-page" data-role="client">
 
   <div class="dashboard-container">
     <%- include('partials/sidebar', { role: 'client', active: 'profile', name: name, photo: photo }) %>
@@ -97,6 +97,17 @@
 
             <div id="accountStatus" style="font-size:13px;font-weight:500;min-height:16px;margin-bottom:10px;text-align:center;"></div>
 
+            <div style="margin:12px 0;">
+              <h4 style="margin:0 0 8px;">Change Password</h4>
+              <form id="changePasswordForm">
+                <input type="password" id="cpCurrent" placeholder="Current password" required style="width:100%;padding:8px;margin-bottom:6px;" />
+                <input type="password" id="cpNew" placeholder="New password" required style="width:100%;padding:8px;margin-bottom:6px;" />
+                <input type="password" id="cpConfirm" placeholder="Confirm new password" required style="width:100%;padding:8px;margin-bottom:8px;" />
+                <button type="submit" class="btn-login" style="width:100%">Change Password</button>
+                <div id="changePasswordStatus" style="font-size:12px;margin-top:8px;text-align:center;"></div>
+              </form>
+            </div>
+
             <div style="text-align:center;">
               <button class="delete-account-btn" id="deleteAccountBtn">Delete Account</button>
             </div>
@@ -107,7 +118,9 @@
             <div class="delete-modal-box">
               <h3>Delete Account</h3>
               <p>This will permanently delete your account and all your bookings. This action <strong>cannot be undone</strong>.</p>
-              <p>Are you sure you want to continue?</p>
+              <p>Please enter your current password to confirm.</p>
+              <input type="password" id="deletePassword" placeholder="Current password" style="width:100%;padding:8px;margin:10px 0;" />
+              <div id="deletePasswordError" style="color:#dc2626;font-size:13px;min-height:18px;margin-bottom:6px;text-align:left"></div>
               <div class="delete-modal-actions">
                 <button class="delete-modal-confirm" id="deleteConfirmBtn">Yes, Delete My Account</button>
                 <button class="delete-modal-cancel" id="deleteCancelBtn">Cancel</button>

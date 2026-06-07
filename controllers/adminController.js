@@ -335,6 +335,34 @@ exports.getAdminDashboard = async (req, res) => {
     }
 };
 
+exports.getMessages = async (req, res) => {
+    const user = sessionUser(req);
+    try {
+        const ContactMessage = require('../models/ContactMessage');
+        const messages = await ContactMessage.find({}).sort({ createdAt: -1 });
+        return res.render('messages', { name: user.name || 'Admin', messages });
+    } catch (err) {
+        console.error('ADMIN:getMessages ERROR:', err);
+        return res.render('messages', { name: user.name || 'Admin', messages: [] });
+    }
+};
+
+exports.deleteMessage = async (req, res) => {
+    const user = sessionUser(req);
+    try {
+        const { messageId } = req.body;
+        if (!messageId) {
+            return res.redirect('/admin/messages');
+        }
+        const ContactMessage = require('../models/ContactMessage');
+        await ContactMessage.findByIdAndDelete(messageId);
+        return res.redirect('/admin/messages');
+    } catch (err) {
+        console.error('ADMIN:deleteMessage ERROR:', err);
+        return res.redirect('/admin/messages');
+    }
+};
+
 exports.getReports = async (req, res) => {
     const user = sessionUser(req);
 

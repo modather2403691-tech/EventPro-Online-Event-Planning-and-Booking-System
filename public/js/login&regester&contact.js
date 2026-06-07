@@ -137,10 +137,9 @@ document.addEventListener("DOMContentLoaded", function () {
       isValid = false;
     }
 
-    // SUCCESS
+    // SUCCESS — submit to server so it is saved and visible to admin
     if (isValid) {
-      alert("Message sent successfully 🎉");
-      contactForm.reset();
+      contactForm.submit();
     }
   });
 

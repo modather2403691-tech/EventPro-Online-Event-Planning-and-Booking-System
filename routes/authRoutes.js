@@ -4,43 +4,7 @@ const authController = require('../controllers/authController');
 const eventController = require('../controllers/eventController');
 const adminController = require('../controllers/adminController');
 const Booking = require('../models/Booking');
-const nodemailer = require('nodemailer');
 const ContactMessage = require('../models/ContactMessage');
-
-const transporter = nodemailer.createTransport({
-    service: 'gmail',
-    auth: {
-        user: 'modather@gmail.com',
-        pass: 'mxti kfyw dkgz jpht'
-    }
-});
-
-router.post("/contact", async (req, res) => {
-    const { name, email, message } = req.body;
-
-    try {
-        const info = await transporter.sendMail({
-            from: email,
-            to: "modather@gmail.com",   // admin email
-            subject: `New Contact Message from ${name}`,
-            text: message
-        });
-
-        console.log("EMAIL SENT SUCCESSFULLY");
-        console.log(info); // 👈 ده اللي يثبتلك الإرسال
-
-        return res.render("contact", {
-            success: "Message sent successfully ✔"
-        });
-
-    } catch (err) {
-        console.log("EMAIL ERROR:", err);
-
-        return res.render("contact", {
-            error: "Failed to send message ❌"
-        });
-    }
-});
 
 const BookingRequest = require('../models/BookingRequest');
 const Event = require('../models/Event');
@@ -261,22 +225,33 @@ router.post('/client-profile/update-account', requireRole('client'), async (req,
     }
 });
 
-// POST — delete account
-router.post('/client-profile/delete-account', requireRole('client'), async (req, res) => {
+// POST — delete account (shared)
+router.post('/profile/delete-account', async (req, res) => {
     const u = req.session && req.session.user;
     if (!u) return res.status(401).json({ error: 'Not logged in' });
     try {
+        const { currentPassword } = req.body;
+        if (!currentPassword) return res.status(400).json({ error: 'Current password required' });
+
+        const bcrypt = require('bcryptjs');
         const User           = require('../models/User');
         const Booking        = require('../models/Booking');
         const BookingRequest = require('../models/BookingRequest');
         const Event          = require('../models/Event');
 
         const email = u.email;
+        const user = await User.findOne({ email });
+        if (!user) return res.status(404).json({ error: 'User not found' });
+
+        const match = await bcrypt.compare(String(currentPassword), user.password);
+        if (!match) {
+            return res.status(400).json({ error: 'Incorrect current password' });
+        }
 
         await Promise.all([
             User.findOneAndDelete({ email }),
             Booking.deleteMany({ $or: [ { userEmail: email }, { organizerEmail: email } ] }),
-            BookingRequest.deleteMany({ clientEmail: email }),
+            BookingRequest.deleteMany({ $or: [ { clientEmail: email }, { 'offers.organizerEmail': email } ] }),
             Event.deleteMany({ organizerEmail: email })
         ]);
 
@@ -350,6 +325,35 @@ router.post('/client-profile/update-photo', requireRole('client'), async (req, r
         res.json({ success: true, photo });
     } catch (err) {
         console.error('PHOTO UPDATE ERROR:', err);
+        res.status(500).json({ error: 'Server error' });
+    }
+});
+
+// POST — change password (shared)
+router.post('/profile/change-password', async (req, res) => {
+    try {
+        const u = req.session && req.session.user;
+        if (!u) return res.status(401).json({ error: 'Not logged in' });
+
+        const { currentPassword, newPassword, confirmPassword } = req.body;
+        if (!currentPassword || !newPassword || !confirmPassword) return res.status(400).json({ error: 'All fields required' });
+        if (String(newPassword).length < 6) return res.status(400).json({ error: 'New password must be at least 6 characters' });
+        if (newPassword !== confirmPassword) return res.status(400).json({ error: 'Passwords do not match' });
+
+        const bcrypt = require('bcryptjs');
+        const User = require('../models/User');
+        const user = await User.findOne({ email: u.email });
+        if (!user) return res.status(404).json({ error: 'User not found' });
+
+        const match = await bcrypt.compare(String(currentPassword), user.password);
+        if (!match) return res.status(400).json({ error: 'Incorrect current password' });
+
+        user.password = await bcrypt.hash(String(newPassword), 10);
+        await user.save();
+
+        res.json({ success: true });
+    } catch (err) {
+        console.error('CHANGE PASSWORD ERROR:', err);
         res.status(500).json({ error: 'Server error' });
     }
 });
@@ -439,8 +443,8 @@ router.post('/manage-events/edit', requireRole('organizer'), eventController.edi
 router.post('/manage-events/booking-status', requireRole('organizer'), eventController.updateBookingStatus);
 
 // ---- Booking requests (marketplace) ----
-router.get('/new-request', requireRole('organizer'), eventController.showNewRequest);
-router.post('/booking-requests/create', requireRole('organizer'), eventController.createRequest);
+router.get('/new-request', requireRole('client'), eventController.showNewRequest);
+router.post('/booking-requests/create', requireRole('client'), eventController.createRequest);
 router.get('/booking-requests', requireRole('organizer'), eventController.organizerRequests);
 router.get('/accepted-requests', requireRole('organizer'), eventController.acceptedRequests);
 router.post('/booking-requests/offer', requireRole('organizer'), eventController.makeOffer);
@@ -474,6 +478,8 @@ router.get('/forgot-password', (req, res) => {
     res.render('forgot-password', { error: null });
 });
 
+router.post('/forgot-password', authController.forgotPassword);
+
 router.post('/contact', async (req, res) => {
     try {
         const { name, email, message } = req.body;
@@ -495,9 +501,6 @@ router.post('/contact', async (req, res) => {
             error: 'Failed to send message'
         });
     }
-});
-router.post('/contact', async (req, res) => {
-    console.log("CONTACT BODY:", req.body);
 });
 
 module.exports = router;

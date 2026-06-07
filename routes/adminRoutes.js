@@ -8,6 +8,12 @@ router.use(requireAdmin);
 // Route to display the manage users page
 router.get('/users', adminController.getManageUsers);
 
+// Route to display contact messages
+router.get('/messages', adminController.getMessages);
+
+// Route to delete a contact message
+router.post('/messages/delete', adminController.deleteMessage);
+
 // Route to handle the form submission for adding a user
 router.post('/users', adminController.addUser);
 

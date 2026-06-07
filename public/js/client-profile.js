@@ -198,9 +198,18 @@ const deleteModal      = document.getElementById('deleteModal');
 const deleteConfirmBtn = document.getElementById('deleteConfirmBtn');
 const deleteCancelBtn  = document.getElementById('deleteCancelBtn');
 const accountStatus    = document.getElementById('accountStatus');
+const deletePasswordInput = document.getElementById('deletePassword');
+const deletePasswordError = document.getElementById('deletePasswordError');
+const role = document.body && document.body.dataset && document.body.dataset.role ? document.body.dataset.role : 'client';
 
 if (deleteAccountBtn && deleteModal) {
   deleteAccountBtn.addEventListener('click', () => { deleteModal.style.display = 'flex'; });
+}
+if (deleteModal) {
+  deleteModal.addEventListener('show', () => {
+    if (deletePasswordError) deletePasswordError.textContent = '';
+    if (accountStatus) accountStatus.textContent = '';
+  });
 }
 if (deleteCancelBtn) {
   deleteCancelBtn.addEventListener('click', () => { deleteModal.style.display = 'none'; });
@@ -210,25 +219,74 @@ if (deleteModal) {
 }
 if (deleteConfirmBtn) {
   deleteConfirmBtn.addEventListener('click', async () => {
+    const current = deletePasswordInput ? deletePasswordInput.value.trim() : '';
+    if (!current) {
+      if (deletePasswordError) { deletePasswordError.textContent = 'Please enter your current password.'; }
+      return;
+    }
+
     deleteConfirmBtn.disabled    = true;
     deleteConfirmBtn.textContent = 'Deleting...';
     try {
-      const res  = await fetch('/client-profile/delete-account', {
-        method: 'POST', headers: { 'Content-Type': 'application/json' }
+      const res  = await fetch('/profile/delete-account', {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ currentPassword: current })
       });
       const data = await res.json();
       if (data.success) {
-        window.location.href = '/index';
+        window.location.href = '/';
       } else {
-        deleteModal.style.display = 'none';
-        if (accountStatus) { accountStatus.textContent = data.error || 'Delete failed.'; accountStatus.className = 'error'; }
+        if (data && data.error) {
+          if (data.error === 'Incorrect current password') {
+            if (deletePasswordError) deletePasswordError.textContent = data.error;
+          } else {
+            deleteModal.style.display = 'none';
+            if (accountStatus) { accountStatus.textContent = data.error; accountStatus.className = 'error'; }
+          }
+        } else {
+          deleteModal.style.display = 'none';
+          if (accountStatus) { accountStatus.textContent = 'Delete failed.'; accountStatus.className = 'error'; }
+        }
       }
     } catch (err) {
-      deleteModal.style.display = 'none';
       if (accountStatus) { accountStatus.textContent = 'Connection error. Try again.'; accountStatus.className = 'error'; }
     } finally {
       deleteConfirmBtn.disabled    = false;
       deleteConfirmBtn.textContent = 'Yes, Delete My Account';
+    }
+  });
+}
+
+// ── Change Password ──
+const changePasswordForm = document.getElementById('changePasswordForm');
+const changePasswordStatus = document.getElementById('changePasswordStatus');
+if (changePasswordForm) {
+  changePasswordForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const current = document.getElementById('cpCurrent').value.trim();
+    const next = document.getElementById('cpNew').value.trim();
+    const confirm = document.getElementById('cpConfirm').value.trim();
+    if (!current || !next || !confirm) {
+      changePasswordStatus.textContent = 'All fields are required.'; changePasswordStatus.className = 'error'; return;
+    }
+    if (next.length < 6) { changePasswordStatus.textContent = 'New password must be at least 6 characters.'; changePasswordStatus.className = 'error'; return; }
+    if (next !== confirm) { changePasswordStatus.textContent = 'Passwords do not match.'; changePasswordStatus.className = 'error'; return; }
+
+    try {
+      changePasswordStatus.textContent = 'Updating...'; changePasswordStatus.className = '';
+      const res = await fetch('/profile/change-password', {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ currentPassword: current, newPassword: next, confirmPassword: confirm })
+      });
+      const data = await res.json();
+      if (data.success) {
+        changePasswordStatus.textContent = 'Password updated ✓'; changePasswordStatus.className = 'success';
+        changePasswordForm.reset();
+      } else {
+        changePasswordStatus.textContent = data.error || 'Update failed.'; changePasswordStatus.className = 'error';
+      }
+    } catch (err) {
+      changePasswordStatus.textContent = 'Connection error. Try again.'; changePasswordStatus.className = 'error';
     }
   });
 }
