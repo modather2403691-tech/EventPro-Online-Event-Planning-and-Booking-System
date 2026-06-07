@@ -4,6 +4,44 @@ const authController = require('../controllers/authController');
 const eventController = require('../controllers/eventController');
 const adminController = require('../controllers/adminController');
 const Booking = require('../models/Booking');
+const nodemailer = require('nodemailer');
+const ContactMessage = require('../models/ContactMessage');
+
+const transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+        user: 'modather@gmail.com',
+        pass: 'mxti kfyw dkgz jpht'
+    }
+});
+
+router.post("/contact", async (req, res) => {
+    const { name, email, message } = req.body;
+
+    try {
+        const info = await transporter.sendMail({
+            from: email,
+            to: "modather@gmail.com",   // admin email
+            subject: `New Contact Message from ${name}`,
+            text: message
+        });
+
+        console.log("EMAIL SENT SUCCESSFULLY");
+        console.log(info); // 👈 ده اللي يثبتلك الإرسال
+
+        return res.render("contact", {
+            success: "Message sent successfully ✔"
+        });
+
+    } catch (err) {
+        console.log("EMAIL ERROR:", err);
+
+        return res.render("contact", {
+            error: "Failed to send message ❌"
+        });
+    }
+});
+
 const BookingRequest = require('../models/BookingRequest');
 const Event = require('../models/Event');
 
@@ -426,6 +464,7 @@ router.get('/register', (req, res) => {
     res.render('register', { error: null });
 });
 
+
 router.get('/login', (req, res) => {
     res.render('login', { error: null });
 });
@@ -433,9 +472,38 @@ router.get('/login', (req, res) => {
 // Logout
 router.get('/logout', authController.logout);
 
-// POST routes
+// POST rout
 router.post('/register', authController.register);
 router.post('/login', authController.login);
 router.post('/admin/users/edit', adminController.editUser);
+router.get('/forgot-password', (req, res) => {
+    res.render('forgot-password', { error: null });
+});
+
+router.post('/contact', async (req, res) => {
+    try {
+        const { name, email, message } = req.body;
+
+        await ContactMessage.create({
+            name,
+            email,
+            message
+        });
+
+        res.render('contact', {
+            success: 'Message sent successfully'
+        });
+
+    } catch (err) {
+        console.error(err);
+
+        res.render('contact', {
+            error: 'Failed to send message'
+        });
+    }
+});
+router.post('/contact', async (req, res) => {
+    console.log("CONTACT BODY:", req.body);
+});
 
 module.exports = router;

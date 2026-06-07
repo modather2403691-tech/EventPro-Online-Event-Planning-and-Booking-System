@@ -778,3 +778,73 @@ input:focus {
         padding: 24px 18px;
     }
 }
+.forgot-page .animation-side {
+    display: none;
+}
+
+.forgot-page .form-side {
+    flex: 1;
+    background: rgba(255, 255, 255, 0.95);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    backdrop-filter: blur(10px);
+}
+
+.forgot-page .login-box {
+    width: 100%;
+    max-width: 380px;
+}
+
+.forgot-page .logo-icon {
+    font-size: 30px;
+    margin-bottom: 20px;
+    display: inline-block;
+    animation: none;
+}
+.forgot-page {
+    background: white !important;
+}
+
+/* نشيل الخلفية الجانبية الزرقا */
+.forgot-page .animation-side {
+    display: none;
+}
+
+/* نخلي الفورم في النص */
+.forgot-page .container {
+    justify-content: center;
+    align-items: center;
+}
+
+/* نخلي الفورم white clean */
+.forgot-page .form-side {
+    flex: none;
+    background: white;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* box يبقى في النص */
+.forgot-page .login-box {
+    background: white;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    padding: 40px;
+    border-radius: 12px;
+}
+
+/* inputs تبقى clean */
+.forgot-page input {
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    padding: 12px;
+}
+
+/* button */
+.forgot-page .btn-login {
+    background: #111;
+    border-radius: 6px;
+}

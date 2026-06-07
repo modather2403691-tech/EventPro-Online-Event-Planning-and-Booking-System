@@ -3,6 +3,7 @@ const User = require('../models/user');
 const Booking = require('../models/Booking');
 const BookingRequest = require('../models/BookingRequest');
 const Event = require('../models/Event');
+const ContactMessage = require('../models/ContactMessage');
 
 function sessionUser(req) {
     return (req.session && req.session.user) || {};
@@ -426,5 +427,17 @@ exports.editUser = async (req, res) => {
     } catch (err) {
         console.error('ADMIN:editUser ERROR:', err);
         return res.json({ success: false, message: 'Server error' });
+    }
+};
+exports.getMessages = async (req, res) => {
+    try {
+        const messages = await ContactMessage.find()
+            .sort({ createdAt: -1 });
+
+        res.render('messages', { messages });
+
+    } catch (err) {
+        console.error(err);
+        res.render('messages', { messages: [] });
     }
 };

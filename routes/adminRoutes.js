@@ -10,5 +10,5 @@ router.post('/users', adminController.addUser);
 
 // Route to handle editing a user via AJAX
 router.post('/users/edit', adminController.editUser);
-
+router.get('/messages', adminController.getMessages);
 module.exports = router;
