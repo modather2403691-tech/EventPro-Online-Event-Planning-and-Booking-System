@@ -445,7 +445,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   if (bookBtn) {
     bookBtn.onclick = () => {
-      window.location.href = `/book-event?source=package&type=${type}`;
+      window.location.href = `/new-request?type=${encodeURIComponent(type)}`;
     };
   }
 });

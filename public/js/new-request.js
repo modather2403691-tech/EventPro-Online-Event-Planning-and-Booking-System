@@ -35,6 +35,22 @@ document.addEventListener('DOMContentLoaded', () => {
     phoneInput.addEventListener('input', () => validatePhone(false));
   }
 
+  // ── Auto-fill event type from package details query ──
+  const params = new URLSearchParams(window.location.search);
+  const packageType = params.get('type');
+  const packageTypeMap = {
+    party: 'Party',
+    wedding: 'Wedding',
+    birthday: 'Birthday'
+  };
+
+  if (packageType && typeInput) {
+    const mappedType = packageTypeMap[packageType.toLowerCase()];
+    if (mappedType) {
+      typeInput.value = mappedType;
+    }
+  }
+
   // ── Submit ──
   if (form) {
     form.addEventListener('submit', (e) => {
