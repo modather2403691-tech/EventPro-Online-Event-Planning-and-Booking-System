@@ -3,7 +3,7 @@ const User = require('../models/user');
 const Booking = require('../models/Booking');
 const BookingRequest = require('../models/BookingRequest');
 const Event = require('../models/Event');
-const ContactMessage = require('../models/ContactMessage');
+
 
 function sessionUser(req) {
     return (req.session && req.session.user) || {};
@@ -11,6 +11,72 @@ function sessionUser(req) {
 
 function monthName(monthIndex) {
     return new Date(2000, monthIndex, 1).toLocaleString('en-US', { month: 'long' });
+}
+
+function wantsJson(req) {
+    const accept = req.headers.accept || '';
+    const contentType = req.headers['content-type'] || '';
+    return Boolean(req.xhr || accept.includes('application/json') || contentType.includes('application/json'));
+}
+
+function calculateAge(dateValue) {
+    const dobDate = new Date(dateValue);
+    if (Number.isNaN(dobDate.getTime())) {
+        return NaN;
+    }
+
+    const today = new Date();
+    let age = today.getFullYear() - dobDate.getFullYear();
+    const monthDiff = today.getMonth() - dobDate.getMonth();
+
+    if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < dobDate.getDate())) {
+        age--;
+    }
+
+    return age;
+}
+
+function validateNewUserFields(body) {
+    const fieldErrors = {};
+    const {
+        userId,
+        name,
+        email,
+        password,
+        phone,
+        dob
+    } = body;
+
+    if (!userId || !String(userId).trim()) {
+        fieldErrors.userId = 'User ID is required.';
+    }
+
+    if (!name || String(name).trim().length < 9) {
+        fieldErrors.name = 'Name must be at least 9 characters.';
+    }
+
+    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(email).trim())) {
+        fieldErrors.email = 'Enter a valid email address.';
+    }
+
+    if (!password || !/^(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9]).{8,}$/.test(String(password))) {
+        fieldErrors.password = 'Password must be at least 8 characters and include 1 uppercase letter, 1 number, and 1 special character.';
+    }
+
+    if (!phone || !String(phone).trim().startsWith('01')) {
+        fieldErrors.phone = 'Phone must start with 01.';
+    }
+
+    if (!dob) {
+        fieldErrors.dob = 'Date of birth is required.';
+    } else {
+        const age = calculateAge(dob);
+        if (Number.isNaN(age) || age < 18) {
+            fieldErrors.dob = 'User must be 18 years or older.';
+        }
+    }
+
+    return fieldErrors;
 }
 
 async function buildRecentActivity() {
@@ -370,15 +436,31 @@ exports.addUser = async (req, res) => {
     try {
         console.log('ADMIN:addUser called');
         console.log('ADMIN:addUser body:', req.body);
-        const { name, email, password, phone, dob, role } = req.body;
+        const { userId, name, email, password, phone, dob, role } = req.body;
 
-        if (!name || !email || !password || !phone || !dob) {
-            return res.status(400).send('Missing required fields');
+        const fieldErrors = validateNewUserFields(req.body);
+
+        if (userId && !fieldErrors.userId) {
+            const existingId = await User.findOne({ userId: String(userId).trim() });
+            if (existingId) {
+                fieldErrors.userId = 'This User ID is already taken.';
+            }
         }
 
-        const existing = await User.findOne({ email });
-        if (existing) {
-            return res.redirect('/admin/users');
+        const existingEmail = await User.findOne({ email });
+        if (existingEmail) {
+            fieldErrors.email = 'This email is already registered.';
+        }
+
+        if (Object.keys(fieldErrors).length > 0) {
+            if (wantsJson(req)) {
+                return res.status(400).json({ success: false, fieldErrors });
+            }
+
+            return res.status(400).render('manage-users', {
+                users: await User.find({}).sort({ createdAt: -1 }),
+                fieldErrors
+            });
         }
 
         const hashed = await bcrypt.hash(password, 10);
@@ -390,6 +472,7 @@ exports.addUser = async (req, res) => {
                 : 'Client';
 
         const newUser = new User({
+            userId: userId || undefined,
             name,
             email,
             dob: new Date(dob),
@@ -399,9 +482,17 @@ exports.addUser = async (req, res) => {
         });
 
         await newUser.save();
+        if (wantsJson(req)) {
+            return res.json({ success: true });
+        }
+
         return res.redirect('/admin/users');
     } catch (err) {
         console.error('ADMIN:addUser ERROR:', err);
+        if (wantsJson(req)) {
+            return res.status(500).json({ success: false, message: 'Server error' });
+        }
+
         return res.status(500).send('Server error');
     }
 };
@@ -412,6 +503,38 @@ exports.editUser = async (req, res) => {
         console.log('ADMIN:editUser body:', req.body);
         const { _id, name, email, phone, dob, role, status } = req.body;
         if (!_id) return res.json({ success: false, message: 'Missing id' });
+
+        const fieldErrors = {};
+
+        if (name && String(name).trim().length < 9) {
+            fieldErrors.name = 'Name must be at least 9 characters.';
+        }
+
+        if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(email).trim())) {
+            fieldErrors.email = 'Enter a valid email address.';
+        }
+
+        if (phone && !String(phone).trim().startsWith('01')) {
+            fieldErrors.phone = 'Phone must start with 01.';
+        }
+
+        if (dob) {
+            const age = calculateAge(dob);
+            if (Number.isNaN(age) || age < 18) {
+                fieldErrors.dob = 'User must be 18 years or older.';
+            }
+        }
+
+        if (Object.keys(fieldErrors).length > 0) {
+            return res.json({ success: false, fieldErrors });
+        }
+
+        if (email) {
+            const existingEmail = await User.findOne({ email: String(email).trim(), _id: { $ne: _id } });
+            if (existingEmail) {
+                return res.json({ success: false, fieldErrors: { email: 'This email is already registered.' } });
+            }
+        }
 
         const update = {};
         if (name) update.name = name;
@@ -429,15 +552,4 @@ exports.editUser = async (req, res) => {
         return res.json({ success: false, message: 'Server error' });
     }
 };
-exports.getMessages = async (req, res) => {
-    try {
-        const messages = await ContactMessage.find()
-            .sort({ createdAt: -1 });
 
-        res.render('messages', { messages });
-
-    } catch (err) {
-        console.error(err);
-        res.render('messages', { messages: [] });
-    }
-};

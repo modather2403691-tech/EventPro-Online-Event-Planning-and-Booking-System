@@ -1,9 +1,10 @@
 const mongoose = require('mongoose');
 
 const userSchema = new mongoose.Schema({
-userId:   { type: String }, 
+userId:   { type: String, trim: true, unique: true, sparse: true }, 
     // Defaults to Active, so existing pages don't need to know about it
     status:   { type: String, enum: ['Active', 'Inactive'], default: 'Active' },
+    lastActiveAt: { type: Date, default: null },
 
     name:     { type: String, required: true },
     email:    { type: String, required: true, unique: true },

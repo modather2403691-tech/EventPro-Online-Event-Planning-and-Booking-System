@@ -1,6 +1,6 @@
 const bcrypt  = require('bcryptjs');
 const User    = require('../models/User');
-const { store, persist } = require('../middleware/session');
+const { store, persist, bootId } = require('../middleware/session');
 
 exports.forgotPassword = async (req, res) => {
     console.log("BODY:", req.body);
@@ -63,7 +63,7 @@ exports.login = async (req, res) => {
 
         // Admin hardcoded login
         if (email === 'jana@eventpro.com' && password === 'Jana123#') {
-            store[sid].user = { name: 'Jana', role: 'admin' };
+            store[sid].user = { name: 'Jana', role: 'admin', sessionBootId: bootId };
             console.log('[login] admin session saved:', store[sid]);
             persist();
             return res.redirect('/admin-index');
@@ -86,8 +86,14 @@ exports.login = async (req, res) => {
             phone:       user.phone,
             photo:       user.photo || '',
             memberSince: user._id.getTimestamp(),
+            lastActiveAt: new Date(),
+            sessionBootId: bootId,
             role:        user.role.trim().toLowerCase()
         };
+
+        await User.findByIdAndUpdate(user._id, {
+            lastActiveAt: new Date()
+        });
         console.log('[login] session saved for sid', sid.slice(0,8), ':', store[sid].user);
         persist();
 

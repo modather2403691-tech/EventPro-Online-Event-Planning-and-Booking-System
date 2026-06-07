@@ -44,6 +44,8 @@ router.post("/contact", async (req, res) => {
 
 const BookingRequest = require('../models/BookingRequest');
 const Event = require('../models/Event');
+const requireAdmin = require('../middleware/adminAuth');
+const { requireRole } = require('../middleware/roleAuth');
 
 // Helper: get name from session or fallback
 function userName(req, fallback) {
@@ -75,16 +77,16 @@ const pages = [
     'security'
 ];
 
-router.get('/manage-users', adminController.getManageUsers);
-router.get('/admin-index', adminController.getAdminIndex);
-router.get('/admin-dashboard', adminController.getAdminDashboard);
-router.get('/admin-dashboard/export-csv', adminController.exportReportsCsv);
-router.get('/reports', adminController.getReports);
-router.get('/client-reservation', adminController.getClientReservation);
-router.get('/organizer-event', adminController.getOrganizerEvent);
+router.get('/manage-users', requireAdmin, adminController.getManageUsers);
+router.get('/admin-index', requireAdmin, adminController.getAdminIndex);
+router.get('/admin-dashboard', requireAdmin, adminController.getAdminDashboard);
+router.get('/admin-dashboard/export-csv', requireAdmin, adminController.exportReportsCsv);
+router.get('/reports', requireAdmin, adminController.getReports);
+router.get('/client-reservation', requireAdmin, adminController.getClientReservation);
+router.get('/organizer-event', requireAdmin, adminController.getOrganizerEvent);
 
 // Client pages that need session data
-router.get('/client-dashboard', async (req, res) => {
+router.get('/client-dashboard', requireRole('client'), async (req, res) => {
     const u = (req.session && req.session.user) || {};
     if (roleFromSession(req) === 'admin') return res.redirect('/admin-index');
     if (roleFromSession(req) === 'organizer') return res.redirect('/organizer-index');
@@ -122,7 +124,7 @@ router.get('/client-dashboard', async (req, res) => {
     });
 });
 
-router.get('/my-bookings', async (req, res) => {
+router.get('/my-bookings', requireRole('client'), async (req, res) => {
     const u = (req.session && req.session.user) || {};
     const userEmail = u.email || null;
     if (!userEmail) return res.redirect('/login');
@@ -142,7 +144,7 @@ router.get('/my-bookings', async (req, res) => {
 });
 
 // Booking form — must be logged in so the booking is tied to the account.
-router.get('/book-event', (req, res) => {
+router.get('/book-event', requireRole('client'), (req, res) => {
     const u = req.session && req.session.user;
     if (!u || !u.email) return res.redirect('/login');
     res.render('book-event', {
@@ -152,7 +154,7 @@ router.get('/book-event', (req, res) => {
     });
 });
 
-router.post('/book-event', async (req, res) => {
+router.post('/book-event', requireRole('client'), async (req, res) => {
     const u = req.session && req.session.user;
     if (!u || !u.email) {
         return res.status(401).json({ error: 'Please log in to book an event.' });
@@ -204,7 +206,7 @@ router.post('/book-event', async (req, res) => {
 });
 
 // Index pages — pass name from session
-router.get('/organizer-index', async (req, res) => {
+router.get('/organizer-index', requireRole('organizer'), async (req, res) => {
     const u = (req.session && req.session.user) || {};
     let events = [];
     try {
@@ -215,18 +217,14 @@ router.get('/organizer-index', async (req, res) => {
     res.render('organizer-index', { name: userName(req, 'Organizer'), events });
 });
 
-router.get('/client-index', async (req, res) => {
-    if (roleFromSession(req) === 'admin') return res.redirect('/admin-index');
-    if (roleFromSession(req) === 'organizer') return res.redirect('/organizer-index');
+router.get('/client-index', requireRole('client'), async (req, res) => {
     const events = await eventController.getAllEvents();
     res.render('client-index', { name: userName(req, 'Client'), events });
 });
 
 // Profile pages
-router.get('/client-profile', async (req, res) => {
+router.get('/client-profile', requireRole('client'), async (req, res) => {
     const u = (req.session && req.session.user) || {};
-    if (roleFromSession(req) === 'admin') return res.redirect('/admin-index');
-    if (roleFromSession(req) === 'organizer') return res.redirect('/organizer-index');
     const memberSince = u.memberSince
         ? new Date(u.memberSince).toLocaleDateString('en-US', { month: 'short', year: 'numeric' })
         : 'N/A';
@@ -249,7 +247,7 @@ router.get('/client-profile', async (req, res) => {
 });
 
 // POST — update account active status
-router.post('/client-profile/update-account', async (req, res) => {
+router.post('/client-profile/update-account', requireRole('client'), async (req, res) => {
     const u = req.session && req.session.user;
     if (!u) return res.status(401).json({ error: 'Not logged in' });
     const { active } = req.body;
@@ -264,7 +262,7 @@ router.post('/client-profile/update-account', async (req, res) => {
 });
 
 // POST — delete account
-router.post('/client-profile/delete-account', async (req, res) => {
+router.post('/client-profile/delete-account', requireRole('client'), async (req, res) => {
     const u = req.session && req.session.user;
     if (!u) return res.status(401).json({ error: 'Not logged in' });
     try {
@@ -305,7 +303,7 @@ router.post('/client-profile/delete-account', async (req, res) => {
 });
 
 // POST — update profile info (name + phone)
-router.post('/client-profile/update-info', async (req, res) => {
+router.post('/client-profile/update-info', requireRole('client'), async (req, res) => {
     const u = req.session && req.session.user;
     if (!u) return res.status(401).json({ error: 'Not logged in' });
 
@@ -330,7 +328,7 @@ router.post('/client-profile/update-info', async (req, res) => {
 });
 
 // POST — update profile photo
-router.post('/client-profile/update-photo', async (req, res) => {
+router.post('/client-profile/update-photo', requireRole('client'), async (req, res) => {
     const u = req.session && req.session.user;
     if (!u) return res.status(401).json({ error: 'Not logged in' });
 
@@ -356,10 +354,8 @@ router.post('/client-profile/update-photo', async (req, res) => {
     }
 });
 
-router.get('/organizer-dashboard', async (req, res) => {
+router.get('/organizer-dashboard', requireRole('organizer'), async (req, res) => {
     const u = (req.session && req.session.user) || {};
-    if (roleFromSession(req) === 'admin') return res.redirect('/admin-index');
-    if (roleFromSession(req) === 'client') return res.redirect('/client-index');
     if (!u.email) return res.redirect('/login');
 
     let totalEvents = 0;
@@ -385,10 +381,8 @@ router.get('/organizer-dashboard', async (req, res) => {
     });
 });
 
-router.get('/organizer-profile', async (req, res) => {
+router.get('/organizer-profile', requireRole('organizer'), async (req, res) => {
     const u = (req.session && req.session.user) || {};
-    if (roleFromSession(req) === 'admin') return res.redirect('/admin-index');
-    if (roleFromSession(req) === 'client') return res.redirect('/client-index');
     if (!u.email) return res.redirect('/login');
 
     const memberSince = u.memberSince
@@ -437,22 +431,22 @@ router.get('/', async (req, res) => {
 });
 
 // ---- Events (organizer) ----
-router.get('/addevent', eventController.showAddEvent);
-router.post('/addevent', eventController.createEvent);
-router.get('/manage-events', eventController.manageEvents);
-router.post('/manage-events/delete', eventController.deleteEvent);
-router.post('/manage-events/edit', eventController.editEvent);
-router.post('/manage-events/booking-status', eventController.updateBookingStatus);
+router.get('/addevent', requireRole('organizer'), eventController.showAddEvent);
+router.post('/addevent', requireRole('organizer'), eventController.createEvent);
+router.get('/manage-events', requireRole('organizer'), eventController.manageEvents);
+router.post('/manage-events/delete', requireRole('organizer'), eventController.deleteEvent);
+router.post('/manage-events/edit', requireRole('organizer'), eventController.editEvent);
+router.post('/manage-events/booking-status', requireRole('organizer'), eventController.updateBookingStatus);
 
 // ---- Booking requests (marketplace) ----
-router.get('/new-request', eventController.showNewRequest);
-router.post('/booking-requests/create', eventController.createRequest);
-router.get('/booking-requests', eventController.organizerRequests);
-router.get('/accepted-requests', eventController.acceptedRequests);
-router.post('/booking-requests/offer', eventController.makeOffer);
-router.get('/my-requests', eventController.clientRequests);
-router.post('/booking-requests/accept', eventController.acceptOffer);
-router.post('/booking-requests/cancel', eventController.cancelRequest);
+router.get('/new-request', requireRole('organizer'), eventController.showNewRequest);
+router.post('/booking-requests/create', requireRole('organizer'), eventController.createRequest);
+router.get('/booking-requests', requireRole('organizer'), eventController.organizerRequests);
+router.get('/accepted-requests', requireRole('organizer'), eventController.acceptedRequests);
+router.post('/booking-requests/offer', requireRole('organizer'), eventController.makeOffer);
+router.get('/my-requests', requireRole('client'), eventController.clientRequests);
+router.post('/booking-requests/accept', requireRole('organizer'), eventController.acceptOffer);
+router.post('/booking-requests/cancel', requireRole('client'), eventController.cancelRequest);
 
 pages.forEach((page) => {
     router.get(`/${page}`, (req, res) => {

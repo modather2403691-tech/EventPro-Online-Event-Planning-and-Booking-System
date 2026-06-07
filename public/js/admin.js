@@ -1,3 +1,4 @@
+//admin
 document.addEventListener("DOMContentLoaded", function () {
   const table = document.getElementById("manageUsersTable");
   const tableBody = document.getElementById("manageUsersTableBody");
@@ -14,53 +15,306 @@ document.addEventListener("DOMContentLoaded", function () {
   const idError = document.getElementById("newUserIdError");
   const nameError = document.getElementById("newUserNameError");
   const emailError = document.getElementById("newUserEmailError");
+  const passwordInput = document.getElementById("newUserPassword");
+  const passwordError = document.getElementById("newUserPasswordError");
+  const phoneInput = document.getElementById("newUserPhone");
+  const phoneError = document.getElementById("newUserPhoneError");
+  const dobInput = document.getElementById("newUserDob");
+  const dobError = document.getElementById("newUserDobError");
+
+  const clearError = (element) => {
+    if (element) {
+      element.textContent = "";
+    }
+  };
+
+  const setError = (element, message) => {
+    if (element) {
+      element.textContent = message;
+    }
+  };
+
+  const calculateAge = (value) => {
+    if (!value) {
+      return NaN;
+    }
+
+    const dobDate = new Date(value);
+    if (Number.isNaN(dobDate.getTime())) {
+      return NaN;
+    }
+
+    const today = new Date();
+    let age = today.getFullYear() - dobDate.getFullYear();
+    const monthDiff = today.getMonth() - dobDate.getMonth();
+
+    if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < dobDate.getDate())) {
+      age--;
+    }
+
+    return age;
+  };
+
+  const passwordPattern = /^(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9]).{8,}$/;
+  const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+  const validateName = () => {
+    const value = nameInput ? nameInput.value.trim() : "";
+    if (!value) {
+      clearError(nameError);
+      return;
+    }
+
+    if (value.length < 9) {
+      setError(nameError, "Name must be at least 9 characters.");
+      return;
+    }
+
+    clearError(nameError);
+  };
+
+  const validateEmail = () => {
+    const value = emailInput ? emailInput.value.trim() : "";
+    if (!value) {
+      setError(emailError, "Email is required.");
+      return;
+    }
+
+    if (!emailPattern.test(value)) {
+      setError(emailError, "Enter a valid email address.");
+      return;
+    }
+
+    clearError(emailError);
+  };
+
+  const validatePassword = () => {
+    const value = passwordInput ? passwordInput.value : "";
+    if (!value) {
+      setError(passwordError, "Password is required.");
+      return;
+    }
+
+    if (!passwordPattern.test(value)) {
+      setError(passwordError, "Password must be at least 8 characters and include 1 uppercase letter, 1 number, and 1 special character.");
+      return;
+    }
+
+    clearError(passwordError);
+  };
+
+  const validatePhone = () => {
+    const value = phoneInput ? phoneInput.value.trim() : "";
+    if (!value) {
+      setError(phoneError, "Phone number is required.");
+      return;
+    }
+
+    if (!value.startsWith("01")) {
+      setError(phoneError, "Phone must start with 01.");
+      return;
+    }
+
+    clearError(phoneError);
+  };
+
+  const validateDob = () => {
+    const value = dobInput ? dobInput.value : "";
+    if (!value) {
+      setError(dobError, "Date of birth is required.");
+      return;
+    }
+
+    const age = calculateAge(value);
+    if (Number.isNaN(age) || age < 18) {
+      setError(dobError, "User must be 18 years or older.");
+      return;
+    }
+
+    clearError(dobError);
+  };
 
   if (idInput && idError) {
     idInput.addEventListener("input", function () {
-      idError.textContent = "";
+      clearError(idError);
     });
   }
 
   if (nameInput && nameError) {
     nameInput.addEventListener("input", function () {
-      if (nameInput.value.trim().length > 0 && nameInput.value.trim().length < 3) {
-        nameError.textContent = "Name must be at least 3 characters.";
-        return;
-      }
-      nameError.textContent = "";
+      validateName();
     });
   }
 
   if (emailInput && emailError) {
     emailInput.addEventListener("input", function () {
-      emailError.textContent = "";
+      validateEmail();
+    });
+
+    emailInput.addEventListener("blur", function () {
+      validateEmail();
     });
   }
 
-  addUserForm.addEventListener("submit", function (event) {
+  if (passwordInput && passwordError) {
+    passwordInput.addEventListener("input", function () {
+      validatePassword();
+    });
+
+    passwordInput.addEventListener("blur", function () {
+      validatePassword();
+    });
+  }
+
+  if (phoneInput && phoneError) {
+    phoneInput.addEventListener("input", function () {
+      validatePhone();
+    });
+
+    phoneInput.addEventListener("blur", function () {
+      validatePhone();
+    });
+  }
+
+  if (dobInput && dobError) {
+    dobInput.addEventListener("input", function () {
+      validateDob();
+    });
+
+    dobInput.addEventListener("change", function () {
+      validateDob();
+    });
+
+    dobInput.addEventListener("blur", function () {
+      validateDob();
+    });
+  }
+
+  addUserForm.addEventListener("submit", async function (event) {
+    event.preventDefault();
+
+    const valueId = idInput ? idInput.value.trim() : "";
+    const nameValue = nameInput ? nameInput.value.trim() : "";
+    const emailValue = emailInput ? emailInput.value.trim() : "";
+    const passwordValue = passwordInput ? passwordInput.value : "";
+    const phoneValue = phoneInput ? phoneInput.value.trim() : "";
+    const dobValue = dobInput ? dobInput.value : "";
+
+    // clear previous errors
+    [idError, nameError, emailError, passwordError, phoneError, dobError].forEach(clearError);
+
     let isValid = true;
 
-    if (idError) idError.textContent = "";
-    if (nameError) nameError.textContent = "";
-    if (emailError) emailError.textContent = "";
-
-    const emailValue = emailInput.value.trim();
-    const nameValue = nameInput.value.trim();
-
-    if (nameValue.length > 0 && nameValue.length < 3) {
-      if (nameError) nameError.textContent = "Name must be at least 3 characters.";
+    // User ID: required and will be checked for uniqueness below
+    if (!valueId) {
+      setError(idError, 'User ID is required.');
       isValid = false;
     }
 
-    if (!emailValue.includes("@")) {
-      if (emailError) emailError.textContent = 'Email must include "@".';
+    // Name: 9 characters or more
+    validateName();
+    if (nameValue.length < 9) {
+      setError(nameError, 'Name must be at least 9 characters.');
       isValid = false;
     }
 
-    // Only prevent form submission if validation fails
-    // If it passes, the form will naturally POST to your Express backend!
-    if (!isValid) {
-      event.preventDefault(); 
+    // Email: basic format validation
+    validateEmail();
+    if (!emailValue) {
+      setError(emailError, 'Email is required.');
+      isValid = false;
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailValue)) {
+      setError(emailError, 'Enter a valid email address.');
+      isValid = false;
+    }
+
+    // Password: 8+ chars, uppercase, number, and special character
+    validatePassword();
+    if (!passwordValue) {
+      setError(passwordError, 'Password is required.');
+      isValid = false;
+    } else if (!passwordPattern.test(passwordValue)) {
+      setError(passwordError, 'Password must be at least 8 characters and include 1 uppercase letter, 1 number, and 1 special character.');
+      isValid = false;
+    }
+
+    // Phone: must start with 01
+    validatePhone();
+    if (!phoneValue) {
+      setError(phoneError, 'Phone number is required.');
+      isValid = false;
+    } else if (!phoneValue.startsWith('01')) {
+      setError(phoneError, 'Phone must start with 01.');
+      isValid = false;
+    }
+
+    // DOB: must be at least 18 years old
+    validateDob();
+    if (!dobValue) {
+      setError(dobError, 'Date of birth is required.');
+      isValid = false;
+    } else {
+      const age = calculateAge(dobValue);
+      if (Number.isNaN(age) || age < 18) {
+        setError(dobError, 'User must be 18 years or older.');
+        isValid = false;
+      }
+    }
+
+    // Check userId uniqueness via AJAX before final submit
+    if (valueId && isValid) {
+      try {
+        const res = await fetch('/admin/users/check-id?userId=' + encodeURIComponent(valueId), {
+          headers: {
+            Accept: 'application/json'
+          }
+        });
+        if (res.ok) {
+          const js = await res.json();
+          if (js.exists) {
+            setError(idError, 'This User ID is already taken.');
+            isValid = false;
+          }
+        }
+      } catch (err) {
+        // network error — allow server-side validation to catch it
+        console.warn('ID uniqueness check failed', err);
+      }
+    }
+
+    if (isValid) {
+      try {
+        const payload = Object.fromEntries(new FormData(addUserForm).entries());
+        const response = await fetch(addUserForm.action, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Accept: 'application/json'
+          },
+          body: JSON.stringify(payload)
+        });
+
+        const result = await response.json().catch(() => ({}));
+
+        if (!response.ok || !result.success) {
+          const fieldErrors = result.fieldErrors || {};
+          if (fieldErrors.userId) setError(idError, fieldErrors.userId);
+          if (fieldErrors.name) setError(nameError, fieldErrors.name);
+          if (fieldErrors.email) setError(emailError, fieldErrors.email);
+          if (fieldErrors.password) setError(passwordError, fieldErrors.password);
+          if (fieldErrors.phone) setError(phoneError, fieldErrors.phone);
+          if (fieldErrors.dob) setError(dobError, fieldErrors.dob);
+
+          if (!Object.keys(fieldErrors).length && result.message) {
+            alert(result.message);
+          }
+          return;
+        }
+
+        window.location.reload();
+      } catch (error) {
+        alert('Unable to save user. Please try again.');
+      }
     }
   });
 
@@ -151,6 +405,35 @@ document.addEventListener("DOMContentLoaded", function () {
       payload[field] = control ? control.value.trim() : cell.textContent.trim();
     });
 
+    if (payload.name && payload.name.length < 9) {
+      alert('Name must be at least 9 characters.');
+      return;
+    }
+
+    if (payload.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(payload.email)) {
+      alert('Enter a valid email address.');
+      return;
+    }
+
+    if (payload.phone && !payload.phone.startsWith('01')) {
+      alert('Phone must start with 01.');
+      return;
+    }
+
+    if (payload.dob) {
+      const dobDate = new Date(payload.dob);
+      const today = new Date();
+      let age = today.getFullYear() - dobDate.getFullYear();
+      const monthDiff = today.getMonth() - dobDate.getMonth();
+      if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < dobDate.getDate())) {
+        age--;
+      }
+      if (Number.isNaN(dobDate.getTime()) || age < 18) {
+        alert('User must be 18 years or older.');
+        return;
+      }
+    }
+
     try {
       const res = await fetch('/admin/users/edit', {
         method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload)
@@ -167,6 +450,11 @@ document.addEventListener("DOMContentLoaded", function () {
         }
       } else {
         throw new Error('Server returned non-JSON response (status ' + res.status + '): ' + raw.slice(0, 180));
+      }
+
+      if (data.fieldErrors) {
+        const firstError = data.fieldErrors.name || data.fieldErrors.email || data.fieldErrors.phone || data.fieldErrors.dob;
+        throw new Error(firstError || 'Validation failed');
       }
 
       if (!res.ok || !data.success) throw new Error((data && data.message) || ('Save failed (status ' + res.status + ')'));
