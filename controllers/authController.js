@@ -1,31 +1,6 @@
 const bcrypt  = require('bcryptjs');
 const User    = require('../models/User');
 const { store, persist, bootId } = require('../middleware/session');
-
-exports.forgotPassword = async (req, res) => {
-    console.log("BODY:", req.body);
-
-    const email = req.body.email?.trim().toLowerCase();
-    const newPassword = req.body.newPassword;
-
-    const user = await User.findOne({ email });
-
-    console.log("FOUND USER:", user);
-
-    if (!user) {
-        return res.render('forgot-password', {
-            error: 'Email not found'
-        });
-    }
-
-    // hash password
-    const hashedPassword = await bcrypt.hash(newPassword, 10);
-
-    user.password = hashedPassword;
-    await user.save();
-
-    return res.redirect('/login');
-};
 exports.register = async (req, res) => {
     try {
         const { name, email, dob, password, phone, role } = req.body;
