@@ -116,5 +116,4 @@ exports.logout = (req, res) => {
 exports.sendMessage = async (req, res) => {
   const { name, email, message } = req.body;
 
-  // هنا الإيميل يروح Gmail
 };
