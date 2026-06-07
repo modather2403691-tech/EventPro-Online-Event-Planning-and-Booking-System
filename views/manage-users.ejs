@@ -46,7 +46,7 @@
 
       <section class="manage-users-form-wrap" aria-label="Add a new user">
         <h2>Add New User</h2>
-        <form action="/admin/users" method="POST" id="addUserForm" class="manage-users-form">
+        <form action="/admin/users" method="POST" id="addUserForm" class="manage-users-form" novalidate>
           <div class="manage-users-form-grid">
             <label>
               User ID
@@ -55,7 +55,7 @@
             </label>
             <label>
               Name
-              <input type="text" name="name" id="newUserName" placeholder="Full name" minlength="3" required>
+              <input type="text" name="name" id="newUserName" placeholder="Full name" required>
               <span class="error" id="newUserNameError"></span>
             </label>
             <label>
@@ -133,7 +133,7 @@
                 <% }) %>
             <% } else { %>
                 <tr>
-                    <td colspan="8" style="text-align: center; padding: 20px;">No users found in the database.</td>
+                <td colspan="8" style="text-align: center; padding: 20px;">No users found in the database.</td>
                 </tr>
             <% } %>
           </tbody>
