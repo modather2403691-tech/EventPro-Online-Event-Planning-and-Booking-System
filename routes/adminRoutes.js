@@ -20,4 +20,7 @@ router.post('/users', adminController.addUser);
 
 router.post('/users/edit', adminController.editUser);
 
+
+router.post('/users/delete', adminController.deleteUser);
+
 module.exports = router;

@@ -319,7 +319,7 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 
  
-  table.addEventListener("click", function (event) {
+  table.addEventListener("click", async function (event) {
     const row = event.target.closest("tr");
     if (!row) return;
 
@@ -345,8 +345,42 @@ document.addEventListener("DOMContentLoaded", function () {
       if (!confirm("Are you sure you want to delete this user?")) {
         return;
       }
-    
-      row.remove();
+
+      const userId = row.getAttribute("data-user-id");
+      if (!userId) {
+        alert('Missing user id');
+        return;
+      }
+
+      try {
+        const res = await fetch('/admin/users/delete', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ _id: userId })
+        });
+
+        const contentType = res.headers.get('content-type') || '';
+        const raw = await res.text();
+        let data = null;
+
+        if (contentType.includes('application/json')) {
+          try {
+            data = JSON.parse(raw);
+          } catch (parseError) {
+            throw new Error('Server sent invalid JSON: ' + parseError.message);
+          }
+        } else {
+          throw new Error('Server returned non-JSON response (status ' + res.status + '): ' + raw.slice(0, 180));
+        }
+
+        if (!res.ok || !data.success) {
+          throw new Error((data && data.message) || ('Delete failed (status ' + res.status + ')'));
+        }
+
+        row.remove();
+      } catch (error) {
+        alert('Unable to delete: ' + error.message);
+      }
     }
   });
 
