@@ -581,3 +581,25 @@ exports.editUser = async (req, res) => {
     }
 };
 
+exports.deleteUser = async (req, res) => {
+    try {
+        console.log('ADMIN:deleteUser called —', req.method, req.originalUrl);
+        console.log('ADMIN:deleteUser body:', req.body);
+
+        const { _id } = req.body;
+        if (!_id) {
+            return res.json({ success: false, message: 'Missing id' });
+        }
+
+        const deletedUser = await User.findByIdAndDelete(_id);
+        if (!deletedUser) {
+            return res.json({ success: false, message: 'User not found' });
+        }
+
+        return res.json({ success: true });
+    } catch (err) {
+        console.error('ADMIN:deleteUser ERROR:', err);
+        return res.json({ success: false, message: 'Server error' });
+    }
+};
+
